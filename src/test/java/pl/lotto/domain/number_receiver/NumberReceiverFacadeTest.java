@@ -1,7 +1,12 @@
 package pl.lotto.domain.number_receiver;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
 
 class NumberReceiverFacadeTest {
 
+    @Test
+    void testNumberReceiver() {
+
+    }
 }
