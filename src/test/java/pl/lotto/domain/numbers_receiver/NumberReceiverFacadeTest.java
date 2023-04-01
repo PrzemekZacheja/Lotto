@@ -16,20 +16,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NumberReceiverFacadeTest {
 
-    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023,3,31,10,0,0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 3, 31, 10, 0, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
 
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
             new InMemoryNumberReceiverRepositoryImpl(),
-            clock
+            clock,
+            new HashGenerator()
     );
 
     @Test
     void should_return_success_when_user_gave_six_numbers() {
         //given
-        Set<Integer>  numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
+        Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers( numbersFromUser);
+        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("Success");
     }
@@ -75,7 +76,7 @@ class NumberReceiverFacadeTest {
     }
 
     @Test
-    void should_return_saved_object_when_user_gave_six_numbers(){
+    void should_return_saved_object_when_user_gave_six_numbers() {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
@@ -92,4 +93,16 @@ class NumberReceiverFacadeTest {
 
         );
     }
+
+    @Test
+    void should_return_correct_hash_for_returned_object() {
+        //given
+        Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
+        //when
+        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        //then
+        assertThat(result.ticketId().length()).isEqualTo(36);
+        assertThat(result.ticketId()).isNotNull();
+    }
+
 }

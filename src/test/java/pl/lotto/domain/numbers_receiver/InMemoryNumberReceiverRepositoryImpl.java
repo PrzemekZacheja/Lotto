@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class InMemoryNumberReceiverRepositoryImpl implements NumberReceiverRepository {
 
-    Map<String, Ticket> inMemoryDatabase =  new ConcurrentHashMap<>();
+    Map<String, Ticket> inMemoryDatabase = new ConcurrentHashMap<>();
 
     @Override
     public Ticket save(final Ticket ticket) {

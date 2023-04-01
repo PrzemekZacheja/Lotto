@@ -69,13 +69,13 @@ public class AdjustableClock extends Clock {
         return "AdjustableClock[" + instant + "," + zone + "]";
     }
 
-    public void advanceInTimeBy(Duration clockOffset) {
-        this.instant = instant.plus(clockOffset);
-    }
-
     public void plusDays(int days) {
         Duration offset = Duration.ofDays(days);
         advanceInTimeBy(offset);
+    }
+
+    public void advanceInTimeBy(Duration clockOffset) {
+        this.instant = instant.plus(clockOffset);
     }
 
     public void plusDaysAndMinutes(int days, int minutes) {
@@ -85,14 +85,14 @@ public class AdjustableClock extends Clock {
         advanceInTimeBy(ofMinutes);
     }
 
-    public void setClockToLocalDateTime(LocalDateTime localDateTime) {
-        ZonedDateTime zoneDateTime = createZoneDateTime(localDateTime.toLocalDate(), localDateTime.toLocalTime(), zone);
-        this.instant = zoneDateTime.toInstant();
-    }
-
     public void setClockToLocalDate(LocalDate localDate) {
         LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.now(this));
         setClockToLocalDateTime(localDateTime);
+    }
+
+    public void setClockToLocalDateTime(LocalDateTime localDateTime) {
+        ZonedDateTime zoneDateTime = createZoneDateTime(localDateTime.toLocalDate(), localDateTime.toLocalTime(), zone);
+        this.instant = zoneDateTime.toInstant();
     }
 
     public void setClockToLocalTime(LocalTime localTime) {
@@ -101,4 +101,3 @@ public class AdjustableClock extends Clock {
     }
 
 }
-

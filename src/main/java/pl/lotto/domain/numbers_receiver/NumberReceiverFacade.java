@@ -8,19 +8,19 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
 
     private final NumberValidator validator;
     private final NumberReceiverRepository repository;
-    private Clock clock;
+    private final Clock clock;
+    private final HashGenerator hashGenerator;
 
     public InputNumbersResultDto inputNumbers(Set<Integer> numbers) {
         boolean areAllNumbersInRange = validator.areAllNumbersInRange(numbers);
         if (areAllNumbersInRange) {
-            String ticketId = UUID.randomUUID().toString();
+            String ticketId = hashGenerator.getHash();
             LocalDateTime drawDate = LocalDateTime.now(clock);
             Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbers));
             return InputNumbersResultDto.builder()
@@ -35,7 +35,7 @@ public class NumberReceiverFacade {
                 .build();
     }
 
-    public List<TicketDto> usersNumbers(LocalDateTime dateOfDraw){
+    public List<TicketDto> usersNumbers(LocalDateTime dateOfDraw) {
         List<Ticket> allTicketsByDrawDate = repository.findAllTicketsByDrawDate(dateOfDraw);
         return allTicketsByDrawDate.stream()
                 .map(TicketMapper::mapFromTicket).toList();
