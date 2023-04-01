@@ -1,7 +1,11 @@
 package pl.lotto.domain.result_checker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class ResultCheckerFacadeTest {
 
+    @Test
+    void test() {
+
+    }
 }
