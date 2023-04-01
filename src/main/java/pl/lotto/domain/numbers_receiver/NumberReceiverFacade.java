@@ -16,12 +16,13 @@ public class NumberReceiverFacade {
     private final NumberReceiverRepository repository;
     private final Clock clock;
     private final HashGenerator hashGenerator;
+    private final DateDrawGenerator dateDrawGenerator;
 
     public InputNumbersResultDto inputNumbers(Set<Integer> numbers) {
         boolean areAllNumbersInRange = validator.areAllNumbersInRange(numbers);
         if (areAllNumbersInRange) {
             String ticketId = hashGenerator.getHash();
-            LocalDateTime drawDate = LocalDateTime.now(clock);
+            LocalDateTime drawDate = dateDrawGenerator.generateNextDateOfDraw();
             Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbers));
             return InputNumbersResultDto.builder()
                     .ticketId(savedTicket.ticketId())

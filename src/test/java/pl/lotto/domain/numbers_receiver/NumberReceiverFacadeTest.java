@@ -5,6 +5,7 @@ import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbers_receiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numbers_receiver.dto.TicketDto;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -22,7 +23,8 @@ class NumberReceiverFacadeTest {
             new NumberValidator(),
             new InMemoryNumberReceiverRepositoryImpl(),
             clock,
-            new HashGenerator()
+            new HashGenerator(),
+            new DateDrawGenerator(clock)
     );
 
     @Test
@@ -80,7 +82,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
-        LocalDateTime drawDate = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
         List<TicketDto> ticketDtos = numberReceiverFacade.usersNumbers(drawDate);
         //then
@@ -105,4 +107,61 @@ class NumberReceiverFacadeTest {
         assertThat(result.ticketId()).isNotNull();
     }
 
+    @Test
+    public void it_should_return_next_Saturday_draw_date_when_date_is_Saturday_noon() {
+        //given
+        Clock clock = Clock.fixed(LocalDateTime.of(2023, 4, 1, 12, 0, 0).toInstant(ZoneOffset.UTC),
+                ZoneId.of("Europe/London"));
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
+                new NumberValidator(),
+                new InMemoryNumberReceiverRepositoryImpl(),
+                clock,
+                new HashGenerator(),
+                new DateDrawGenerator(clock)
+        );
+        LocalDateTime expected = LocalDateTime.of(2023, 4, 8, 12, 0, 0);
+        //when
+        InputNumbersResultDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
+        //then
+        assertThat(expected).isEqualTo(resultDto.drawDate());
+    }
+
+    @Test
+    public void it_should_return_next_Saturday_draw_date_when_date_is_Saturday_afternoon() {
+        //given
+        Clock clock = Clock.fixed(LocalDateTime.of(2023, 4, 1, 15, 0, 0).toInstant(ZoneOffset.UTC),
+                ZoneId.of("Europe/London"));
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
+                new NumberValidator(),
+                new InMemoryNumberReceiverRepositoryImpl(),
+                clock,
+                new HashGenerator(),
+                new DateDrawGenerator(clock)
+        );
+        LocalDateTime expected = LocalDateTime.of(2023, 4, 8, 12, 0, 0);
+        //when
+        InputNumbersResultDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
+        //then
+        assertThat(expected).isEqualTo(resultDto.drawDate());
+    }
+
+    @Test
+    public void it_should_return_this_Saturday_draw_date_when_date_is_before_Saturday_noon() {
+        //given
+        Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0).toInstant(ZoneOffset.UTC),
+                ZoneId.of("Europe/London"));
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
+                new NumberValidator(),
+                new InMemoryNumberReceiverRepositoryImpl(),
+                clock,
+                new HashGenerator(),
+                new DateDrawGenerator(clock)
+        );
+        LocalDateTime expected = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
+        //when
+        InputNumbersResultDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
+        //then
+        assertThat(expected).isEqualTo(resultDto.drawDate());
+
+    }
 }
