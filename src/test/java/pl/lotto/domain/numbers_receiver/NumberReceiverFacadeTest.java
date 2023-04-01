@@ -5,7 +5,6 @@ import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbers_receiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numbers_receiver.dto.TicketDto;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
