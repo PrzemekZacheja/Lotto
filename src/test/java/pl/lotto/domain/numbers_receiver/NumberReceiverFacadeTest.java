@@ -162,6 +162,25 @@ class NumberReceiverFacadeTest {
         InputNumbersResultDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
         //then
         assertThat(expected).isEqualTo(resultDto.drawDate());
+    }
 
+    @Test
+    public void it_should_return_empty_list_when_given_date_is_after_next_drawDate() {
+        //given
+        Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0).toInstant(ZoneOffset.UTC),
+                ZoneId.of("Europe/London"));
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
+                new NumberValidator(),
+                new InMemoryNumberReceiverRepositoryImpl(),
+                clock,
+                new HashGenerator(),
+                new DateDrawGenerator(clock)
+        );
+        InputNumbersResultDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
+        LocalDateTime drawDate = resultDto.drawDate();
+        //when
+        List<TicketDto> listOfTickets = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(drawDate.plusWeeks(1L));
+        //then
+        assertThat(listOfTickets.size()).isEqualTo(0);
     }
 }

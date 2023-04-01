@@ -6,6 +6,7 @@ import pl.lotto.domain.numbers_receiver.dto.TicketDto;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -40,5 +41,16 @@ public class NumberReceiverFacade {
         List<Ticket> allTicketsByDrawDate = repository.findAllTicketsByDrawDate(dateOfDraw);
         return allTicketsByDrawDate.stream()
                 .map(TicketMapper::mapFromTicket).toList();
+    }
+
+    public List<TicketDto> retrieveAllTicketsByNextDrawDate( LocalDateTime drawDate) {
+        LocalDateTime nextDateOfDraw = dateDrawGenerator.generateNextDateOfDraw();
+        if (drawDate.isAfter(nextDateOfDraw)){
+            return Collections.emptyList();
+        }
+        return repository.findAllTicketsByDrawDate(drawDate)
+                .stream()
+                .map(TicketMapper::mapFromTicket)
+                .toList();
     }
 }
