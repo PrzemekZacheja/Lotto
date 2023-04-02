@@ -6,6 +6,7 @@ import pl.lotto.domain.numbers_receiver.NumberReceiverFacade;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,8 +20,7 @@ class NumbersGeneratorFacadeTest {
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
             mockNumberReceiverFacade,
             new WinningNumberGeneratorForTest(),
-            new NumbersGeneratorRepositoryForTest() {
-            }
+            new NumbersGeneratorRepositoryForTest()
     );
 
     NumbersGeneratorFacade generatorRandomNumbers = new NumbersGeneratorFacade(
@@ -32,9 +32,9 @@ class NumbersGeneratorFacadeTest {
     @Test
     void should_generate_six_numbers() {
         //given
-        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12,0,0);
-        when(generatorMockedNumbers.generateSixNumbers().timeOfWinDrawNumbers()).thenReturn(drawDate);
+        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
+        when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         WinnerNumbersDto winnerNumbersDto = generatorRandomNumbers.generateSixNumbers();
         Set<Integer> winningNumbers = winnerNumbersDto.winningNumbers();
         //then
@@ -44,7 +44,9 @@ class NumbersGeneratorFacadeTest {
     @Test
     void should_generate_six_random_numbers() {
         //given
+        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
+        when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         Set<Integer> randomNumbers1 = generatorRandomNumbers.generateSixNumbers().winningNumbers();
         Set<Integer> randomNumbers2 = generatorRandomNumbers.generateSixNumbers().winningNumbers();
         //then
@@ -52,15 +54,15 @@ class NumbersGeneratorFacadeTest {
     }
 
     @Test
-    void should_return_correct_saved_object_to_database(){
+    void should_return_correct_saved_object_saved_to_database() {
         //given
-
+        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
-
+        when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
+        WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
+        List<WinnerNumbersDto> winnerNumbersDtoList = generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(drawDate);
+        //then
+        assertThat(winnerNumbersDtoList).contains(winnerNumbersDto);
     }
 
-    @Test
-    void should_return_correct_object_dto_from_database(){
-
-    }
 }
