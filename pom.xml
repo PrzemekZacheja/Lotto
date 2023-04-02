@@ -15,6 +15,7 @@
         <junit-jupiter.version>RELEASE</junit-jupiter.version>
         <assertj-core.version>3.24.2</assertj-core.version>
         <lombok.version>RELEASE</lombok.version>
+        <mockito-core.version>5.1.1</mockito-core.version>
     </properties>
     <dependencies>
         <dependency>
@@ -34,6 +35,14 @@
             <version>${lombok.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
