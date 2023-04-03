@@ -3,8 +3,8 @@ package pl.lotto.domain.numbers_generator;
 import lombok.AllArgsConstructor;
 
 import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static pl.lotto.domain.numbers_generator.ConfigNumbersGenerator.RANDOM_NUMBERS;
 import static pl.lotto.domain.numbers_generator.ConfigNumbersGenerator.RANDOM_NUMBER_MAX_BOUND;
@@ -17,6 +17,10 @@ class WinningNumberGenerator implements WinningNumberGenerable {
 
     @Override
     public Set<Integer> generateWinningRandomNumbers() {
-        return secureRandom.ints(RANDOM_NUMBERS, RANDOM_NUMBER_MIN, RANDOM_NUMBER_MAX_BOUND).boxed().collect(Collectors.toSet());
+        Set<Integer> setToReturn = new HashSet<>();
+        while (setToReturn.size() < RANDOM_NUMBERS) {
+            setToReturn.add(secureRandom.nextInt(RANDOM_NUMBER_MIN, RANDOM_NUMBER_MAX_BOUND));
+        }
+        return setToReturn;
     }
 }
