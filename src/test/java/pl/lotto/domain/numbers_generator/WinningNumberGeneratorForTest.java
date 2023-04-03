@@ -8,4 +8,5 @@ class WinningNumberGeneratorForTest implements WinningNumberGenerable {
     public Set<Integer> generateWinningRandomNumbers() {
         return Set.of(1, 2, 3, 4, 5, 6);
     }
+
 }
