@@ -5,7 +5,6 @@ import pl.lotto.domain.numbers_generator.dto.WinnerNumbersDto;
 import pl.lotto.domain.numbers_receiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -18,7 +17,7 @@ public class NumbersGeneratorFacade {
     public WinnerNumbersDto generateSixNumbers() {
         LocalDateTime drawDate = numberReceiverFacade.getDrawDate();
         Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers();
-        if (areNumbersInRequiredRange(winningRandomNumbers)) {
+        if (areAllNumbersInRequiredRange(winningRandomNumbers)) {
             WinnerNumbers winnerNumbersSavedToDB = numbersGeneratorRepository.save(
                     WinnerNumbers.builder()
                             .winningNumbers(winningRandomNumbers)
@@ -31,7 +30,7 @@ public class NumbersGeneratorFacade {
         }
     }
 
-    private boolean areNumbersInRequiredRange(final Set<Integer> numbers) {
+    private boolean areAllNumbersInRequiredRange(final Set<Integer> numbers) {
         long sizeOfNumbersInRange = numbers.stream()
                 .filter(integer -> integer >= 1)
                 .filter(integer -> integer <= 99)
@@ -39,10 +38,16 @@ public class NumbersGeneratorFacade {
         return sizeOfNumbersInRange == 6;
     }
 
-    List<WinnerNumbersDto> retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
-        return numbersGeneratorRepository.findAllWinnerNumbersByDrawDate(localDateTime)
-                .stream()
-                .map(WinnerNumbersMapper::mapFromWinnerNumbers)
-                .toList();
+    public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
+
+        WinnerNumbers winnerNumbersByDrawDate =
+                numbersGeneratorRepository.findWinnerNumbersByDrawDate(localDateTime);
+        if (winnerNumbersByDrawDate == null) {
+            throw new WinningNunmbersNotFoundExeption("Not Found");
+        }
+        return WinnerNumbersDto.builder()
+                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
+                .timeOfWinDrawNumbers(winnerNumbersByDrawDate.timeOfWinDrawNumbers())
+                .build();
     }
 }

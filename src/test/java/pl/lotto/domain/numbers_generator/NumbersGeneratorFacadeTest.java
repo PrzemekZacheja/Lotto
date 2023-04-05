@@ -6,7 +6,6 @@ import pl.lotto.domain.numbers_receiver.NumberReceiverFacade;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,12 +58,24 @@ class NumbersGeneratorFacadeTest {
     void should_return_correct_winning_numbers_by_date() {
         //given
         final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
-        //when
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
+        //when
         WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
-        List<WinnerNumbersDto> winnerNumbersDtoList = generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(drawDate);
+        WinnerNumbersDto winnerNumbersDtoFromRepository = generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(drawDate);
         //then
-        assertThat(winnerNumbersDtoList).contains(winnerNumbersDto);
+        assertThat(winnerNumbersDtoFromRepository).isEqualTo(winnerNumbersDto);
+    }
+
+    @Test
+    void should_throw_exception_when_not_retrieved_numbers_by_date() {
+        //given
+        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
+        final LocalDateTime failDrawDate = LocalDateTime.of(2021, 4, 1, 12, 0, 0);
+        when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
+        //when
+        WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
+        //then
+        assertThrows(WinningNunmbersNotFoundExeption.class, () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
     }
 
     @Test
