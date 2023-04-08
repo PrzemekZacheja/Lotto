@@ -1,11 +1,94 @@
 package pl.lotto.domain.result_checker;
 
 import org.junit.jupiter.api.Test;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.numbers_generator.NumbersGeneratorFacade;
+import pl.lotto.domain.numbers_generator.dto.WinnerNumbersDto;
+import pl.lotto.domain.numbers_receiver.NumberReceiverFacade;
+import pl.lotto.domain.numbers_receiver.dto.TicketDto;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ResultCheckerFacadeTest {
 
-    @Test
-    void test() {
+    NumbersGeneratorFacade numbersGenerator = mock(NumbersGeneratorFacade.class);
+    NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
+    DrawDateFacade drawDateFacade = mock(DrawDateFacade.class);
+    ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(
+            numbersGenerator,
+            numberReceiverFacade,
+            drawDateFacade
+    );
 
+
+    @Test
+    void should_generate_all_players_with_correct_message() {
+        //given
+        LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
+        when(numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime))
+                .thenReturn(new WinnerNumbersDto(localDateTime, Set.of(1, 2, 3, 4, 5, 6)));
+        when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
+                List.of(
+                        TicketDto.builder()
+                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .build(),
+                        TicketDto.builder()
+                                .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
+                                .drawDate(localDateTime)
+                                .ticketId("002")
+                                .build()
+                ));
+        when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
+        //when
+        List<ResultOfResultCheckerDto> resultOfResultCheckerDto = resultCheckerFacade.generateWinningTickets();
+        //then
+        assertThat(resultOfResultCheckerDto).isEqualTo(
+                List.of(
+                        new ResultOfResultCheckerDto(
+                                TicketDto.builder()
+                                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                        .drawDate(localDateTime)
+                                        .ticketId("001")
+                                        .build(),
+                                true,
+                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime).winningNumbers()),
+                        new ResultOfResultCheckerDto(
+                                TicketDto.builder()
+                                        .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
+                                        .drawDate(localDateTime)
+                                        .ticketId("002")
+                                        .build(),
+                                false,
+                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime).winningNumbers())
+                ));
+    }
+
+    @Test
+    void should_generate_fail_message_when_winningNumbers_equal_null() {
+        //given
+        //when
+        //then
+    }
+
+    @Test
+    void should_generate_fail_message_when_winningNumbers_is_empty() {
+        //given
+        //when
+        //then
+    }
+
+    @Test
+    void should_generate_result_with_correct_credentials() {
+        //given
+        //when
+        //then
     }
 }
