@@ -6,6 +6,7 @@ import pl.lotto.domain.numbers_generator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbers_generator.dto.WinnerNumbersDto;
 import pl.lotto.domain.numbers_receiver.NumberReceiverFacade;
 import pl.lotto.domain.numbers_receiver.dto.TicketDto;
+import pl.lotto.domain.result_checker.dto.TicketCheckedDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,15 +20,21 @@ public class ResultCheckerFacade {
     private final DrawDateFacade drawDateFacade;
 
 
-    List<ResultOfResultCheckerDto> generateWinningTickets() {
+    List<TicketCheckedDto> generateWinningTickets() {
         LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
 
         return checkWinnerResults(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw),
                 numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
     }
 
-    private List<ResultOfResultCheckerDto> checkWinnerResults(List<TicketDto> ticketDtos, WinnerNumbersDto winnerNumbersDto) {
-        List<ResultOfResultCheckerDto> listToReturn = new ArrayList<>();
+    private List<TicketCheckedDto> checkWinnerResults(List<TicketDto> ticketDtos, WinnerNumbersDto winnerNumbersDto) {
+        List<TicketCheckedDto> listToReturn = new ArrayList<>();
+
+        if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers().isEmpty()){
+            return List.of(TicketCheckedDto.builder()
+                    .message("Ticket checked incorrectly")
+                    .isWinner(false).build());
+        }
 
         for (TicketDto ticketDto : ticketDtos) {
             List<Integer> setToRetain = new ArrayList<>(ticketDto.numbersFromUser());
@@ -35,10 +42,11 @@ public class ResultCheckerFacade {
             int result = setToRetain.size();
             boolean isWinner = result >= 3;
 
-            ResultOfResultCheckerDto resultOfResultCheckerDto = ResultOfResultCheckerDto.builder()
+            TicketCheckedDto resultOfResultCheckerDto = TicketCheckedDto.builder()
                     .isWinner(isWinner)
                     .winnersNumbers(winnerNumbersDto.winningNumbers())
                     .ticketDto(ticketDto)
+                    .message("Ticket checked correctly")
                     .build();
             listToReturn.add(resultOfResultCheckerDto);
         }
