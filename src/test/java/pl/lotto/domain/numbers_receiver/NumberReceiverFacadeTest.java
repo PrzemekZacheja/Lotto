@@ -106,13 +106,13 @@ class NumberReceiverFacadeTest {
         //when
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
-        assertThat(result.ticketId().length()).isEqualTo(36);
+        assertThat(result.ticketId()).hasSize(36);
         assertThat(result.ticketId()).isNotNull();
     }
 
 
     @Test
-    public void it_should_return_empty_list_when_given_date_is_after_next_drawDate() {
+    void it_should_return_empty_list_when_given_date_is_after_next_drawDate() {
         //given
         Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0).toInstant(ZoneOffset.UTC),
                 ZoneId.of("Europe/London"));
@@ -127,6 +127,6 @@ class NumberReceiverFacadeTest {
         //when
         List<TicketDto> listOfTickets = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(drawDate.plusWeeks(1L));
         //then
-        assertThat(listOfTickets.size()).isEqualTo(0);
+        assertThat(listOfTickets).isEmpty();
     }
 }

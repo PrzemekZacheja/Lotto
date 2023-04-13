@@ -18,7 +18,7 @@ class DrawDateFacadeTest {
     );
 
     @Test
-    public void it_should_return_next_Saturday_draw_date_when_date_is_Saturday_noon() {
+    void it_should_return_next_Saturday_draw_date_when_date_is_Saturday_noon() {
         //given
 
         LocalDateTime expected = LocalDateTime.of(2023, 4, 8, 12, 0, 0);
@@ -29,7 +29,7 @@ class DrawDateFacadeTest {
     }
 
     @Test
-    public void it_should_return_this_Saturday_draw_date_when_date_is_before_Saturday_noon() {
+    void it_should_return_this_Saturday_draw_date_when_date_is_before_Saturday_noon() {
         //given
         clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0).toInstant(ZoneOffset.UTC),
                 ZoneId.of("Europe/London"));
@@ -43,7 +43,7 @@ class DrawDateFacadeTest {
     }
 
     @Test
-    public void it_should_return_next_Saturday_draw_date_when_date_is_Saturday_afternoon() {
+    void it_should_return_next_Saturday_draw_date_when_date_is_Saturday_afternoon() {
         //given
         clock = Clock.fixed(LocalDateTime.of(2023, 4, 1, 15, 0, 0).toInstant(ZoneOffset.UTC),
                 ZoneId.of("Europe/London"));
