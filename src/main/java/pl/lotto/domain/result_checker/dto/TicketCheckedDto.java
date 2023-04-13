@@ -1,7 +1,6 @@
 package pl.lotto.domain.result_checker.dto;
 
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import pl.lotto.domain.numbers_receiver.dto.TicketDto;
 
 import java.util.Set;
