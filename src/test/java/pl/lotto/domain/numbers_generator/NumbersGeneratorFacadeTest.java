@@ -39,7 +39,7 @@ class NumbersGeneratorFacadeTest {
         WinnerNumbersDto winnerNumbersDto = generatorRandomNumbers.generateSixNumbers();
         Set<Integer> winningNumbers = winnerNumbersDto.winningNumbers();
         //then
-        assertThat(winningNumbers.size()).isEqualTo(6);
+        assertThat(winningNumbers).hasSize(6);
     }
 
     @Test
@@ -87,7 +87,7 @@ class NumbersGeneratorFacadeTest {
         WinnerNumbersDto winnerNumbersDto = generatorRandomNumbers.generateSixNumbers();
         Set<Integer> winningNumbers = winnerNumbersDto.winningNumbers();
         //then
-        assertThat(winningNumbers.size()).isEqualTo(6);
+        assertThat(winningNumbers).hasSize(6);
     }
 
     @Test
