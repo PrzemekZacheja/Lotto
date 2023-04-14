@@ -30,7 +30,9 @@ class ResultChecker {
             TicketCheckedDto resultOfResultCheckerDto = TicketCheckedDto.builder()
                     .isWinner(isWinner)
                     .winnersNumbers(winnerNumbersDto.winningNumbers())
-                    .ticketDto(ticketDto)
+                    .ticketId(ticketDto.ticketId())
+                    .drawDate(ticketDto.drawDate())
+                    .numbersFromUser(ticketDto.numbersFromUser())
                     .message("Ticket checked correctly")
                     .build();
             listToReturn.add(resultOfResultCheckerDto);

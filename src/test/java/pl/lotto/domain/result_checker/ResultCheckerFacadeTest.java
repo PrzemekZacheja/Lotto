@@ -56,24 +56,22 @@ class ResultCheckerFacadeTest {
         //then
         assertThat(ticketCheckedDtos).isEqualTo(
                 List.of(
-                        new TicketCheckedDto(
-                                TicketDto.builder()
-                                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                        .drawDate(localDateTime)
-                                        .ticketId("001")
-                                        .build(),
-                                true,
-                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime).winningNumbers(),
-                                "Ticket checked correctly"),
-                        new TicketCheckedDto(
-                                TicketDto.builder()
-                                        .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
-                                        .drawDate(localDateTime)
-                                        .ticketId("002")
-                                        .build(),
-                                false,
-                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime).winningNumbers(),
-                                "Ticket checked correctly")
+                        TicketCheckedDto.builder()
+                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .isWinner(true)
+                                .message("Ticket checked correctly")
+                                .build(),
+                        TicketCheckedDto.builder()
+                                .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(localDateTime)
+                                .ticketId("002")
+                                .isWinner(false)
+                                .message("Ticket checked correctly")
+                                .build()
                 ));
     }
 
@@ -143,11 +141,9 @@ class ResultCheckerFacadeTest {
         assertThat(ticketCheckedList).isEqualTo(List.of(
                 TicketChecked.builder()
                         .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                        .ticketDto(TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                .drawDate(localDateTime)
-                                .ticketId("001")
-                                .build())
+                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                        .drawDate(localDateTime)
+                        .ticketId("001")
                         .isWinner(true)
                         .message("Ticket checked correctly")
                         .build()
@@ -177,21 +173,12 @@ class ResultCheckerFacadeTest {
         assertThat(ticketCheckedList).isEqualTo(List.of(
                 TicketChecked.builder()
                         .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                        .ticketDto(TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                .drawDate(localDateTime)
-                                .ticketId("001")
-                                .build())
+                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                        .drawDate(localDateTime)
+                        .ticketId("001")
                         .isWinner(true)
                         .message("Ticket checked correctly")
                         .build()
         ));
-    }
-
-    @Test
-    void should_generate_result_with_correct_credentials() {
-        //given
-        //when
-        //then
     }
 }
