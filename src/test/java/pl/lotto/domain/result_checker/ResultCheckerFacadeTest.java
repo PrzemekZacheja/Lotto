@@ -187,11 +187,4 @@ class ResultCheckerFacadeTest {
                         .build()
         ));
     }
-
-    @Test
-    void should_generate_result_with_correct_credentials() {
-        //given
-        //when
-        //then
-    }
 }
