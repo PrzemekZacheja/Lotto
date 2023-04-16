@@ -49,4 +49,15 @@ class ResultAnnouncerFacadeTest {
                 .build());
     }
 
+    @Test
+    void should_return_object_from_cached_repository_if_exist() {
+
+    }
+
+    @Test
+    void should_return_object_from_result_checker_facade_when_not_exist_in_cached_repository() {
+        {
+
+        }
+    }
 }
