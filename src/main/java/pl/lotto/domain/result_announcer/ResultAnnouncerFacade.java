@@ -9,17 +9,18 @@ import pl.lotto.domain.result_checker.dto.TicketCheckedDto;
 public class ResultAnnouncerFacade {
 
     ResultCheckerFacade resultCheckerFacade;
+    ResultAnnouncerResponseRepository repository;
 
     public ResultAnnouncerResponseDto generateResponseByIdTicket(String idTicket) {
         TicketCheckedDto ticketCheckedDto = resultCheckerFacade.retrieveTicketCheckedByIdTicket(idTicket);
-
-        return ResultAnnouncerResponseDto.builder()
-                .isWinner(ticketCheckedDto.isWinner())
-                .ticketId(ticketCheckedDto.ticketId())
-                .numbersFromUser(ticketCheckedDto.numbersFromUser())
-                .winnersNumbers(ticketCheckedDto.winnersNumbers())
-                .drawDate(ticketCheckedDto.drawDate())
-                .message(ticketCheckedDto.message())
-                .build();
+        if (repository.findResponseById(idTicket) == null) {
+            ResultAnnouncerResponse resultResponse = ResultAnnouncerMapper.mapToResultAnnouncerResponse(ticketCheckedDto);
+            repository.save(resultResponse);
+            return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(resultResponse);
+        } else {
+            return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(repository.findResponseById(idTicket));
+        }
     }
+
+
 }
