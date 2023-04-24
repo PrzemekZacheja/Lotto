@@ -20,4 +20,15 @@ class ResultCheckerMapper {
                         .message(ticketCheckedDto.message())
                         .build()).toList();
     }
+
+    static TicketCheckedDto mapToTicketCheckedDto(TicketChecked ticketChecked) {
+        return TicketCheckedDto.builder()
+                .ticketId(ticketChecked.ticketId())
+                .isWinner(ticketChecked.isWinner())
+                .message(ticketChecked.message())
+                .drawDate(ticketChecked.drawDate())
+                .numbersFromUser(ticketChecked.numbersFromUser())
+                .winnersNumbers(ticketChecked.winnersNumbers())
+                .build();
+    }
 }

@@ -29,4 +29,9 @@ public class ResultCheckerFacade {
     public List<TicketChecked> retrieveTicketCheckedByDate(LocalDateTime localDateTime) {
         return repository.findAllTicketCheckedByDate(localDateTime);
     }
+
+    public TicketCheckedDto retrieveTicketCheckedByIdTicket(String idTicket) {
+        TicketChecked ticketById = repository.findTicketById(idTicket);
+        return ResultCheckerMapper.mapToTicketCheckedDto(ticketById);
+    }
 }

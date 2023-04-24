@@ -25,5 +25,10 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
         return ticketCheckedDtoList;
     }
 
+    @Override
+    public TicketChecked findTicketById(String idTicket) {
+        return inMemoryDatabase.get(idTicket);
+    }
+
 
 }
