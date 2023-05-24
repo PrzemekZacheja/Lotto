@@ -14,7 +14,6 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import pl.lotto.domain.LottoSpringBootApplication;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
@@ -25,16 +24,20 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 public class BaseIntegrationTest {
 
     public static final String WIRE_MOCK_HOST = "http://localhost";
+
+    @Autowired
+    public MockMvc mockMvc;
+
     @Container
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+
+    @Autowired
+    public ObjectMapper objectMapper;
+
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
             .options(wireMockConfig().dynamicPort())
             .build();
-    @Autowired
-    public MockMvc mockMvc;
-    @Autowired
-    public ObjectMapper objectMapper;
 
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
