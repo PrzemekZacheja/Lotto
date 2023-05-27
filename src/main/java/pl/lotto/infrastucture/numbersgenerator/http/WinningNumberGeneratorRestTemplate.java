@@ -19,10 +19,13 @@ import java.util.stream.Collectors;
 public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerable {
 
     private final RestTemplate restTemplate;
+    private final String uri;
+    private final int port;
 
     @Override
     public Set<Integer> generateWinningRandomNumbers() {
-        final String url = UriComponentsBuilder.fromHttpUrl("http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com:9090/api/v1.0/random")
+        String urlForService = getUrlForService();
+        final String url = UriComponentsBuilder.fromHttpUrl(urlForService)
                 .queryParam("min", 1)
                 .queryParam("max", 99)
                 .queryParam("count", 25)
@@ -38,5 +41,9 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
                 });
 
         return Objects.requireNonNull(responseEntity.getBody()).stream().limit(6).collect(Collectors.toSet());
+    }
+
+    private String getUrlForService() {
+        return uri + ":" + port + "/api/v1.0/random";
     }
 }

@@ -1,5 +1,6 @@
 package pl.lotto.infrastucture.numbersgenerator.http;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import java.time.Duration;
 
 @Configuration
 public class WinningNumberGenerationClientConfig {
+
 
     @Bean
     public RestTemplateResponseErrorHandler restTemplateResponseErrorHandler() {
@@ -26,7 +28,10 @@ public class WinningNumberGenerationClientConfig {
     }
 
     @Bean
-    public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate) {
-        return new WinningNumberGeneratorRestTemplate(restTemplate);
+    public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate,
+                                                              @Value("${lotto.number_generator.http.client.config.uri}") String uri,
+                                                              @Value("${lotto.number_generator.http.client.config.port}") int port) {
+
+        return new WinningNumberGeneratorRestTemplate(restTemplate, uri, port);
     }
 }
