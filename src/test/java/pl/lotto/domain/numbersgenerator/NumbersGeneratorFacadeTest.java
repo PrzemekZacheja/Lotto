@@ -17,17 +17,24 @@ class NumbersGeneratorFacadeTest {
 
     private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
     private final WinningNumberGeneratorForTest mockWinningNumberGeneratorForTest = mock(WinningNumberGeneratorForTest.class);
+    private final NumbersGeneratorFacadeConfigurationProperties properties = NumbersGeneratorFacadeConfigurationProperties.builder()
+            .upperBand(99)
+            .lowerBand(1)
+            .count(25)
+            .build();
 
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
             mockNumberReceiverFacade,
             new WinningNumberGeneratorForTest(),
-            new NumbersGeneratorRepositoryForTest()
+            new NumbersGeneratorRepositoryForTest(),
+            properties
     );
 
     NumbersGeneratorFacade generatorRandomNumbers = new NumbersGeneratorFacade(
             mockNumberReceiverFacade,
             new WinningNumberGenerator(new SecureRandom()),
-            new NumbersGeneratorRepositoryForTest()
+            new NumbersGeneratorRepositoryForTest(),
+            properties
     );
 
     @Test
@@ -88,22 +95,6 @@ class NumbersGeneratorFacadeTest {
         Set<Integer> winningNumbers = winnerNumbersDto.winningNumbers();
         //then
         assertThat(winningNumbers).hasSize(6);
-    }
-
-    @Test
-    void should_throw_exception_when_not_in_required_range() {
-        //given
-        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
-        NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
-                mockNumberReceiverFacade,
-                mockWinningNumberGeneratorForTest,
-                new NumbersGeneratorRepositoryForTest()
-        );
-        //when
-        when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
-        when(mockWinningNumberGeneratorForTest.generateWinningRandomNumbers()).thenReturn(Set.of(100, 2, 3, 4, 5, 6));
-        //then
-        assertThrows(IllegalStateException.class, generatorMockedNumbers::generateSixNumbers);
     }
 
 }

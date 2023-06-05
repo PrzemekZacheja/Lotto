@@ -6,6 +6,7 @@ import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class NumbersGeneratorFacade {
@@ -13,10 +14,11 @@ public class NumbersGeneratorFacade {
     private final NumberReceiverFacade numberReceiverFacade;
     private final WinningNumberGenerable winningNumberGenerator;
     private final NumbersGeneratorRepository numbersGeneratorRepository;
+    private final NumbersGeneratorFacadeConfigurationProperties configuration;
 
     public WinnerNumbersDto generateSixNumbers() {
         LocalDateTime drawDate = numberReceiverFacade.getDrawDate();
-        Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers();
+        Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers(configuration.lowerBand(), configuration.upperBand(), configuration.count());
         if (areAllNumbersInRequiredRange(winningRandomNumbers)) {
             WinnerNumbers winnerNumbersSavedToDB = numbersGeneratorRepository.save(
                     WinnerNumbers.builder()
@@ -26,16 +28,21 @@ public class NumbersGeneratorFacade {
             );
             return WinnerNumbersMapper.mapFromWinnerNumbers(winnerNumbersSavedToDB);
         } else {
-            throw new IllegalStateException("set of numbers" + winningRandomNumbers);
+            return generateSixNumbers();
         }
     }
 
     private boolean areAllNumbersInRequiredRange(final Set<Integer> numbers) {
-        long sizeOfNumbersInRange = numbers.stream()
+        Set<Integer> limited = limitSetTo(numbers, ConfigNumbersGenerator.RANDOM_NUMBERS);
+        return limited.size() == ConfigNumbersGenerator.RANDOM_NUMBERS;
+    }
+
+    private Set<Integer> limitSetTo(Set<Integer> numbers, int limitOfLength) {
+        return numbers.stream()
                 .filter(integer -> integer >= 1)
                 .filter(integer -> integer <= 99)
-                .count();
-        return sizeOfNumbersInRange == 6;
+                .limit(limitOfLength)
+                .collect(Collectors.toSet());
     }
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {

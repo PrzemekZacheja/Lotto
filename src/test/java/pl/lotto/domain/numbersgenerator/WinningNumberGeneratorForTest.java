@@ -5,7 +5,7 @@ import java.util.Set;
 class WinningNumberGeneratorForTest implements WinningNumberGenerable {
 
     @Override
-    public Set<Integer> generateWinningRandomNumbers() {
+    public Set<Integer> generateWinningRandomNumbers(int lowerBand, int upperBand, int count) {
         return Set.of(1, 2, 3, 4, 5, 6);
     }
 }

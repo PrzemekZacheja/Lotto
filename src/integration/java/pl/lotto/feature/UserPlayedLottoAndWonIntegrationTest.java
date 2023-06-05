@@ -23,7 +23,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody("[43, 5, 80, 14, 62, 31, 99, 51, 22, 40, 4, 75, 71, 31, 30, 66, 64, 53, 78, 72, 68, 4, 62, 70, 84]")));
         //when
-        winningNumberGenerable.generateWinningRandomNumbers();
+        winningNumberGenerable.generateWinningRandomNumbers(1, 99, 25);
         //then
 
 

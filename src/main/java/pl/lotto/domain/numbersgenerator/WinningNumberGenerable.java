@@ -4,5 +4,5 @@ import java.util.Set;
 
 public interface WinningNumberGenerable {
 
-    Set<Integer> generateWinningRandomNumbers();
+    Set<Integer> generateWinningRandomNumbers(int lowerBand, int upperBand, int count);
 }

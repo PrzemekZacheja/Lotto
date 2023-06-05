@@ -4,7 +4,11 @@ spring:
       uri: mongodb://admin:admin@localhost:27017/lotto-web
 
 lotto:
-  number_generator:
+  number-generator:
+    facade:
+      lowerBand: 1
+      upperBand: 99
+      count: 25
     http:
       client:
         config:
