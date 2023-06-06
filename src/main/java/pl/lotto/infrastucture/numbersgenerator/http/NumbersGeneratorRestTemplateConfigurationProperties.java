@@ -8,6 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record NumbersGeneratorRestTemplateConfigurationProperties(
         String uri,
         int port,
-        long timeout,
+        long connectionTimeout,
         long readTimeout) {
 }
