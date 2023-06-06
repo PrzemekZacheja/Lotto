@@ -25,7 +25,7 @@ public class WinningNumberGenerationClientConfig {
             RestTemplateResponseErrorHandler restTemplateResponseErrorHandler) {
         return new RestTemplateBuilder()
                 .errorHandler(restTemplateResponseErrorHandler)
-                .setConnectTimeout(Duration.ofMillis(configuration.timeout()))
+                .setConnectTimeout(Duration.ofMillis(configuration.connectionTimeout()))
                 .setReadTimeout(Duration.ofMillis(configuration.readTimeout()))
                 .build();
     }
