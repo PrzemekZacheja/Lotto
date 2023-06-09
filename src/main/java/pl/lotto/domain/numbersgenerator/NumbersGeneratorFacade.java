@@ -34,15 +34,15 @@ public class NumbersGeneratorFacade {
     }
 
     private boolean areAllNumbersInRequiredRange(final Set<Integer> numbers) {
-        Set<Integer> limited = limitSetTo(numbers, ConfigNumbersGenerator.RANDOM_NUMBERS);
+        Set<Integer> limited = limitSetTo(numbers);
         return limited.size() == ConfigNumbersGenerator.RANDOM_NUMBERS;
     }
 
-    private Set<Integer> limitSetTo(Set<Integer> numbers, int limitOfLength) {
+    private Set<Integer> limitSetTo(Set<Integer> numbers) {
         return numbers.stream()
                       .filter(integer -> integer >= 1)
                       .filter(integer -> integer <= 99)
-                      .limit(limitOfLength)
+                      .limit(ConfigNumbersGenerator.RANDOM_NUMBERS)
                       .collect(Collectors.toSet());
     }
 
