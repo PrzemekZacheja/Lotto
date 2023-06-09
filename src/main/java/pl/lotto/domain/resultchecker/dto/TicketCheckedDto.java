@@ -13,6 +13,6 @@ public record TicketCheckedDto(
         Set<Integer> winnersNumbers,
         boolean isWinner,
         String message
-        ) {
+) {
 
 }

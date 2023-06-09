@@ -2,9 +2,7 @@ package pl.lotto.domain.numbersgenerator;
 
 import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 
-public class WinnerNumbersMapper
-
-{
+public class WinnerNumbersMapper {
 
     private WinnerNumbersMapper() {
     }

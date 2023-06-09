@@ -14,10 +14,20 @@ class ResultChecker {
 
     private final TicketCheckedRepository repository;
 
+    private static boolean isWinner(int result) {
+        return result >= 3;
+    }
+
+    private static int intersectionOfTwoLists(WinnerNumbersDto winnerNumbersDto, TicketDto ticketDto) {
+        List<Integer> setToRetain = new ArrayList<>(ticketDto.numbersFromUser());
+        setToRetain.retainAll(winnerNumbersDto.winningNumbers());
+        return setToRetain.size();
+    }
+
     List<TicketCheckedDto> checkWinnerResults(List<TicketDto> ticketDtos, WinnerNumbersDto winnerNumbersDto) {
         List<TicketCheckedDto> listToReturn = new ArrayList<>();
 
-        if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers().isEmpty()){
+        if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers().isEmpty()) {
             return List.of(TicketCheckedDto.builder()
                     .message("Ticket checked incorrectly")
                     .isWinner(false).build());
@@ -40,15 +50,5 @@ class ResultChecker {
             repository.saveAll(ResultCheckerMapper.mapToTicketChecked(listToReturn));
         }
         return listToReturn;
-    }
-
-    private static boolean isWinner( int result) {
-        return result >= 3;
-    }
-
-    private static int intersectionOfTwoLists(WinnerNumbersDto winnerNumbersDto,  TicketDto ticketDto) {
-        List<Integer> setToRetain = new ArrayList<>(ticketDto.numbersFromUser());
-        setToRetain.retainAll(winnerNumbersDto.winningNumbers());
-        return setToRetain.size();
     }
 }
