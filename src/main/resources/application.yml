@@ -6,6 +6,8 @@ spring:
 
 lotto:
   number-generator:
+    lotteryRunOccurrence: "0 0 12 * * 6"
+
     facade:
       lowerBand: 1
       upperBand: 99
