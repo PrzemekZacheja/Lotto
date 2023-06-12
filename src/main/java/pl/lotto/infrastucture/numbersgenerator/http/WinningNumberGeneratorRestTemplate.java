@@ -23,12 +23,12 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
     private final int port;
 
     @Override
-    public Set<Integer> generateWinningRandomNumbers(int lowerBand, int upperBand, int count) {
+    public Set<Integer> generateWinningRandomNumbers() {
         String urlForService = getUrlForService();
         final String url = UriComponentsBuilder.fromHttpUrl(urlForService)
-                .queryParam("min", lowerBand)
-                .queryParam("max", upperBand)
-                .queryParam("count", count)
+                .queryParam("min", 1)
+                .queryParam("max", 99)
+                .queryParam("count", 25)
                 .toUriString();
 
         HttpHeaders headers = new HttpHeaders();

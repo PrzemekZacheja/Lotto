@@ -1,6 +1,6 @@
 package pl.lotto.infrastucture.numbersgenerator.http;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +10,8 @@ import pl.lotto.domain.numbersgenerator.WinningNumberGenerable;
 import java.time.Duration;
 
 @Configuration
-@AllArgsConstructor
 public class WinningNumberGenerationClientConfig {
 
-    private final NumbersGeneratorRestTemplateConfigurationProperties configuration;
 
     @Bean
     public RestTemplateResponseErrorHandler restTemplateResponseErrorHandler() {
@@ -21,19 +19,19 @@ public class WinningNumberGenerationClientConfig {
     }
 
     @Bean
-    public RestTemplate restTemplate(
-            RestTemplateResponseErrorHandler restTemplateResponseErrorHandler) {
+    public RestTemplate restTemplate(RestTemplateResponseErrorHandler restTemplateResponseErrorHandler) {
         return new RestTemplateBuilder()
                 .errorHandler(restTemplateResponseErrorHandler)
-                .setConnectTimeout(Duration.ofMillis(configuration.connectionTimeout()))
-                .setReadTimeout(Duration.ofMillis(configuration.readTimeout()))
+                .setConnectTimeout(Duration.ofMillis(1000))
+                .setReadTimeout(Duration.ofMillis(1000))
                 .build();
     }
 
     @Bean
-    public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate) {
+    public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate,
+                                                              @Value("${lotto.number_generator.http.client.config.uri}") String uri,
+                                                              @Value("${lotto.number_generator.http.client.config.port}") int port) {
 
-        return new WinningNumberGeneratorRestTemplate(restTemplate, configuration.uri(), configuration.port());
+        return new WinningNumberGeneratorRestTemplate(restTemplate, uri, port);
     }
-
 }

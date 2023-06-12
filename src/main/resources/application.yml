@@ -1,19 +1,13 @@
-#file: noinspection SpringBootApplicationYaml
 spring:
   data:
     mongodb:
       uri: mongodb://admin:admin@localhost:27017/lotto-web
 
 lotto:
-  number-generator:
-    facade:
-      lowerBand: 1
-      upperBand: 99
-      count: 25
+  number_generator:
     http:
       client:
         config:
           uri: http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com
+
           port: 9090
-          connectionTimeout: 5000
-          readTimeout: 5000
