@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "lotto.number-generator.lotteryRunOccurrence",
+      "type": "java.lang.String",
+      "description": "Description for lotto.number-generator.lotteryRunOccurrence."
+    }
+  ]
+}

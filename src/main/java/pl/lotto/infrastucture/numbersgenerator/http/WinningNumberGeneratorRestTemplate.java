@@ -22,14 +22,19 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
     private final String uri;
     private final int port;
 
+
+    private String getUrlForService() {
+        return uri + ":" + port + "/api/v1.0/random";
+    }
+
     @Override
-    public Set<Integer> generateWinningRandomNumbers() {
+    public Set<Integer> generateWinningRandomNumbers(final int lowerBand, final int upperBand, final int count) {
         String urlForService = getUrlForService();
         final String url = UriComponentsBuilder.fromHttpUrl(urlForService)
-                .queryParam("min", 1)
-                .queryParam("max", 99)
-                .queryParam("count", 25)
-                .toUriString();
+                                               .queryParam("min", 1)
+                                               .queryParam("max", 99)
+                                               .queryParam("count", 25)
+                                               .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
@@ -40,10 +45,9 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
                 new ParameterizedTypeReference<>() {
                 });
 
-        return Objects.requireNonNull(responseEntity.getBody()).stream().limit(6).collect(Collectors.toSet());
-    }
-
-    private String getUrlForService() {
-        return uri + ":" + port + "/api/v1.0/random";
+        return Objects.requireNonNull(responseEntity.getBody())
+                      .stream()
+                      .limit(6)
+                      .collect(Collectors.toSet());
     }
 }

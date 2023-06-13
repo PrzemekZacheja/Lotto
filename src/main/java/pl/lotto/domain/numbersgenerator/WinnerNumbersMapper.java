@@ -9,9 +9,9 @@ public class WinnerNumbersMapper {
 
     public static WinnerNumbersDto mapFromWinnerNumbers(WinnerNumbers winnerNumbers) {
         return WinnerNumbersDto.builder()
-                .winningNumbers(winnerNumbers.winningNumbers())
-                .timeOfWinDrawNumbers(winnerNumbers.timeOfWinDrawNumbers())
-                .build();
+                               .winningNumbers(winnerNumbers.winningNumbers())
+                               .timeOfWinDrawNumbers(winnerNumbers.drawDate())
+                               .build();
     }
 
 }

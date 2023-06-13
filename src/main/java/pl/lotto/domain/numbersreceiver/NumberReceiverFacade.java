@@ -25,21 +25,22 @@ public class NumberReceiverFacade {
             LocalDateTime drawDate = drawDateFacade.getDateOfNextDraw();
             Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbers));
             return InputNumbersResultDto.builder()
-                    .ticketId(savedTicket.ticketId())
-                    .drawDate(savedTicket.drawDate())
-                    .message("Success")
-                    .userNumbers(numbers)
-                    .build();
+                                        .ticketId(savedTicket.ticketId())
+                                        .drawDate(savedTicket.drawDate())
+                                        .message("Success")
+                                        .userNumbers(numbers)
+                                        .build();
         }
         return InputNumbersResultDto.builder()
-                .message("Fail")
-                .build();
+                                    .message("Fail")
+                                    .build();
     }
 
     public List<TicketDto> usersNumbers(DrawDateFacade dateOfDraw) {
         List<Ticket> allTicketsByDrawDate = repository.findAllTicketsByDrawDate(dateOfDraw.getDateOfNextDraw());
         return allTicketsByDrawDate.stream()
-                .map(TicketMapper::mapFromTicket).toList();
+                                   .map(TicketMapper::mapFromTicket)
+                                   .toList();
     }
 
     public List<TicketDto> retrieveAllTicketsByNextDrawDate(LocalDateTime drawDate) {
@@ -48,9 +49,9 @@ public class NumberReceiverFacade {
             return Collections.emptyList();
         }
         return repository.findAllTicketsByDrawDate(drawDate)
-                .stream()
-                .map(TicketMapper::mapFromTicket)
-                .toList();
+                         .stream()
+                         .map(TicketMapper::mapFromTicket)
+                         .toList();
     }
 
     public LocalDateTime getDrawDate() {

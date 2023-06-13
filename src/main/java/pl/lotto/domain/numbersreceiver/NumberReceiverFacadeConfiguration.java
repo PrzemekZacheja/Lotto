@@ -37,7 +37,10 @@ public class NumberReceiverFacadeConfiguration {
     }
 
     @Bean
-    public NumberReceiverFacade numberReceiverFacade(NumberValidator numberValidator, NumberReceiverRepository numberRepository, HashGenerable hashGenerable, DrawDateFacade drawDateFacade) {
+    public NumberReceiverFacade numberReceiverFacade(NumberValidator numberValidator,
+                                                     NumberReceiverRepository numberRepository,
+                                                     HashGenerable hashGenerable,
+                                                     DrawDateFacade drawDateFacade) {
         return new NumberReceiverFacade(numberValidator, numberRepository, hashGenerable, drawDateFacade);
     }
 }

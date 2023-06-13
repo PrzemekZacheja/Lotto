@@ -10,8 +10,8 @@ class NumberValidator {
 
     boolean areAllNumbersInRange(final Set<Integer> numbers) {
         return numbers.stream()
-                .filter(number -> number >= MIN_RANGE)
-                .filter(number -> number <= MAX_RANGE)
-                .count() == MAX_NUMBERS_IN_GAME;
+                      .filter(number -> number >= MIN_RANGE)
+                      .filter(number -> number <= MAX_RANGE)
+                      .count() == MAX_NUMBERS_IN_GAME;
     }
 }

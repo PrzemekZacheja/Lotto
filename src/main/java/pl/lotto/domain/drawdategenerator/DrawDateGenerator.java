@@ -14,7 +14,9 @@ class DrawDateGenerator implements DrawDateGenerable {
     private final Clock clock;
 
     private static boolean isSundayAndBeforeNoon(final LocalDateTime dateOfTicket) {
-        return dateOfTicket.getDayOfWeek().equals(DayOfWeek.SUNDAY) && dateOfTicket.toLocalTime().isBefore(HOUR_OF_DRAW);
+        return dateOfTicket.getDayOfWeek()
+                           .equals(DayOfWeek.SUNDAY) && dateOfTicket.toLocalTime()
+                                                                    .isBefore(HOUR_OF_DRAW);
     }
 
     @Override
@@ -23,7 +25,8 @@ class DrawDateGenerator implements DrawDateGenerable {
         if (isSundayAndBeforeNoon(dateOfTicket)) {
             return LocalDateTime.of(dateOfTicket.toLocalDate(), HOUR_OF_DRAW);
         }
-        LocalDate nextSaturdayFromDateOfTicket = dateOfTicket.toLocalDate().with(NEXT_SATURDAY);
+        LocalDate nextSaturdayFromDateOfTicket = dateOfTicket.toLocalDate()
+                                                             .with(NEXT_SATURDAY);
         return LocalDateTime.of(nextSaturdayFromDateOfTicket, HOUR_OF_DRAW);
     }
 }

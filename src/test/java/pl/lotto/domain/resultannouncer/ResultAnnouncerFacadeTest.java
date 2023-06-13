@@ -20,7 +20,8 @@ class ResultAnnouncerFacadeTest {
     ResultCheckerFacade resultCheckerFacadeMock = mock(ResultCheckerFacade.class);
     RepositoryForTest repository = new RepositoryForTest();
     ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacadeMock, repository);
-    AdjustableClock clockForTest = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+    AdjustableClock clockForTest = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
+                                                                    .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
     String idTicket = "001";
 
 
@@ -30,25 +31,25 @@ class ResultAnnouncerFacadeTest {
 
         when(resultCheckerFacadeMock.retrieveTicketCheckedByIdTicket(idTicket)).thenReturn(
                 TicketCheckedDto.builder()
-                        .ticketId("001")
-                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                        .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
-                        .drawDate(LocalDateTime.now(clockForTest))
-                        .message("You win")
-                        .isWinner(true)
-                        .build()
-        );
+                                .ticketId("001")
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(LocalDateTime.now(clockForTest))
+                                .message("You win")
+                                .isWinner(true)
+                                .build()
+                                                                                          );
         //when
         ResultAnnouncerResponseDto responseDto = resultAnnouncerFacade.generateResponseByIdTicket(idTicket);
         //then
         assertThat(responseDto).isEqualTo(ResultAnnouncerResponseDto.builder()
-                .isWinner(true)
-                .ticketId("001")
-                .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
-                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                .drawDate(LocalDateTime.now(clockForTest))
-                .message("You win")
-                .build());
+                                                                    .isWinner(true)
+                                                                    .ticketId("001")
+                                                                    .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
+                                                                    .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                                                    .drawDate(LocalDateTime.now(clockForTest))
+                                                                    .message("You win")
+                                                                    .build());
     }
 
     @Test
@@ -56,28 +57,31 @@ class ResultAnnouncerFacadeTest {
         //given
         when(resultCheckerFacadeMock.retrieveTicketCheckedByIdTicket(idTicket)).thenReturn(
                 TicketCheckedDto.builder()
-                        .ticketId("001")
-                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                        .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
-                        .drawDate(LocalDateTime.now(clockForTest))
-                        .message("You win")
-                        .isWinner(true)
-                        .build()
-        );
+                                .ticketId("001")
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(LocalDateTime.now(clockForTest))
+                                .message("You win")
+                                .isWinner(true)
+                                .build()
+                                                                                          );
         TicketCheckedDto expectedTickeCheckedtDto = TicketCheckedDto.builder()
-                .ticketId("001")
-                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
-                .drawDate(LocalDateTime.now(clockForTest))
-                .message("You win")
-                .isWinner(true)
-                .build();
+                                                                    .ticketId("001")
+                                                                    .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                                                    .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
+                                                                    .drawDate(LocalDateTime.now(clockForTest))
+                                                                    .message("You win")
+                                                                    .isWinner(true)
+                                                                    .build();
         //when
-        ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.generateResponseByIdTicket(idTicket);
-        ResultAnnouncerResponseDto resultAnnouncerResponseDtoSecond = resultAnnouncerFacade.generateResponseByIdTicket(idTicket);
+        ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.generateResponseByIdTicket(
+                idTicket);
+        ResultAnnouncerResponseDto resultAnnouncerResponseDtoSecond = resultAnnouncerFacade.generateResponseByIdTicket(
+                idTicket);
         //then
         assertThat(repository.findResponseById(idTicket)).isNotNull();
-        assertThat(repository.findResponseById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(expectedTickeCheckedtDto));
+        assertThat(repository.findResponseById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
+                expectedTickeCheckedtDto));
     }
 
     @Test
@@ -85,26 +89,28 @@ class ResultAnnouncerFacadeTest {
         //given
         when(resultCheckerFacadeMock.retrieveTicketCheckedByIdTicket(idTicket)).thenReturn(
                 TicketCheckedDto.builder()
-                        .ticketId("001")
-                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                        .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
-                        .drawDate(LocalDateTime.now(clockForTest))
-                        .message("You win")
-                        .isWinner(true)
-                        .build()
-        );
+                                .ticketId("001")
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(LocalDateTime.now(clockForTest))
+                                .message("You win")
+                                .isWinner(true)
+                                .build()
+                                                                                          );
         TicketCheckedDto expectedTickeCheckedtDto = TicketCheckedDto.builder()
-                .ticketId("001")
-                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
-                .drawDate(LocalDateTime.now(clockForTest))
-                .message("You win")
-                .isWinner(true)
-                .build();
+                                                                    .ticketId("001")
+                                                                    .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                                                    .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
+                                                                    .drawDate(LocalDateTime.now(clockForTest))
+                                                                    .message("You win")
+                                                                    .isWinner(true)
+                                                                    .build();
         //when
         //then
         assertThat(repository.findResponseById(idTicket)).isNull();
-        ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.generateResponseByIdTicket(idTicket);
-        assertThat(repository.findResponseById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(expectedTickeCheckedtDto));
+        ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.generateResponseByIdTicket(
+                idTicket);
+        assertThat(repository.findResponseById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
+                expectedTickeCheckedtDto));
     }
 }

@@ -17,8 +17,10 @@ class InMemoryNumberReceiverRepositoryImpl implements NumberReceiverRepository {
 
     @Override
     public List<Ticket> findAllTicketsByDrawDate(final LocalDateTime date) {
-        return inMemoryDatabase.values().stream()
-                .filter(ticket -> ticket.drawDate().isEqual(date))
-                .toList();
+        return inMemoryDatabase.values()
+                               .stream()
+                               .filter(ticket -> ticket.drawDate()
+                                                       .isEqual(date))
+                               .toList();
     }
 }

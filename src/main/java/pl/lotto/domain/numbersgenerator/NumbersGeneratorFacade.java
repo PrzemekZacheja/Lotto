@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-public class NumbersGeneratorFacade {
+@AllArgsConstructor public class NumbersGeneratorFacade {
 
     private final NumberReceiverFacade numberReceiverFacade;
     private final WinningNumberGenerable winningNumberGenerator;
@@ -21,13 +20,13 @@ public class NumbersGeneratorFacade {
         Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers(configuration.lowerBand(),
                                                                                                 configuration.upperBand(),
                                                                                                 configuration.count());
-        WinnerNumbers winnerNumbers = WinnerNumbers.builder()
-                                                   .winningNumbers(winningRandomNumbers)
-                                                   .timeOfWinDrawNumbers(drawDate)
-                                                   .build();
         if (areAllNumbersInRequiredRange(winningRandomNumbers)) {
-            numbersGeneratorRepository.save(winnerNumbers);
-            return WinnerNumbersMapper.mapFromWinnerNumbers(winnerNumbers);
+            WinnerNumbers winnerNumbersDocument = WinnerNumbers.builder()
+                                                               .winningNumbers(winningRandomNumbers)
+                                                               .drawDate(drawDate)
+                                                               .build();
+            WinnerNumbers saved = numbersGeneratorRepository.save(winnerNumbersDocument);
+            return WinnerNumbersMapper.mapFromWinnerNumbers(saved);
         } else {
             return generateSixNumbers();
         }
@@ -47,14 +46,12 @@ public class NumbersGeneratorFacade {
     }
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
-
-        WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findWinnerNumbersByDrawDate(localDateTime);
-        if (winnerNumbersByDrawDate == null) {
-            throw new WinningNunmbersNotFoundExeption("Not Found");
-        }
+        WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findWinningNumberByDrawDate(localDateTime)
+                                                                          .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
+                                                                                  "Not Found"));
         return WinnerNumbersDto.builder()
                                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
-                               .timeOfWinDrawNumbers(winnerNumbersByDrawDate.timeOfWinDrawNumbers())
+                               .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
                                .build();
     }
 }

@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NumberReceiverFacadeTest {
 
-    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
+                                                             .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
     DrawDateGenerable dateDrawGeneratorForTest = new DrawDateGeneratorForTest(clock);
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
@@ -92,11 +93,11 @@ class NumberReceiverFacadeTest {
         //then
         assertThat(ticketDtos).contains(
                 TicketDto.builder()
-                        .ticketId(result.ticketId())
-                        .drawDate(result.drawDate())
-                        .numbersFromUser(result.userNumbers())
-                        .build()
-        );
+                         .ticketId(result.ticketId())
+                         .drawDate(result.drawDate())
+                         .numbersFromUser(result.userNumbers())
+                         .build()
+                                       );
     }
 
     @Test
@@ -114,8 +115,9 @@ class NumberReceiverFacadeTest {
     @Test
     void it_should_return_empty_list_when_given_date_is_after_next_drawDate() {
         //given
-        Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0).toInstant(ZoneOffset.UTC),
-                ZoneId.of("Europe/London"));
+        Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0)
+                                               .toInstant(ZoneOffset.UTC),
+                                  ZoneId.of("Europe/London"));
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
                 new NumberValidator(),
                 new InMemoryNumberReceiverRepositoryImpl(),

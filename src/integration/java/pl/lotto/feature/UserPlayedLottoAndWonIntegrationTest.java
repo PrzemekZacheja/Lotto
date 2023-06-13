@@ -33,11 +33,11 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         numbersGeneratorFacade.generateSixNumbers();
 
 
-//        step 2: system fetched winning numbers for draw date: 19.11.2022 12:00
+//        step 2: system fetched winning numbers for next draw date: 2023-06-17 12:00
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2022, 11, 19, 12, 0, 0);
-        //when
-        await().atMost(Duration.ofSeconds(30))
+        LocalDateTime drawDate = LocalDateTime.of(2023, 06, 17, 12, 0, 0);
+        //when & then
+        await().atMost(Duration.ofSeconds(20))
                .pollInterval(Duration.ofSeconds(1))
                .until(() -> {
                    try {
@@ -49,7 +49,8 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                        return false;
                    }
                });
-        //then
+
+
 //        step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned OK(200) with message: “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
 //        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND) and body with (“message”: “Not found for id: notExistingId” and “status”: “NOT_FOUND”)
 //        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
