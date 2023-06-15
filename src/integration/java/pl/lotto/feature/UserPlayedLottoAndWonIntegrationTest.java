@@ -33,9 +33,9 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         numbersGeneratorFacade.generateSixNumbers();
 
 
-//        step 2: system fetched winning numbers for next draw date: 2023-06-17 12:00
+//        step 2: system fetched winning numbers for draw date: 19.11.2022 10:00
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2023, 06, 17, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2022, 11, 26, 12, 0, 0);
         //when & then
         await().atMost(Duration.ofSeconds(20))
                .pollInterval(Duration.ofSeconds(1))

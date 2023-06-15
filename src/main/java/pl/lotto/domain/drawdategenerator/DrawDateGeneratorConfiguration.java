@@ -10,7 +10,18 @@ public class DrawDateGeneratorConfiguration {
 
     @Bean
     DrawDateFacade drawDateFacade() {
-        return new DrawDateFacade(new DrawDateGenerator(Clock.systemUTC()));
+        return new DrawDateFacade(drawDateGenerator());
     }
+
+    @Bean
+    DrawDateGenerator drawDateGenerator() {
+        return new DrawDateGenerator(clock());
+    }
+
+    @Bean
+    Clock clock() {
+        return Clock.systemUTC();
+    }
+
 
 }
