@@ -31,10 +31,10 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
     public Set<Integer> generateWinningRandomNumbers(final int lowerBand, final int upperBand, final int count) {
         String urlForService = getUrlForService();
         final String url = UriComponentsBuilder.fromHttpUrl(urlForService)
-                                               .queryParam("min", 1)
-                                               .queryParam("max", 99)
-                                               .queryParam("count", 25)
-                                               .toUriString();
+                .queryParam("min", 1)
+                .queryParam("max", 99)
+                .queryParam("count", 25)
+                .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
@@ -46,8 +46,8 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
                 });
 
         return Objects.requireNonNull(responseEntity.getBody())
-                      .stream()
-                      .limit(6)
-                      .collect(Collectors.toSet());
+                .stream()
+                .limit(6)
+                .collect(Collectors.toSet());
     }
 }

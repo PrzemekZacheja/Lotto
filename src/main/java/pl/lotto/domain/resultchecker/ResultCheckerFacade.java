@@ -23,7 +23,7 @@ public class ResultCheckerFacade {
         LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
 
         return resultChecker.checkWinnerResults(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw),
-                                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
+                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
     }
 
     public List<TicketChecked> retrieveTicketCheckedByDate(LocalDateTime localDateTime) {

@@ -13,6 +13,12 @@ class DrawDateGenerator implements DrawDateGenerable {
     public static final TemporalAdjuster NEXT_SATURDAY = TemporalAdjusters.next(DayOfWeek.SATURDAY);
     private final Clock clock;
 
+    private static boolean isSundayAndBeforeNoon(final LocalDateTime dateOfTicket) {
+        return dateOfTicket.getDayOfWeek()
+                .equals(DayOfWeek.SUNDAY) && dateOfTicket.toLocalTime()
+                .isBefore(HOUR_OF_DRAW);
+    }
+
     @Override
     public LocalDateTime generateNextDateOfDraw() {
         LocalDateTime dateOfTicket = LocalDateTime.now(clock);
@@ -20,13 +26,7 @@ class DrawDateGenerator implements DrawDateGenerable {
             return LocalDateTime.of(dateOfTicket.toLocalDate(), HOUR_OF_DRAW);
         }
         LocalDate nextSaturdayFromDateOfTicket = dateOfTicket.toLocalDate()
-                                                             .with(NEXT_SATURDAY);
+                .with(NEXT_SATURDAY);
         return LocalDateTime.of(nextSaturdayFromDateOfTicket, HOUR_OF_DRAW);
-    }
-
-    private static boolean isSundayAndBeforeNoon(final LocalDateTime dateOfTicket) {
-        return dateOfTicket.getDayOfWeek()
-                           .equals(DayOfWeek.SUNDAY) && dateOfTicket.toLocalTime()
-                                                                    .isBefore(HOUR_OF_DRAW);
     }
 }

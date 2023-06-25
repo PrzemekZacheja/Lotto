@@ -19,7 +19,7 @@ public class AdjustableClock extends Clock {
 
     protected static ZonedDateTime createZoneDateTime(LocalDate date, LocalTime time, ZoneId zone) {
         return ZonedDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-                                time.getHour(), time.getMinute(), time.getSecond(), time.getNano(), zone);
+                time.getHour(), time.getMinute(), time.getSecond(), time.getNano(), zone);
     }
 
     @Override

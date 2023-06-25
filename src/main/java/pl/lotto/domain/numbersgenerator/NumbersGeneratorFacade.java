@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor public class NumbersGeneratorFacade {
+@AllArgsConstructor
+public class NumbersGeneratorFacade {
 
     private final NumberReceiverFacade numberReceiverFacade;
     private final WinningNumberGenerable winningNumberGenerator;
@@ -18,13 +19,13 @@ import java.util.stream.Collectors;
     public WinnerNumbersDto generateSixNumbers() {
         LocalDateTime drawDate = numberReceiverFacade.getDrawDate();
         Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers(configuration.lowerBand(),
-                                                                                                configuration.upperBand(),
-                                                                                                configuration.count());
+                configuration.upperBand(),
+                configuration.count());
         if (areAllNumbersInRequiredRange(winningRandomNumbers)) {
             WinnerNumbers winnerNumbersDocument = WinnerNumbers.builder()
-                                                               .winningNumbers(winningRandomNumbers)
-                                                               .drawDate(drawDate)
-                                                               .build();
+                    .winningNumbers(winningRandomNumbers)
+                    .drawDate(drawDate)
+                    .build();
             WinnerNumbers saved = numbersGeneratorRepository.save(winnerNumbersDocument);
             return WinnerNumbersMapper.mapFromWinnerNumbers(saved);
         } else {
@@ -39,19 +40,19 @@ import java.util.stream.Collectors;
 
     private Set<Integer> limitSetTo(Set<Integer> numbers) {
         return numbers.stream()
-                      .filter(integer -> integer >= 1)
-                      .filter(integer -> integer <= 99)
-                      .limit(ConfigNumbersGenerator.RANDOM_NUMBERS)
-                      .collect(Collectors.toSet());
+                .filter(integer -> integer >= 1)
+                .filter(integer -> integer <= 99)
+                .limit(ConfigNumbersGenerator.RANDOM_NUMBERS)
+                .collect(Collectors.toSet());
     }
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
         WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findWinningNumberByDrawDate(localDateTime)
-                                                                          .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
-                                                                                  "Not Found"));
+                .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
+                        "Not Found"));
         return WinnerNumbersDto.builder()
-                               .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
-                               .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
-                               .build();
+                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
+                .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
+                .build();
     }
 }

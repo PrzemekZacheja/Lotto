@@ -28,11 +28,11 @@ class ResultChecker {
         List<TicketCheckedDto> listToReturn = new ArrayList<>();
 
         if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers()
-                                                        .isEmpty()) {
+                .isEmpty()) {
             return List.of(TicketCheckedDto.builder()
-                                           .message("Ticket checked incorrectly")
-                                           .isWinner(false)
-                                           .build());
+                    .message("Ticket checked incorrectly")
+                    .isWinner(false)
+                    .build());
         }
 
         for (TicketDto ticketDto : ticketDtos) {
@@ -40,13 +40,13 @@ class ResultChecker {
             boolean isWinner = isWinner(result);
 
             TicketCheckedDto resultOfResultCheckerDto = TicketCheckedDto.builder()
-                                                                        .isWinner(isWinner)
-                                                                        .winnersNumbers(winnerNumbersDto.winningNumbers())
-                                                                        .ticketId(ticketDto.ticketId())
-                                                                        .drawDate(ticketDto.drawDate())
-                                                                        .numbersFromUser(ticketDto.numbersFromUser())
-                                                                        .message("Ticket checked correctly")
-                                                                        .build();
+                    .isWinner(isWinner)
+                    .winnersNumbers(winnerNumbersDto.winningNumbers())
+                    .ticketId(ticketDto.ticketId())
+                    .drawDate(ticketDto.drawDate())
+                    .numbersFromUser(ticketDto.numbersFromUser())
+                    .message("Ticket checked correctly")
+                    .build();
             listToReturn.add(resultOfResultCheckerDto);
 
             repository.saveAll(ResultCheckerMapper.mapToTicketChecked(listToReturn));

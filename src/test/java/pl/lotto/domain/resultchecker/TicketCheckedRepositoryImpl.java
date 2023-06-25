@@ -13,10 +13,10 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
     @Override
     public List<TicketChecked> findAllTicketCheckedByDate(LocalDateTime dateTime) {
         return inMemoryDatabase.values()
-                               .stream()
-                               .filter(ticketChecked -> ticketChecked.drawDate()
-                                                                     .isEqual(dateTime))
-                               .collect(Collectors.toList());
+                .stream()
+                .filter(ticketChecked -> ticketChecked.drawDate()
+                        .isEqual(dateTime))
+                .collect(Collectors.toList());
     }
 
     @Override
