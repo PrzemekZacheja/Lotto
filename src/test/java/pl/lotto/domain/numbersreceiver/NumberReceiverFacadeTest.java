@@ -5,7 +5,6 @@ import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.drawdategenerator.DrawDateGenerable;
 import pl.lotto.domain.drawdategenerator.DrawDateGeneratorForTest;
-import pl.lotto.domain.numbersreceiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
 import java.time.Clock;
@@ -35,7 +34,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("Success");
     }
@@ -45,7 +44,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("Fail");
     }
@@ -55,7 +54,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6, 7);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("Fail");
     }
@@ -65,7 +64,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("Success");
     }
@@ -75,7 +74,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1000, 2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("Fail");
     }
@@ -84,18 +83,18 @@ class NumberReceiverFacadeTest {
     void should_return_saved_object_when_user_gave_six_numbers() {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         clock = new AdjustableClock(drawDate.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
         DrawDateFacade drawDateFacade = new DrawDateFacade(new DrawDateGeneratorForTest(clock));
         //when
-        List<TicketDto> ticketDtos = numberReceiverFacade.usersNumbers(drawDateFacade);
+        List<TicketDto> ticketDtoToChanges = numberReceiverFacade.usersNumbers(drawDateFacade);
         //then
-        assertThat(ticketDtos).contains(
+        assertThat(ticketDtoToChanges).contains(
                 TicketDto.builder()
                         .ticketId(result.ticketId())
                         .drawDate(result.drawDate())
-                        .numbersFromUser(result.userNumbers())
+                        .userNumbers(result.userNumbers())
                         .build()
         );
     }
@@ -105,7 +104,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.ticketId()).hasSize(36);
         assertThat(result.ticketId()).isNotNull();
@@ -124,7 +123,7 @@ class NumberReceiverFacadeTest {
                 new HashGenerator(),
                 new DrawDateFacade(new DrawDateGeneratorForTest(clock))
         );
-        InputNumbersResultDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
+        TicketDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
         LocalDateTime drawDate = resultDto.drawDate();
         //when
         List<TicketDto> listOfTickets = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(drawDate.plusWeeks(1L));

@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
-import pl.lotto.domain.numbersreceiver.dto.InputNumbersResultDto;
+import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -62,12 +62,12 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         //then
         MvcResult mvcResult = perform.andExpect(status().isOk()).andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        InputNumbersResultDto inputNumbersResultDto = objectMapper.readValue(contentAsString, InputNumbersResultDto.class);
+        TicketDto ticketDto = objectMapper.readValue(contentAsString, TicketDto.class);
 
         assertAll(
-                () -> assertThat(inputNumbersResultDto.drawDate()).isEqualTo(drawDate),
-                () -> assertThat(inputNumbersResultDto.ticketId()).isNotNull(),
-                () -> assertThat(inputNumbersResultDto.message()).isEqualTo("Success")
+                () -> assertThat(ticketDto.drawDate()).isEqualTo(drawDate),
+                () -> assertThat(ticketDto.ticketId()).isNotNull(),
+                () -> assertThat(ticketDto.message()).isEqualTo("Success")
         );
 
         //TODO ustaw bazę MongoDB dla InputNumbers

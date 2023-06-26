@@ -2,7 +2,6 @@ package pl.lotto.domain.numbersreceiver;
 
 import lombok.AllArgsConstructor;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
-import pl.lotto.domain.numbersreceiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
 import java.time.LocalDateTime;
@@ -18,20 +17,20 @@ public class NumberReceiverFacade {
     private final HashGenerable hashGenerator;
     private final DrawDateFacade drawDateFacade;
 
-    public InputNumbersResultDto inputNumbers(Set<Integer> numbers) {
+    public TicketDto inputNumbers(Set<Integer> numbers) {
         boolean areAllNumbersInRange = validator.areAllNumbersInRange(numbers);
         if (areAllNumbersInRange) {
             String ticketId = hashGenerator.getHash();
             LocalDateTime drawDate = drawDateFacade.getDateOfNextDraw();
             Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbers));
-            return InputNumbersResultDto.builder()
+            return TicketDto.builder()
                     .ticketId(savedTicket.ticketId())
                     .drawDate(savedTicket.drawDate())
                     .message("Success")
                     .userNumbers(numbers)
                     .build();
         }
-        return InputNumbersResultDto.builder()
+        return TicketDto.builder()
                 .message("Fail")
                 .build();
     }

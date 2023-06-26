@@ -40,12 +40,12 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
                                 .drawDate(localDateTime)
                                 .ticketId("001")
                                 .build(),
                         TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
+                                .userNumbers(Set.of(1, 2, 30, 40, 80, 70))
                                 .drawDate(localDateTime)
                                 .ticketId("002")
                                 .build()
@@ -84,11 +84,10 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
                                 .drawDate(localDateTime)
                                 .ticketId("001")
                                 .build()
-
                 ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
@@ -107,7 +106,7 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
                                 .drawDate(localDateTime)
                                 .ticketId("001")
                                 .build()
@@ -130,7 +129,7 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
                                 .drawDate(localDateTime)
                                 .ticketId("001")
                                 .build()
@@ -161,7 +160,7 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
                                 .drawDate(localDateTime)
                                 .ticketId("001")
                                 .build()
