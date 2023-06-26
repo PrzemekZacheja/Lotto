@@ -28,8 +28,8 @@ public class BaseIntegrationTest {
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
-                                                                      .options(wireMockConfig().dynamicPort())
-                                                                      .build();
+            .options(wireMockConfig().dynamicPort())
+            .build();
     @Autowired
     public MockMvc mockMvc;
     @Autowired

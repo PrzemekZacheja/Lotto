@@ -18,35 +18,35 @@ class ResultChecker {
         return result >= 3;
     }
 
-    private static int intersectionOfTwoLists(WinnerNumbersDto winnerNumbersDto, TicketDto ticketDto) {
-        List<Integer> setToRetain = new ArrayList<>(ticketDto.numbersFromUser());
+    private static int intersectionOfTwoLists(WinnerNumbersDto winnerNumbersDto, TicketDto ticketDtoToChange) {
+        List<Integer> setToRetain = new ArrayList<>(ticketDtoToChange.userNumbers());
         setToRetain.retainAll(winnerNumbersDto.winningNumbers());
         return setToRetain.size();
     }
 
-    List<TicketCheckedDto> checkWinnerResults(List<TicketDto> ticketDtos, WinnerNumbersDto winnerNumbersDto) {
+    List<TicketCheckedDto> checkWinnerResults(List<TicketDto> ticketDtoToChanges, WinnerNumbersDto winnerNumbersDto) {
         List<TicketCheckedDto> listToReturn = new ArrayList<>();
 
         if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers()
-                                                        .isEmpty()) {
+                .isEmpty()) {
             return List.of(TicketCheckedDto.builder()
-                                           .message("Ticket checked incorrectly")
-                                           .isWinner(false)
-                                           .build());
+                    .message("Ticket checked incorrectly")
+                    .isWinner(false)
+                    .build());
         }
 
-        for (TicketDto ticketDto : ticketDtos) {
-            int result = intersectionOfTwoLists(winnerNumbersDto, ticketDto);
+        for (TicketDto ticketDtoToChange : ticketDtoToChanges) {
+            int result = intersectionOfTwoLists(winnerNumbersDto, ticketDtoToChange);
             boolean isWinner = isWinner(result);
 
             TicketCheckedDto resultOfResultCheckerDto = TicketCheckedDto.builder()
-                                                                        .isWinner(isWinner)
-                                                                        .winnersNumbers(winnerNumbersDto.winningNumbers())
-                                                                        .ticketId(ticketDto.ticketId())
-                                                                        .drawDate(ticketDto.drawDate())
-                                                                        .numbersFromUser(ticketDto.numbersFromUser())
-                                                                        .message("Ticket checked correctly")
-                                                                        .build();
+                    .isWinner(isWinner)
+                    .winnersNumbers(winnerNumbersDto.winningNumbers())
+                    .ticketId(ticketDtoToChange.ticketId())
+                    .drawDate(ticketDtoToChange.drawDate())
+                    .numbersFromUser(ticketDtoToChange.userNumbers())
+                    .message("Ticket checked correctly")
+                    .build();
             listToReturn.add(resultOfResultCheckerDto);
 
             repository.saveAll(ResultCheckerMapper.mapToTicketChecked(listToReturn));

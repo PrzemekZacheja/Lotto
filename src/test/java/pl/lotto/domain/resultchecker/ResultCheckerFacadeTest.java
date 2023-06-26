@@ -40,16 +40,16 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                 .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                 .drawDate(localDateTime)
-                                 .ticketId("001")
-                                 .build(),
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .build(),
                         TicketDto.builder()
-                                 .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
-                                 .drawDate(localDateTime)
-                                 .ticketId("002")
-                                 .build()
-                       ));
+                                .userNumbers(Set.of(1, 2, 30, 40, 80, 70))
+                                .drawDate(localDateTime)
+                                .ticketId("002")
+                                .build()
+                ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateWinningTickets();
@@ -57,22 +57,22 @@ class ResultCheckerFacadeTest {
         assertThat(ticketCheckedDtos).isEqualTo(
                 List.of(
                         TicketCheckedDto.builder()
-                                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                                        .drawDate(localDateTime)
-                                        .ticketId("001")
-                                        .isWinner(true)
-                                        .message("Ticket checked correctly")
-                                        .build(),
+                                .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .isWinner(true)
+                                .message("Ticket checked correctly")
+                                .build(),
                         TicketCheckedDto.builder()
-                                        .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
-                                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                                        .drawDate(localDateTime)
-                                        .ticketId("002")
-                                        .isWinner(false)
-                                        .message("Ticket checked correctly")
-                                        .build()
-                       ));
+                                .numbersFromUser(Set.of(1, 2, 30, 40, 80, 70))
+                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                                .drawDate(localDateTime)
+                                .ticketId("002")
+                                .isWinner(false)
+                                .message("Ticket checked correctly")
+                                .build()
+                ));
     }
 
     @Test
@@ -84,18 +84,17 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                 .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                 .drawDate(localDateTime)
-                                 .ticketId("001")
-                                 .build()
-
-                       ));
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .build()
+                ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateWinningTickets();
         //then
         assertThat(ticketCheckedDtos.get(0)
-                                    .message()).isEqualTo("Ticket checked incorrectly");
+                .message()).isEqualTo("Ticket checked incorrectly");
     }
 
     @Test
@@ -107,18 +106,18 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                 .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                 .drawDate(localDateTime)
-                                 .ticketId("001")
-                                 .build()
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .build()
 
-                       ));
+                ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateWinningTickets();
         //then
         assertThat(ticketCheckedDtos.get(0)
-                                    .message()).isEqualTo("Ticket checked incorrectly");
+                .message()).isEqualTo("Ticket checked incorrectly");
     }
 
     @Test
@@ -130,11 +129,11 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                 .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                 .drawDate(localDateTime)
-                                 .ticketId("001")
-                                 .build()
-                       ));
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .build()
+                ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<TicketCheckedDto> listFromDatabase = resultCheckerFacade.generateWinningTickets();
@@ -142,14 +141,14 @@ class ResultCheckerFacadeTest {
         //then
         assertThat(ticketCheckedList).isEqualTo(List.of(
                 TicketChecked.builder()
-                             .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                             .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                             .drawDate(localDateTime)
-                             .ticketId("001")
-                             .isWinner(true)
-                             .message("Ticket checked correctly")
-                             .build()
-                                                       ));
+                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                        .drawDate(localDateTime)
+                        .ticketId("001")
+                        .isWinner(true)
+                        .message("Ticket checked correctly")
+                        .build()
+        ));
     }
 
     @Test
@@ -161,12 +160,12 @@ class ResultCheckerFacadeTest {
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
                 List.of(
                         TicketDto.builder()
-                                 .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                                 .drawDate(localDateTime)
-                                 .ticketId("001")
-                                 .build()
+                                .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
+                                .drawDate(localDateTime)
+                                .ticketId("001")
+                                .build()
 
-                       ));
+                ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<TicketCheckedDto> listFromDatabase = resultCheckerFacade.generateWinningTickets();
@@ -174,13 +173,13 @@ class ResultCheckerFacadeTest {
         //then
         assertThat(ticketCheckedList).isEqualTo(List.of(
                 TicketChecked.builder()
-                             .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                             .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                             .drawDate(localDateTime)
-                             .ticketId("001")
-                             .isWinner(true)
-                             .message("Ticket checked correctly")
-                             .build()
-                                                       ));
+                        .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                        .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                        .drawDate(localDateTime)
+                        .ticketId("001")
+                        .isWinner(true)
+                        .message("Ticket checked correctly")
+                        .build()
+        ));
     }
 }

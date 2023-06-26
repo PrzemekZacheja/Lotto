@@ -18,12 +18,12 @@ class NumbersGeneratorFacadeTest {
     private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
     private final WinningNumberGeneratorForTest mockWinningNumberGeneratorForTest = mock(WinningNumberGeneratorForTest.class);
     private final NumbersGeneratorFacadeConfigurationProperties properties = NumbersGeneratorFacadeConfigurationProperties.builder()
-                                                                                                                          .upperBand(
-                                                                                                                                  99)
-                                                                                                                          .lowerBand(
-                                                                                                                                  1)
-                                                                                                                          .count(25)
-                                                                                                                          .build();
+            .upperBand(
+                    99)
+            .lowerBand(
+                    1)
+            .count(25)
+            .build();
 
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
             mockNumberReceiverFacade,
@@ -58,9 +58,9 @@ class NumbersGeneratorFacadeTest {
         //when
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         Set<Integer> randomNumbers1 = generatorRandomNumbers.generateSixNumbers()
-                                                            .winningNumbers();
+                .winningNumbers();
         Set<Integer> randomNumbers2 = generatorRandomNumbers.generateSixNumbers()
-                                                            .winningNumbers();
+                .winningNumbers();
         //then
         assertThat(randomNumbers1).isNotEqualTo(randomNumbers2);
     }
@@ -88,7 +88,7 @@ class NumbersGeneratorFacadeTest {
         WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
         //then
         assertThrows(WinningNunmbersNotFoundExeption.class,
-                     () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
+                () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
     }
 
     @Test
