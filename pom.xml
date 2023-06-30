@@ -28,6 +28,7 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <log4j-core.version>2.20.0</log4j-core.version>
         <awaitility.version>4.2.0</awaitility.version>
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -107,7 +108,12 @@
             <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <!--  SWAGGER http://localhost:8080/swagger-ui/ -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox-boot-starter.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -119,7 +125,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <proc>none</proc>
+                </configuration>
             </plugin>
         </plugins>
     </build>

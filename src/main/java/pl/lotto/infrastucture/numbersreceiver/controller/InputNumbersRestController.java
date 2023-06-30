@@ -1,15 +1,13 @@
 package pl.lotto.infrastucture.numbersreceiver.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
-import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import lombok.*;
+import lombok.extern.log4j.*;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import pl.lotto.domain.numbersreceiver.*;
+import pl.lotto.domain.numbersreceiver.dto.*;
 
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Log4j2
@@ -20,7 +18,7 @@ public class InputNumbersRestController {
 
     @PostMapping("/inputNumbers")
     public ResponseEntity<TicketDto> inputNumbers(@RequestBody InputNumbersRestDto requestDto) {
-        Set<Integer> inputNumbers = requestDto.inputNumbers();
+        Set<Integer> inputNumbers = new HashSet<>(requestDto.inputNumbers());
         TicketDto ticketDto = numberReceiverFacade.inputNumbers(inputNumbers);
         return ResponseEntity.ok(ticketDto);
     }

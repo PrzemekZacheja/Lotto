@@ -1,25 +1,21 @@
 package pl.lotto.feature;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import pl.lotto.BaseIntegrationTest;
-import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
-import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
-import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import com.github.tomakehurst.wiremock.client.*;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.test.web.servlet.*;
+import pl.lotto.*;
+import pl.lotto.domain.numbersgenerator.*;
+import pl.lotto.domain.numbersreceiver.dto.*;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.awaitility.Awaitility.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
@@ -70,7 +66,6 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 () -> assertThat(ticketDto.message()).isEqualTo("Success")
         );
 
-        //TODO ustaw bazę MongoDB dla InputNumbers
 
 //        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND) and body with (“message”: “Not found for id: notExistingId” and “status”: “NOT_FOUND”)
 //        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)

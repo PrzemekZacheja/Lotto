@@ -1,4 +1,7 @@
 package pl.lotto.infrastucture.numbersreceiver.controller;
 
-public record InputNumbersRestDto(java.util.Set<Integer> inputNumbers) {
+import java.util.*;
+
+public record InputNumbersRestDto(List<Integer> inputNumbers) {
+
 }
