@@ -27,10 +27,11 @@ public class WinningNumberGenerationClientConfig {
     }
 
     @Bean
-    public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate,
-                                                              @Value("${lotto.number_generator.http.client.config.uri" +
-                                                                      ":http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com}") String uri,
-                                                              @Value("${lotto.number_generator.http.client.config.port:9090}") int port) {
+    public WinningNumberGenerable remoteNumberGeneratorClient(
+            RestTemplate restTemplate,
+            @Value("${lotto.number_generator.http.client.config.uri") String uri,
+            @Value("${lotto.number_generator.http.client.config.port}") int port
+                                                             ) {
 
         return new WinningNumberGeneratorRestTemplate(restTemplate, uri, port);
     }
