@@ -1,17 +1,12 @@
 package pl.lotto.domain.numbersreceiver;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.data.domain.*;
+import org.springframework.data.repository.query.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
+import java.time.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 
 class InMemoryNumberReceiverRepositoryImpl implements NumberReceiverRepository {
 
@@ -27,10 +22,10 @@ class InMemoryNumberReceiverRepositoryImpl implements NumberReceiverRepository {
     @Override
     public List<Ticket> findAllTicketsByDrawDate(final LocalDateTime date) {
         return inMemoryDatabase.values()
-                .stream()
-                .filter(ticket -> ticket.drawDate()
-                        .isEqual(date))
-                .toList();
+                               .stream()
+                               .filter(ticket -> ticket.drawDate()
+                                                       .isEqual(date))
+                               .toList();
     }
 
     @Override
@@ -139,7 +134,10 @@ class InMemoryNumberReceiverRepositoryImpl implements NumberReceiverRepository {
     }
 
     @Override
-    public <S extends Ticket, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Ticket, R> R findBy(
+            Example<S> example,
+            Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction
+                                         ) {
         return null;
     }
 }

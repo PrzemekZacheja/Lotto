@@ -17,7 +17,9 @@ public class InputNumbersRestController {
     private final NumberReceiverFacade numberReceiverFacade;
 
     @PostMapping("/inputNumbers")
-    public ResponseEntity<TicketDto> inputNumbers(@RequestBody InputNumbersRestDto requestDto) {
+    public ResponseEntity<TicketDto> inputNumbers(
+            @RequestBody InputNumbersRestDto requestDto
+                                                 ) {
         Set<Integer> inputNumbers = new HashSet<>(requestDto.inputNumbers());
         TicketDto ticketDto = numberReceiverFacade.inputNumbers(inputNumbers);
         return ResponseEntity.ok(ticketDto);

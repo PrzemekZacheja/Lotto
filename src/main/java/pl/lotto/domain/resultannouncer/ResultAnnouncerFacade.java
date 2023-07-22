@@ -1,9 +1,9 @@
 package pl.lotto.domain.resultannouncer;
 
-import lombok.AllArgsConstructor;
-import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
-import pl.lotto.domain.resultchecker.ResultCheckerFacade;
-import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
+import lombok.*;
+import pl.lotto.domain.resultannouncer.dto.*;
+import pl.lotto.domain.resultchecker.*;
+import pl.lotto.domain.resultchecker.dto.*;
 
 @AllArgsConstructor
 public class ResultAnnouncerFacade {

@@ -1,9 +1,8 @@
 package pl.lotto.domain.drawdategenerator;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.*;
 
 @AllArgsConstructor
 public class DrawDateGeneratorForTest implements DrawDateGenerable {

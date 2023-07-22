@@ -1,19 +1,13 @@
 package pl.lotto.domain.numbersreceiver;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import org.springframework.context.annotation.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.repository.query.*;
+import pl.lotto.domain.drawdategenerator.*;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
+import java.time.*;
+import java.util.*;
+import java.util.function.*;
 
 @Configuration
 public class NumberReceiverFacadeConfiguration {
@@ -29,7 +23,7 @@ public class NumberReceiverFacadeConfiguration {
 
             @Override
             public <S extends Ticket> List<S> saveAll(Iterable<S> entities) {
-                return null;
+                return Collections.emptyList();
             }
 
             @Override
@@ -84,7 +78,7 @@ public class NumberReceiverFacadeConfiguration {
 
             @Override
             public List<Ticket> findAll(Sort sort) {
-                return null;
+                return Collections.emptyList();
             }
 
             @Override
@@ -99,7 +93,7 @@ public class NumberReceiverFacadeConfiguration {
 
             @Override
             public <S extends Ticket> List<S> insert(Iterable<S> entities) {
-                return null;
+                return Collections.emptyList();
             }
 
             @Override
@@ -109,12 +103,12 @@ public class NumberReceiverFacadeConfiguration {
 
             @Override
             public <S extends Ticket> List<S> findAll(Example<S> example) {
-                return null;
+                return Collections.emptyList();
             }
 
             @Override
             public <S extends Ticket> List<S> findAll(Example<S> example, Sort sort) {
-                return null;
+                return Collections.emptyList();
             }
 
             @Override
@@ -133,7 +127,10 @@ public class NumberReceiverFacadeConfiguration {
             }
 
             @Override
-            public <S extends Ticket, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+            public <S extends Ticket, R> R findBy(
+                    Example<S> example,
+                    Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction
+                                                 ) {
                 return null;
             }
 
@@ -155,10 +152,12 @@ public class NumberReceiverFacadeConfiguration {
     }
 
     @Bean
-    public NumberReceiverFacade numberReceiverFacade(NumberValidator numberValidator,
-                                                     NumberReceiverRepository numberRepository,
-                                                     HashGenerable hashGenerable,
-                                                     DrawDateFacade drawDateFacade) {
+    public NumberReceiverFacade numberReceiverFacade(
+            NumberValidator numberValidator,
+            NumberReceiverRepository numberRepository,
+            HashGenerable hashGenerable,
+            DrawDateFacade drawDateFacade
+                                                    ) {
         return new NumberReceiverFacade(numberValidator, numberRepository, hashGenerable, drawDateFacade);
     }
 }

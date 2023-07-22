@@ -1,6 +1,6 @@
 package pl.lotto.domain.drawdategenerator;
 
-import java.time.LocalDateTime;
+import java.time.*;
 
 public interface DrawDateGenerable {
 

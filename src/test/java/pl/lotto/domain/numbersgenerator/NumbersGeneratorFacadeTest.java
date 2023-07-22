@@ -1,29 +1,28 @@
 package pl.lotto.domain.numbersgenerator;
 
-import org.junit.jupiter.api.Test;
-import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
-import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
+import org.junit.jupiter.api.*;
+import pl.lotto.domain.numbersgenerator.dto.*;
+import pl.lotto.domain.numbersreceiver.*;
 
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.security.*;
+import java.time.*;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class NumbersGeneratorFacadeTest {
 
     private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
     private final WinningNumberGeneratorForTest mockWinningNumberGeneratorForTest = mock(WinningNumberGeneratorForTest.class);
     private final NumbersGeneratorFacadeConfigurationProperties properties = NumbersGeneratorFacadeConfigurationProperties.builder()
-            .upperBand(
-                    99)
-            .lowerBand(
-                    1)
-            .count(25)
-            .build();
+                                                                                                                          .upperBand(
+                                                                                                                                  99)
+                                                                                                                          .lowerBand(
+                                                                                                                                  1)
+                                                                                                                          .count(25)
+                                                                                                                          .build();
 
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
             mockNumberReceiverFacade,
@@ -58,9 +57,9 @@ class NumbersGeneratorFacadeTest {
         //when
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         Set<Integer> randomNumbers1 = generatorRandomNumbers.generateSixNumbers()
-                .winningNumbers();
+                                                            .winningNumbers();
         Set<Integer> randomNumbers2 = generatorRandomNumbers.generateSixNumbers()
-                .winningNumbers();
+                                                            .winningNumbers();
         //then
         assertThat(randomNumbers1).isNotEqualTo(randomNumbers2);
     }

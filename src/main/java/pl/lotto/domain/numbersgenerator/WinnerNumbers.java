@@ -1,11 +1,11 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.Builder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.*;
+import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.*;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
 @Builder
 @Document

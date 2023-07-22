@@ -1,18 +1,13 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
+import lombok.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.repository.query.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
+import java.time.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 
 @AllArgsConstructor
 class NumbersGeneratorRepositoryForTest implements NumbersGeneratorRepository {
@@ -142,8 +137,10 @@ class NumbersGeneratorRepositoryForTest implements NumbersGeneratorRepository {
     }
 
     @Override
-    public <S extends WinnerNumbers, R> R findBy(final Example<S> example,
-                                                 final Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends WinnerNumbers, R> R findBy(
+            final Example<S> example,
+            final Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction
+                                                ) {
         return null;
     }
 }

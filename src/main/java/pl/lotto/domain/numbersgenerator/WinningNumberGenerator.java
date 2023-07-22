@@ -1,10 +1,9 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
-import java.security.SecureRandom;
-import java.util.HashSet;
-import java.util.Set;
+import java.security.*;
+import java.util.*;
 
 import static pl.lotto.domain.numbersgenerator.ConfigNumbersGenerator.*;
 

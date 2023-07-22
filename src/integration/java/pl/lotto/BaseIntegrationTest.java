@@ -1,21 +1,19 @@
 package pl.lotto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MongoDBContainer;
+import com.fasterxml.jackson.databind.*;
+import com.github.tomakehurst.wiremock.junit5.*;
+import org.junit.jupiter.api.extension.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.web.servlet.*;
+import org.testcontainers.containers.*;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.junit.jupiter.*;
+import org.testcontainers.utility.*;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.*;
 
 @SpringBootTest(classes = {LottoSpringBootApplication.class, IntegrationConfiguration.class})
 @ActiveProfiles("integration")
@@ -28,8 +26,8 @@ public class BaseIntegrationTest {
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
-            .options(wireMockConfig().dynamicPort())
-            .build();
+                                                                      .options(wireMockConfig().dynamicPort())
+                                                                      .build();
     @Autowired
     public MockMvc mockMvc;
     @Autowired

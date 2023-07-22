@@ -1,6 +1,6 @@
 package pl.lotto.domain.numbersreceiver;
 
-import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import pl.lotto.domain.numbersreceiver.dto.*;
 
 class TicketMapper {
 
@@ -9,9 +9,9 @@ class TicketMapper {
 
     public static TicketDto mapFromTicket(Ticket ticket) {
         return TicketDto.builder()
-                .userNumbers(ticket.numbers())
-                .ticketId(ticket.ticketId())
-                .drawDate(ticket.drawDate())
-                .build();
+                        .userNumbers(ticket.numbers())
+                        .ticketId(ticket.ticketId())
+                        .drawDate(ticket.drawDate())
+                        .build();
     }
 }

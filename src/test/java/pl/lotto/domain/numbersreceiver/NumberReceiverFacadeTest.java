@@ -1,26 +1,20 @@
 package pl.lotto.domain.numbersreceiver;
 
-import org.junit.jupiter.api.Test;
-import pl.lotto.domain.AdjustableClock;
-import pl.lotto.domain.drawdategenerator.DrawDateFacade;
-import pl.lotto.domain.drawdategenerator.DrawDateGenerable;
-import pl.lotto.domain.drawdategenerator.DrawDateGeneratorForTest;
-import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import org.junit.jupiter.api.*;
+import pl.lotto.domain.*;
+import pl.lotto.domain.drawdategenerator.*;
+import pl.lotto.domain.numbersreceiver.dto.*;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.List;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 class NumberReceiverFacadeTest {
 
     AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
-            .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+                                                             .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
     DrawDateGenerable dateDrawGeneratorForTest = new DrawDateGeneratorForTest(clock);
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
@@ -92,11 +86,11 @@ class NumberReceiverFacadeTest {
         //then
         assertThat(ticketDtoToChanges).contains(
                 TicketDto.builder()
-                        .ticketId(result.ticketId())
-                        .drawDate(result.drawDate())
-                        .userNumbers(result.userNumbers())
-                        .build()
-        );
+                         .ticketId(result.ticketId())
+                         .drawDate(result.drawDate())
+                         .userNumbers(result.userNumbers())
+                         .build()
+                                               );
     }
 
     @Test
@@ -115,7 +109,7 @@ class NumberReceiverFacadeTest {
     void it_should_return_empty_list_when_given_date_is_after_next_drawDate() {
         //given
         Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0)
-                        .toInstant(ZoneOffset.UTC),
+                                               .toInstant(ZoneOffset.UTC),
                 ZoneId.of("Europe/London"));
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
                 new NumberValidator(),

@@ -1,8 +1,8 @@
 package pl.lotto.domain.resultchecker;
 
-import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
+import pl.lotto.domain.resultchecker.dto.*;
 
-import java.util.List;
+import java.util.*;
 
 class ResultCheckerMapper {
 
@@ -11,25 +11,25 @@ class ResultCheckerMapper {
 
     static List<TicketChecked> mapToTicketChecked(final List<TicketCheckedDto> ticketCheckedDtoList) {
         return ticketCheckedDtoList.stream()
-                .map(ticketCheckedDto -> TicketChecked.builder()
-                        .ticketId(ticketCheckedDto.ticketId())
-                        .numbersFromUser(ticketCheckedDto.numbersFromUser())
-                        .drawDate(ticketCheckedDto.drawDate())
-                        .winnersNumbers(ticketCheckedDto.winnersNumbers())
-                        .isWinner(ticketCheckedDto.isWinner())
-                        .message(ticketCheckedDto.message())
-                        .build())
-                .toList();
+                                   .map(ticketCheckedDto -> TicketChecked.builder()
+                                                                         .ticketId(ticketCheckedDto.ticketId())
+                                                                         .numbersFromUser(ticketCheckedDto.numbersFromUser())
+                                                                         .drawDate(ticketCheckedDto.drawDate())
+                                                                         .winnersNumbers(ticketCheckedDto.winnersNumbers())
+                                                                         .isWinner(ticketCheckedDto.isWinner())
+                                                                         .message(ticketCheckedDto.message())
+                                                                         .build())
+                                   .toList();
     }
 
     static TicketCheckedDto mapToTicketCheckedDto(TicketChecked ticketChecked) {
         return TicketCheckedDto.builder()
-                .ticketId(ticketChecked.ticketId())
-                .isWinner(ticketChecked.isWinner())
-                .message(ticketChecked.message())
-                .drawDate(ticketChecked.drawDate())
-                .numbersFromUser(ticketChecked.numbersFromUser())
-                .winnersNumbers(ticketChecked.winnersNumbers())
-                .build();
+                               .ticketId(ticketChecked.ticketId())
+                               .isWinner(ticketChecked.isWinner())
+                               .message(ticketChecked.message())
+                               .drawDate(ticketChecked.drawDate())
+                               .numbersFromUser(ticketChecked.numbersFromUser())
+                               .winnersNumbers(ticketChecked.winnersNumbers())
+                               .build();
     }
 }

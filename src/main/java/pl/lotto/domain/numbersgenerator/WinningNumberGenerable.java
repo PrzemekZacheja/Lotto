@@ -1,6 +1,6 @@
 package pl.lotto.domain.numbersgenerator;
 
-import java.util.Set;
+import java.util.*;
 
 public interface WinningNumberGenerable {
 

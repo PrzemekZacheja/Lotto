@@ -1,9 +1,9 @@
 package pl.lotto.domain.numbersreceiver;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 public interface NumberReceiverRepository extends MongoRepository<Ticket, String> {
 

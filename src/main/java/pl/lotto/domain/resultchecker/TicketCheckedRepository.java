@@ -1,7 +1,7 @@
 package pl.lotto.domain.resultchecker;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 public interface TicketCheckedRepository {
 

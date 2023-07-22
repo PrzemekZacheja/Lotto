@@ -1,13 +1,11 @@
 package pl.lotto.domain.numbersreceiver;
 
-import lombok.AllArgsConstructor;
-import pl.lotto.domain.drawdategenerator.DrawDateFacade;
-import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import lombok.*;
+import pl.lotto.domain.drawdategenerator.*;
+import pl.lotto.domain.numbersreceiver.dto.*;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
@@ -24,22 +22,22 @@ public class NumberReceiverFacade {
             LocalDateTime drawDate = drawDateFacade.getDateOfNextDraw();
             Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbers));
             return TicketDto.builder()
-                    .ticketId(savedTicket.ticketId())
-                    .drawDate(savedTicket.drawDate())
-                    .message("Success")
-                    .userNumbers(numbers)
-                    .build();
+                            .ticketId(savedTicket.ticketId())
+                            .drawDate(savedTicket.drawDate())
+                            .message("Success")
+                            .userNumbers(numbers)
+                            .build();
         }
         return TicketDto.builder()
-                .message("Fail")
-                .build();
+                        .message("Fail")
+                        .build();
     }
 
     public List<TicketDto> usersNumbers(DrawDateFacade dateOfDraw) {
         List<Ticket> allTicketsByDrawDate = repository.findAllTicketsByDrawDate(dateOfDraw.getDateOfNextDraw());
         return allTicketsByDrawDate.stream()
-                .map(TicketMapper::mapFromTicket)
-                .toList();
+                                   .map(TicketMapper::mapFromTicket)
+                                   .toList();
     }
 
     public List<TicketDto> retrieveAllTicketsByNextDrawDate(LocalDateTime drawDate) {
@@ -48,9 +46,9 @@ public class NumberReceiverFacade {
             return Collections.emptyList();
         }
         return repository.findAllTicketsByDrawDate(drawDate)
-                .stream()
-                .map(TicketMapper::mapFromTicket)
-                .toList();
+                         .stream()
+                         .map(TicketMapper::mapFromTicket)
+                         .toList();
     }
 
     public LocalDateTime getDrawDate() {

@@ -1,9 +1,9 @@
 package pl.lotto.domain.numbersgenerator.dto;
 
-import lombok.Builder;
+import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
 @Builder
 public record WinnerNumbersDto(LocalDateTime timeOfWinDrawNumbers, Set<Integer> winningNumbers) {

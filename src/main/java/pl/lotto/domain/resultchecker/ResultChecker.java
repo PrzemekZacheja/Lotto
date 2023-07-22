@@ -1,12 +1,11 @@
 package pl.lotto.domain.resultchecker;
 
-import lombok.AllArgsConstructor;
-import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
-import pl.lotto.domain.numbersreceiver.dto.TicketDto;
-import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
+import lombok.*;
+import pl.lotto.domain.numbersgenerator.dto.*;
+import pl.lotto.domain.numbersreceiver.dto.*;
+import pl.lotto.domain.resultchecker.dto.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @AllArgsConstructor
 class ResultChecker {
@@ -28,11 +27,11 @@ class ResultChecker {
         List<TicketCheckedDto> listToReturn = new ArrayList<>();
 
         if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers()
-                .isEmpty()) {
+                                                        .isEmpty()) {
             return List.of(TicketCheckedDto.builder()
-                    .message("Ticket checked incorrectly")
-                    .isWinner(false)
-                    .build());
+                                           .message("Ticket checked incorrectly")
+                                           .isWinner(false)
+                                           .build());
         }
 
         for (TicketDto ticketDtoToChange : ticketDtoToChanges) {
@@ -40,13 +39,13 @@ class ResultChecker {
             boolean isWinner = isWinner(result);
 
             TicketCheckedDto resultOfResultCheckerDto = TicketCheckedDto.builder()
-                    .isWinner(isWinner)
-                    .winnersNumbers(winnerNumbersDto.winningNumbers())
-                    .ticketId(ticketDtoToChange.ticketId())
-                    .drawDate(ticketDtoToChange.drawDate())
-                    .numbersFromUser(ticketDtoToChange.userNumbers())
-                    .message("Ticket checked correctly")
-                    .build();
+                                                                        .isWinner(isWinner)
+                                                                        .winnersNumbers(winnerNumbersDto.winningNumbers())
+                                                                        .ticketId(ticketDtoToChange.ticketId())
+                                                                        .drawDate(ticketDtoToChange.drawDate())
+                                                                        .numbersFromUser(ticketDtoToChange.userNumbers())
+                                                                        .message("Ticket checked correctly")
+                                                                        .build();
             listToReturn.add(resultOfResultCheckerDto);
 
             repository.saveAll(ResultCheckerMapper.mapToTicketChecked(listToReturn));

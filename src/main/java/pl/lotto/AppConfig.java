@@ -8,9 +8,10 @@ import org.springframework.core.io.*;
 public class AppConfig {
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         configurer.setLocation(new ClassPathResource("application.properties"));
+        configurer.setIgnoreUnresolvablePlaceholders(true);
         return configurer;
     }
 }

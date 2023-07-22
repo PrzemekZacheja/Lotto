@@ -1,10 +1,9 @@
 package pl.lotto.domain.resultchecker;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.time.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.*;
 
 public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
 
@@ -13,10 +12,10 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
     @Override
     public List<TicketChecked> findAllTicketCheckedByDate(LocalDateTime dateTime) {
         return inMemoryDatabase.values()
-                .stream()
-                .filter(ticketChecked -> ticketChecked.drawDate()
-                        .isEqual(dateTime))
-                .collect(Collectors.toList());
+                               .stream()
+                               .filter(ticketChecked -> ticketChecked.drawDate()
+                                                                     .isEqual(dateTime))
+                               .collect(Collectors.toList());
     }
 
     @Override

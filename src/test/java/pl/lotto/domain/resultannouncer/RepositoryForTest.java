@@ -1,7 +1,7 @@
 package pl.lotto.domain.resultannouncer;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.concurrent.*;
 
 class RepositoryForTest implements ResultAnnouncerResponseRepository {
     Map<String, ResultAnnouncerResponse> databaseInMemory = new ConcurrentHashMap<>();

@@ -1,9 +1,9 @@
 package pl.lotto.infrastucture.numbersgenerator.http;
 
-import lombok.Builder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.*;
+import org.springframework.boot.context.properties.*;
 
-@ConfigurationProperties(prefix = "lotto.number-generator.http.client.config")
+@ConfigurationProperties(prefix = "lotto.numbergenerator.http.client.config")
 @Builder
 public record NumbersGeneratorRestTemplateConfigurationProperties(
         String uri,

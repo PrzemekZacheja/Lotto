@@ -11,6 +11,8 @@ import java.time.*;
 @Configuration
 public class WinningNumberGenerationClientConfig {
 
+    @Autowired
+    NumbersGeneratorRestTemplateConfigurationProperties numbersGeneratorRestTemplateConfigurationProperties;
 
     @Bean
     public RestTemplateResponseErrorHandler restTemplateResponseErrorHandler() {
@@ -19,20 +21,20 @@ public class WinningNumberGenerationClientConfig {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateResponseErrorHandler restTemplateResponseErrorHandler) {
-        return new RestTemplateBuilder()
-                .errorHandler(restTemplateResponseErrorHandler)
-                .setConnectTimeout(Duration.ofMillis(1000))
-                .setReadTimeout(Duration.ofMillis(1000))
-                .build();
+        return new RestTemplateBuilder().errorHandler(restTemplateResponseErrorHandler)
+                                        .setConnectTimeout(Duration.ofMillis(
+                                                numbersGeneratorRestTemplateConfigurationProperties.connectionTimeout()))
+                                        .setReadTimeout(Duration.ofMillis(
+                                                numbersGeneratorRestTemplateConfigurationProperties.readTimeout()))
+                                        .build();
     }
 
     @Bean
     public WinningNumberGenerable remoteNumberGeneratorClient(
-            RestTemplate restTemplate,
-            @Value("${lotto.number_generator.http.client.config.uri") String uri,
-            @Value("${lotto.number_generator.http.client.config.port}") int port
+            RestTemplate restTemplate
                                                              ) {
-
-        return new WinningNumberGeneratorRestTemplate(restTemplate, uri, port);
+        return new WinningNumberGeneratorRestTemplate(restTemplate,
+                numbersGeneratorRestTemplateConfigurationProperties.uri(),
+                numbersGeneratorRestTemplateConfigurationProperties.port());
     }
 }

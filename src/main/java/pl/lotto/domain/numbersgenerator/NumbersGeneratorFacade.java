@@ -1,12 +1,12 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.AllArgsConstructor;
-import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
-import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
+import lombok.*;
+import pl.lotto.domain.numbersgenerator.dto.*;
+import pl.lotto.domain.numbersreceiver.*;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.*;
+import java.util.*;
+import java.util.stream.*;
 
 @AllArgsConstructor
 public class NumbersGeneratorFacade {
@@ -23,9 +23,9 @@ public class NumbersGeneratorFacade {
                 configuration.count());
         if (areAllNumbersInRequiredRange(winningRandomNumbers)) {
             WinnerNumbers winnerNumbersDocument = WinnerNumbers.builder()
-                    .winningNumbers(winningRandomNumbers)
-                    .drawDate(drawDate)
-                    .build();
+                                                               .winningNumbers(winningRandomNumbers)
+                                                               .drawDate(drawDate)
+                                                               .build();
             WinnerNumbers saved = numbersGeneratorRepository.save(winnerNumbersDocument);
             return WinnerNumbersMapper.mapFromWinnerNumbers(saved);
         } else {
@@ -40,19 +40,19 @@ public class NumbersGeneratorFacade {
 
     private Set<Integer> limitSetTo(Set<Integer> numbers) {
         return numbers.stream()
-                .filter(integer -> integer >= 1)
-                .filter(integer -> integer <= 99)
-                .limit(ConfigNumbersGenerator.RANDOM_NUMBERS)
-                .collect(Collectors.toSet());
+                      .filter(integer -> integer >= ConfigNumbersGenerator.RANDOM_NUMBER_MIN)
+                      .filter(integer -> integer <= ConfigNumbersGenerator.RANDOM_NUMBER_MAX_BOUND)
+                      .limit(ConfigNumbersGenerator.RANDOM_NUMBERS)
+                      .collect(Collectors.toSet());
     }
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
         WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findWinningNumberByDrawDate(localDateTime)
-                .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
-                        "Not Found"));
+                                                                          .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
+                                                                                  "Not Found"));
         return WinnerNumbersDto.builder()
-                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
-                .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
-                .build();
+                               .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
+                               .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
+                               .build();
     }
 }
