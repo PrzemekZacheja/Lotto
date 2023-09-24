@@ -1,12 +1,13 @@
 package pl.lotto.infrastucture.numbersgenerator.http;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.web.client.*;
-import org.springframework.context.annotation.*;
-import org.springframework.web.client.*;
-import pl.lotto.domain.numbersgenerator.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+import pl.lotto.domain.numbersgenerator.WinningNumberGenerable;
 
-import java.time.*;
+import java.time.Duration;
 
 @Configuration
 public class WinningNumberGenerationClientConfig {
@@ -30,11 +31,9 @@ public class WinningNumberGenerationClientConfig {
     }
 
     @Bean
-    public WinningNumberGenerable remoteNumberGeneratorClient(
-            RestTemplate restTemplate
-                                                             ) {
+    public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate) {
         return new WinningNumberGeneratorRestTemplate(restTemplate,
-                numbersGeneratorRestTemplateConfigurationProperties.uri(),
-                numbersGeneratorRestTemplateConfigurationProperties.port());
+                                                      numbersGeneratorRestTemplateConfigurationProperties.uri(),
+                                                      numbersGeneratorRestTemplateConfigurationProperties.port());
     }
 }
