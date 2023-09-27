@@ -1,8 +1,8 @@
 package pl.lotto.domain.resultchecker;
 
-import pl.lotto.domain.resultchecker.dto.*;
+import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
 
-import java.util.*;
+import java.util.List;
 
 class ResultCheckerMapper {
 

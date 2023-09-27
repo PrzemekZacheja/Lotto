@@ -1,21 +1,27 @@
 package pl.lotto.feature;
 
-import com.github.tomakehurst.wiremock.client.*;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-import org.springframework.test.web.servlet.*;
-import pl.lotto.*;
-import pl.lotto.domain.numbersgenerator.*;
-import pl.lotto.domain.numbersreceiver.dto.*;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import pl.lotto.BaseIntegrationTest;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
+import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
+import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.awaitility.Awaitility.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
@@ -59,15 +65,16 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 //        “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
         //given
         //when
-        ResultActions perform = mockMvc.perform(post("/inputNumbers").content("""
-                                                                              {
-                                                                              "inputNumbers" : [1, 2, 3, 4, 5, 6]
-                                                                              }
-                                                                              """.trim())
-                                                                     .contentType(MediaType.APPLICATION_JSON));
+        ResultActions performPostInputNumbers = mockMvc.perform(post("/inputNumbers").content("""
+                                                                                                      {
+                                                                                                      "inputNumbers" : [1, 2, 3, 4, 5, 6]
+                                                                                                      }
+                                                                                                      """.trim())
+                                                                                     .contentType(
+                                                                                             MediaType.APPLICATION_JSON));
         //then
-        MvcResult mvcResult = perform.andExpect(status().isOk())
-                                     .andReturn();
+        MvcResult mvcResult = performPostInputNumbers.andExpect(status().isOk())
+                                                     .andReturn();
         String contentAsString = mvcResult.getResponse()
                                           .getContentAsString();
         TicketDto ticketDto = objectMapper.readValue(contentAsString, TicketDto.class);
@@ -76,10 +83,26 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 () -> assertThat(ticketDto.drawDate()).isEqualTo(drawDate),
                 () -> assertThat(ticketDto.ticketId()).isNotNull(),
                 () -> assertThat(ticketDto.message()).isEqualTo("Success")
-                 );
+        );
 
 
-//        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND) and body with (“message”: “Not found for id: notExistingId” and “status”: “NOT_FOUND”)
+//        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND)
+//          and body with (“message”: “Not found for id: notExistingId” and “status”: “NOT_FOUND”)
+        //given
+        //when
+        ResultActions performGetResultWithNoExistingId = mockMvc.perform(get("/results/notExistingId"));
+        //then
+        performGetResultWithNoExistingId.andExpect(status().isNotFound())
+                                        .andExpect(content().json("""
+                                                                            {
+                                                                            "message": "Not found for id: notExistingId",
+                                                                            "status" : "NOT_FOUND"
+                                                                            }
+                                                                          """
+
+                                        ));
+
+
 //        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
 //        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
 //        step 7: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
