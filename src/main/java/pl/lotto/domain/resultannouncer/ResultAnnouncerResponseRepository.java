@@ -1,8 +1,9 @@
 package pl.lotto.domain.resultannouncer;
 
-public interface ResultAnnouncerResponseRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-    ResultAnnouncerResponse save(ResultAnnouncerResponse resultResponse);
+@Repository
+public interface ResultAnnouncerResponseRepository extends MongoRepository<ResultAnnouncerResponse, String> {
 
-    ResultAnnouncerResponse findResponseById(String id);
 }

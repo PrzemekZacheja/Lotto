@@ -1,16 +1,19 @@
 package pl.lotto.domain.resultannouncer;
 
-import org.junit.jupiter.api.*;
-import pl.lotto.domain.*;
-import pl.lotto.domain.resultannouncer.dto.*;
-import pl.lotto.domain.resultchecker.*;
-import pl.lotto.domain.resultchecker.dto.*;
+import org.junit.jupiter.api.Test;
+import pl.lotto.domain.AdjustableClock;
+import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
+import pl.lotto.domain.resultchecker.ResultCheckerFacade;
+import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Set;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ResultAnnouncerFacadeTest {
 
@@ -76,8 +79,8 @@ class ResultAnnouncerFacadeTest {
         ResultAnnouncerResponseDto resultAnnouncerResponseDtoSecond = resultAnnouncerFacade.generateResponseByIdTicket(
                 idTicket);
         //then
-        assertThat(repository.findResponseById(idTicket)).isNotNull();
-        assertThat(repository.findResponseById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
+        assertThat(repository.findById(idTicket)).isNotNull();
+        assertThat(repository.findById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
                 expectedTickeCheckedtDto));
     }
 
@@ -104,10 +107,10 @@ class ResultAnnouncerFacadeTest {
                                                                     .build();
         //when
         //then
-        assertThat(repository.findResponseById(idTicket)).isNull();
+        assertThat(repository.findById(idTicket)).isNull();
         ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.generateResponseByIdTicket(
                 idTicket);
-        assertThat(repository.findResponseById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
+        assertThat(repository.findById(idTicket)).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
                 expectedTickeCheckedtDto));
     }
 }

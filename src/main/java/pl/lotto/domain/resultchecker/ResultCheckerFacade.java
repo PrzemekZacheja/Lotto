@@ -1,13 +1,13 @@
 package pl.lotto.domain.resultchecker;
 
-import lombok.*;
-import pl.lotto.domain.drawdategenerator.*;
-import pl.lotto.domain.numbersgenerator.*;
-import pl.lotto.domain.numbersreceiver.*;
-import pl.lotto.domain.resultchecker.dto.*;
+import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
+import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
+import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 public class ResultCheckerFacade {
@@ -26,12 +26,9 @@ public class ResultCheckerFacade {
                 numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
     }
 
-    public List<TicketChecked> retrieveTicketCheckedByDate(LocalDateTime localDateTime) {
-        return repository.findAllTicketCheckedByDate(localDateTime);
-    }
-
     public TicketCheckedDto retrieveTicketCheckedByIdTicket(String idTicket) {
-        TicketChecked ticketById = repository.findTicketById(idTicket);
+        TicketChecked ticketById = repository.findById(idTicket)
+                                             .orElseThrow(IllegalArgumentException::new);
         return ResultCheckerMapper.mapToTicketCheckedDto(ticketById);
     }
 }
