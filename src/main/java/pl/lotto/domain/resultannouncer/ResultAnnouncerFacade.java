@@ -13,14 +13,12 @@ public class ResultAnnouncerFacade {
 
     public ResultAnnouncerResponseDto generateResponseByIdTicket(String idTicket) {
         TicketCheckedDto ticketCheckedDto = resultCheckerFacade.retrieveTicketCheckedByIdTicket(idTicket);
-        if (repository.findById(idTicket)
-                      .isPresent()) {
+        if (ticketCheckedDto != null) {
             ResultAnnouncerResponse resultResponse = ResultAnnouncerMapper.mapToResultAnnouncerResponse(ticketCheckedDto);
             repository.save(resultResponse);
             return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(resultResponse);
         } else {
-            return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(repository.findById(idTicket)
-                                                                                   .orElseThrow(IllegalArgumentException::new));
+            return new ResultAnnouncerResponseDto(null, "Ticket id: " + idTicket + " not found");
         }
     }
 

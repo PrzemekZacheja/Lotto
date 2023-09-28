@@ -23,12 +23,12 @@ public class ResultCheckerFacade {
         LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
 
         return resultChecker.checkWinnerResults(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw),
-                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
+                                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
     }
 
     public TicketCheckedDto retrieveTicketCheckedByIdTicket(String idTicket) {
-        TicketChecked ticketById = repository.findById(idTicket)
-                                             .orElseThrow(IllegalArgumentException::new);
-        return ResultCheckerMapper.mapToTicketCheckedDto(ticketById);
+        return repository.findById(idTicket)
+                         .map(ResultCheckerMapper::mapToTicketCheckedDto)
+                         .orElseThrow(RuntimeException::new);
     }
 }

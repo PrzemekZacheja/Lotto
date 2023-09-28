@@ -27,7 +27,7 @@ class RepositoryForTest implements ResultAnnouncerResponseRepository {
 
     @Override
     public Optional<ResultAnnouncerResponse> findById(String s) {
-        return Optional.empty();
+        return Optional.ofNullable(databaseInMemory.get(s));
     }
 
     @Override

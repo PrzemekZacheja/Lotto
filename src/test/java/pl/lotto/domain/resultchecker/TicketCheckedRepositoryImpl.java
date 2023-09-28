@@ -29,7 +29,7 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
 
     @Override
     public Optional<TicketChecked> findById(String s) {
-        return Optional.of(inMemoryDatabase.get(s));
+        return Optional.ofNullable(inMemoryDatabase.get(s));
     }
 
     @Override
