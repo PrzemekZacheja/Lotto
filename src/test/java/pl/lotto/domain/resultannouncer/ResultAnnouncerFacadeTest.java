@@ -108,7 +108,7 @@ class ResultAnnouncerFacadeTest {
                                 .isWinner(true)
                                 .build()
         );
-        TicketCheckedDto expectedTickeCheckedtDto = TicketCheckedDto.builder()
+        TicketCheckedDto expectedTicketCheckedDto = TicketCheckedDto.builder()
                                                                     .ticketId("001")
                                                                     .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
                                                                     .numbersFromUser(Set.of(1, 2, 3, 4, 5, 6))
@@ -123,6 +123,6 @@ class ResultAnnouncerFacadeTest {
                 idTicket);
         Optional<ResultAnnouncerResponse> byId = repository.findById(idTicket);
         assertThat(byId.get()).isEqualTo(ResultAnnouncerMapper.mapToResultAnnouncerResponse(
-                expectedTickeCheckedtDto));
+                expectedTicketCheckedDto));
     }
 }

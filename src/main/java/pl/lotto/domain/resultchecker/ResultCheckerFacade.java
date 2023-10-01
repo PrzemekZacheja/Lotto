@@ -29,6 +29,6 @@ public class ResultCheckerFacade {
     public TicketCheckedDto retrieveTicketCheckedByIdTicket(String idTicket) {
         return repository.findById(idTicket)
                          .map(ResultCheckerMapper::mapToTicketCheckedDto)
-                         .orElseThrow(RuntimeException::new);
+                         .orElseThrow(() -> new ResultCheckerNotFoundException("Not found for id: " + idTicket));
     }
 }
