@@ -1,13 +1,13 @@
 package pl.lotto.domain.resultchecker;
 
-import lombok.*;
-import pl.lotto.domain.drawdategenerator.*;
-import pl.lotto.domain.numbersgenerator.*;
-import pl.lotto.domain.numbersreceiver.*;
-import pl.lotto.domain.resultchecker.dto.*;
+import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
+import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
+import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 public class ResultCheckerFacade {
@@ -23,15 +23,12 @@ public class ResultCheckerFacade {
         LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
 
         return resultChecker.checkWinnerResults(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw),
-                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
-    }
-
-    public List<TicketChecked> retrieveTicketCheckedByDate(LocalDateTime localDateTime) {
-        return repository.findAllTicketCheckedByDate(localDateTime);
+                                                numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw));
     }
 
     public TicketCheckedDto retrieveTicketCheckedByIdTicket(String idTicket) {
-        TicketChecked ticketById = repository.findTicketById(idTicket);
-        return ResultCheckerMapper.mapToTicketCheckedDto(ticketById);
+        return repository.findById(idTicket)
+                         .map(ResultCheckerMapper::mapToTicketCheckedDto)
+                         .orElseThrow(() -> new ResultCheckerNotFoundException("Not found for id: " + idTicket));
     }
 }

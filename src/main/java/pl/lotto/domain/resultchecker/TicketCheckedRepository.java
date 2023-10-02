@@ -1,13 +1,9 @@
 package pl.lotto.domain.resultchecker;
 
-import java.time.*;
-import java.util.*;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TicketCheckedRepository {
+@Repository
+public interface TicketCheckedRepository extends MongoRepository<TicketChecked, String> {
 
-    List<TicketChecked> findAllTicketCheckedByDate(LocalDateTime localDateTime);
-
-    List<TicketChecked> saveAll(List<TicketChecked> ticketCheckedDtoList);
-
-    TicketChecked findTicketById(String idTicket);
 }

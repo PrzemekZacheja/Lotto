@@ -1,7 +1,8 @@
 package pl.lotto.domain.resultannouncer;
 
-import pl.lotto.domain.resultannouncer.dto.*;
-import pl.lotto.domain.resultchecker.dto.*;
+import pl.lotto.domain.resultannouncer.dto.ResponseDto;
+import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
+import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
 
 public class ResultAnnouncerMapper {
     public static ResultAnnouncerResponse mapToResultAnnouncerResponse(TicketCheckedDto ticketCheckedDto) {
@@ -17,11 +18,13 @@ public class ResultAnnouncerMapper {
 
     public static ResultAnnouncerResponseDto mapToResultAnnouncerResponseDto(ResultAnnouncerResponse resultResponse) {
         return ResultAnnouncerResponseDto.builder()
-                                         .isWinner(resultResponse.isWinner())
-                                         .ticketId(resultResponse.ticketId())
-                                         .numbersFromUser(resultResponse.numbersFromUser())
-                                         .winnersNumbers(resultResponse.winnersNumbers())
-                                         .drawDate(resultResponse.drawDate())
+                                         .responseDto(ResponseDto.builder()
+                                                                 .isWinner(resultResponse.isWinner())
+                                                                 .ticketId(resultResponse.ticketId())
+                                                                 .numbersFromUser(resultResponse.numbersFromUser())
+                                                                 .winnersNumbers(resultResponse.winnersNumbers())
+                                                                 .drawDate(resultResponse.drawDate())
+                                                                 .build())
                                          .message(resultResponse.message())
                                          .build();
     }
