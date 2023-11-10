@@ -19,7 +19,7 @@ public class ResultCheckerFacade {
     private final ResultChecker resultChecker;
 
 
-    List<TicketCheckedDto> generateWinningTickets() {
+    List<TicketCheckedDto> generateResultsOfTickets() {
         LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
 
         return resultChecker.checkWinnerResults(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw),

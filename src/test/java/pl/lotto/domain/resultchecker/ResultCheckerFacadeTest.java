@@ -1,18 +1,20 @@
 package pl.lotto.domain.resultchecker;
 
-import org.junit.jupiter.api.*;
-import pl.lotto.domain.drawdategenerator.*;
-import pl.lotto.domain.numbersgenerator.*;
-import pl.lotto.domain.numbersgenerator.dto.*;
-import pl.lotto.domain.numbersreceiver.*;
-import pl.lotto.domain.numbersreceiver.dto.*;
-import pl.lotto.domain.resultchecker.dto.*;
+import org.junit.jupiter.api.Test;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
+import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
+import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ResultCheckerFacadeTest {
 
@@ -50,7 +52,7 @@ class ResultCheckerFacadeTest {
                        ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
-        List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateWinningTickets();
+        List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateResultsOfTickets();
         //then
         assertThat(ticketCheckedDtos).isEqualTo(
                 List.of(
@@ -89,7 +91,7 @@ class ResultCheckerFacadeTest {
                        ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
-        List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateWinningTickets();
+        List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateResultsOfTickets();
         //then
         assertThat(ticketCheckedDtos.get(0)
                                     .message()).isEqualTo("Ticket checked incorrectly");
@@ -112,7 +114,7 @@ class ResultCheckerFacadeTest {
                        ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
-        List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateWinningTickets();
+        List<TicketCheckedDto> ticketCheckedDtos = resultCheckerFacade.generateResultsOfTickets();
         //then
         assertThat(ticketCheckedDtos.get(0)
                                     .message()).isEqualTo("Ticket checked incorrectly");
@@ -134,7 +136,7 @@ class ResultCheckerFacadeTest {
                        ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
-        List<TicketCheckedDto> listFromDatabase = resultCheckerFacade.generateWinningTickets();
+        List<TicketCheckedDto> listFromDatabase = resultCheckerFacade.generateResultsOfTickets();
         List<TicketChecked> ticketCheckedList = ResultCheckerMapper.mapToTicketChecked(listFromDatabase);
         //then
         assertThat(ticketCheckedList).isEqualTo(List.of(
@@ -166,7 +168,7 @@ class ResultCheckerFacadeTest {
                        ));
         when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
         //when
-        List<TicketCheckedDto> listFromDatabase = resultCheckerFacade.generateWinningTickets();
+        List<TicketCheckedDto> listFromDatabase = resultCheckerFacade.generateResultsOfTickets();
         List<TicketChecked> ticketCheckedList = ResultCheckerMapper.mapToTicketChecked(listFromDatabase);
         //then
         assertThat(ticketCheckedList).isEqualTo(List.of(

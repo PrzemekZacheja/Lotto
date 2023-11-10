@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
+import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
@@ -27,6 +28,8 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     NumbersGeneratorFacade numbersGeneratorFacade;
+    @Autowired
+    AdjustableClock clock;
 
 
     @Test
@@ -43,9 +46,9 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         numbersGeneratorFacade.generateSixNumbers();
 
 
-//        step 2: system fetched winning numbers for draw date: 19.11.2022 10:00
+//        step 2: system fetched winning numbers for draw date: 19.11.2022 12:00
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2022, 11, 26, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2022, 11, 19, 12, 0, 0);
         //when & then
         await().atMost(Duration.ofSeconds(20))
                .pollInterval(Duration.ofSeconds(1))
@@ -78,10 +81,11 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         String contentAsString = mvcResult.getResponse()
                                           .getContentAsString();
         TicketDto ticketDto = objectMapper.readValue(contentAsString, TicketDto.class);
+        String ticketId = ticketDto.ticketId();
 
         assertAll(
                 () -> assertThat(ticketDto.drawDate()).isEqualTo(drawDate),
-                () -> assertThat(ticketDto.ticketId()).isNotNull(),
+                () -> assertThat(ticketId).isNotNull(),
                 () -> assertThat(ticketDto.message()).isEqualTo("Success")
         );
 
@@ -103,8 +107,26 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                         ));
 
 
-//        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
+//        step 5: 3 days and 115 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
+        //given & when & then
+        clock.plusDaysAndMinutes(3, 115);
+
+
 //        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
+        await().atMost(Duration.ofSeconds(20))
+               .pollInterval(Duration.ofSeconds(1))
+               .until(() -> {
+                          try {
+                              return !numbersGeneratorFacade.retrieveAllWinnerNumbersByTicketId(ticketId)
+                                                            .winningNumbers()
+                                                            .isEmpty();
+
+                          } catch (WinningNunmbersNotFoundExeption exception) {
+                              return false;
+                          }
+                      }
+
+
 //        step 7: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
 //        step 8: user made GET /results/sampleTicketId and system returned 200 (OK)
 
