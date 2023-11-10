@@ -19,7 +19,7 @@ public class ResultCheckerFacade {
     private final ResultChecker resultChecker;
 
 
-    List<TicketCheckedDto> generateResultsOfTickets() {
+    public List<TicketCheckedDto> generateResultsOfTickets() {
         LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
 
         return resultChecker.checkWinnerResults(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw),
@@ -27,6 +27,7 @@ public class ResultCheckerFacade {
     }
 
     public TicketCheckedDto retrieveTicketCheckedByIdTicket(String idTicket) {
+        generateResultsOfTickets();
         return repository.findById(idTicket)
                          .map(ResultCheckerMapper::mapToTicketCheckedDto)
                          .orElseThrow(() -> new ResultCheckerNotFoundException("Not found for id: " + idTicket));

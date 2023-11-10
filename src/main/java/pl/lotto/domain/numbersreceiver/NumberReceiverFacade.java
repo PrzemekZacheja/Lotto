@@ -1,11 +1,13 @@
 package pl.lotto.domain.numbersreceiver;
 
-import lombok.*;
-import pl.lotto.domain.drawdategenerator.*;
-import pl.lotto.domain.numbersreceiver.dto.*;
+import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
@@ -34,7 +36,7 @@ public class NumberReceiverFacade {
     }
 
     public List<TicketDto> usersNumbers(DrawDateFacade dateOfDraw) {
-        List<Ticket> allTicketsByDrawDate = repository.findAllTicketsByDrawDate(dateOfDraw.getDateOfNextDraw());
+        List<Ticket> allTicketsByDrawDate = repository.findByDrawDate(dateOfDraw.getDateOfNextDraw());
         return allTicketsByDrawDate.stream()
                                    .map(TicketMapper::mapFromTicket)
                                    .toList();
@@ -45,7 +47,7 @@ public class NumberReceiverFacade {
         if (drawDate.isAfter(nextDateOfDraw)) {
             return Collections.emptyList();
         }
-        return repository.findAllTicketsByDrawDate(drawDate)
+        return repository.findByDrawDate(drawDate)
                          .stream()
                          .map(TicketMapper::mapFromTicket)
                          .toList();

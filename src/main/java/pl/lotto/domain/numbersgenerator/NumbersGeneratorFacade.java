@@ -1,12 +1,12 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.*;
-import pl.lotto.domain.numbersgenerator.dto.*;
-import pl.lotto.domain.numbersreceiver.*;
+import lombok.AllArgsConstructor;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
+import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
-import java.time.*;
-import java.util.*;
-import java.util.stream.*;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class NumbersGeneratorFacade {
@@ -47,12 +47,18 @@ public class NumbersGeneratorFacade {
     }
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
-        WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findWinningNumberByDrawDate(localDateTime)
+        WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findByDrawDate(localDateTime)
                                                                           .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
                                                                                   "Not Found"));
         return WinnerNumbersDto.builder()
                                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
                                .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
                                .build();
+    }
+
+    public boolean areWinnerNumbersGenerated() {
+        WinnerNumbersDto winnerNumbersDto = retrieveAllWinnerNumbersByNextDrawDate(numberReceiverFacade.getDrawDate());
+        return !winnerNumbersDto.winningNumbers()
+                                .isEmpty();
     }
 }

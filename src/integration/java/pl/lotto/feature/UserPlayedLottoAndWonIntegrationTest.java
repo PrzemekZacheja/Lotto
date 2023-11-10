@@ -12,6 +12,9 @@ import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
+import pl.lotto.domain.resultchecker.ResultCheckerFacade;
+import pl.lotto.domain.resultchecker.ResultCheckerNotFoundException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -29,6 +32,8 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
     @Autowired
     NumbersGeneratorFacade numbersGeneratorFacade;
     @Autowired
+    ResultCheckerFacade resultCheckerFacade;
+    @Autowired
     AdjustableClock clock;
 
 
@@ -41,7 +46,8 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                            .withStatus(HttpStatus.OK.value())
                                                            .withHeader("Content-Type", "application/json")
                                                            .withBody(
-                                                                   "[43, 5, 80, 14, 62, 31, 99, 51, 22, 40, 4, 75, 71, 31, 30, 66, 64, 53, 78, 72, 68, 4, 62, 70, 84]")));
+                                                                   "[1, 2, 3, 4, 5, 6, 43, 5, 80, 14, 62, 31, 99, 51, 22, 40, " +
+                                                                           "4, 75, 71, 31, 30, 66, 64, 53, 78, 72, 68, 4, 62, 70, 84]")));
         //when
         numbersGeneratorFacade.generateSixNumbers();
 
@@ -111,24 +117,43 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         //given & when & then
         clock.plusDaysAndMinutes(3, 115);
 
-
 //        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
         await().atMost(Duration.ofSeconds(20))
-               .pollInterval(Duration.ofSeconds(1))
+               .pollInterval(Duration.ofSeconds(1L))
                .until(() -> {
-                          try {
-                              return !numbersGeneratorFacade.retrieveAllWinnerNumbersByTicketId(ticketId)
-                                                            .winningNumbers()
-                                                            .isEmpty();
-
-                          } catch (WinningNunmbersNotFoundExeption exception) {
-                              return false;
-                          }
-                      }
+                   try {
+                       return !resultCheckerFacade.retrieveTicketCheckedByIdTicket(ticketId)
+                                                  .winnersNumbers()
+                                                  .isEmpty();
+                   } catch (ResultCheckerNotFoundException exception) {
+                       return false;
+                   }
+               });
 
 
 //        step 7: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
+        //given & when & then
+        clock.plusDaysAndMinutes(0, 6);
+
+
 //        step 8: user made GET /results/sampleTicketId and system returned 200 (OK)
+        //given & when
+        ResultActions performGetResultWithExistingId = mockMvc.perform(get("/results/" + ticketId));
+        //then
+        String content = performGetResultWithExistingId.andExpect(status().isOk())
+                                                       .andReturn()
+                                                       .getResponse()
+                                                       .getContentAsString();
+        ResultAnnouncerResponseDto resultAnnouncerResponseDto = objectMapper.readValue(content, ResultAnnouncerResponseDto.class);
+        assertAll(
+                () -> assertThat(resultAnnouncerResponseDto.responseDto()
+                                                           .ticketId()).isEqualTo(ticketId),
+                () -> assertThat(resultAnnouncerResponseDto.responseDto()
+                                                           .drawDate()).isEqualTo(drawDate),
+                () -> assertThat(resultAnnouncerResponseDto.responseDto()
+                                                           .numbersFromUser()
+                                                           .size()).isEqualTo(6)
+        );
 
     }
 }
