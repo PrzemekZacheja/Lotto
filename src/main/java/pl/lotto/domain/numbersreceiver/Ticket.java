@@ -1,11 +1,14 @@
 package pl.lotto.domain.numbersreceiver;
 
-import lombok.*;
+import lombok.Builder;
+import org.springframework.data.annotation.Id;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Builder
-record Ticket(String ticketId, LocalDateTime drawDate, Set<Integer> numbers) {
+record Ticket(@Id String ticketId,
+              LocalDateTime drawDate,
+              Set<Integer> numbers) {
 
 }

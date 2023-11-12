@@ -12,13 +12,13 @@ public class ResultCheckerFacadeConfig {
     @Bean
     public ResultCheckerFacade resultCheckerFacade(NumbersGeneratorFacade numbersGeneratorFacade,
                                                    NumberReceiverFacade numberReceiverFacade, DrawDateFacade drawDateFacade,
-                                                   TicketCheckedRepository ticketCheckedRepository, ResultChecker resultChecker) {
-        return new ResultCheckerFacade(numbersGeneratorFacade, numberReceiverFacade, drawDateFacade, ticketCheckedRepository,
+                                                   ResultRepository resultRepository, ResultChecker resultChecker) {
+        return new ResultCheckerFacade(numbersGeneratorFacade, numberReceiverFacade, drawDateFacade, resultRepository,
                                        resultChecker);
     }
 
     @Bean
-    public ResultChecker resultChecker(TicketCheckedRepository ticketCheckedRepository) {
-        return new ResultChecker(ticketCheckedRepository);
+    public ResultChecker resultChecker(ResultRepository resultRepository) {
+        return new ResultChecker(resultRepository);
     }
 }

@@ -1,12 +1,12 @@
 package pl.lotto.domain.resultchecker.dto;
 
-import lombok.*;
+import lombok.Builder;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Builder
-public record TicketCheckedDto(
+public record ResultDto(
         String ticketId,
         LocalDateTime drawDate,
         Set<Integer> numbersFromUser,
