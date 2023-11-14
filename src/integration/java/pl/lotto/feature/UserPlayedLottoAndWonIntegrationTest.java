@@ -1,6 +1,7 @@
 package pl.lotto.feature;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
-import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
+import pl.lotto.domain.numbersgenerator.WinningNumbersFoundException;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Log4j2
 class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
@@ -64,7 +66,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                      .winningNumbers()
                                                      .isEmpty();
 
-                   } catch (WinningNunmbersNotFoundExeption exception) {
+                   } catch (WinningNumbersFoundException exception) {
                        return false;
                    }
                });
@@ -126,6 +128,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                   .winnersNumbers()
                                                   .isEmpty();
                    } catch (ResultCheckerNotFoundException exception) {
+                       log.error("Step 6 exception; " + exception);
                        return false;
                    }
                });

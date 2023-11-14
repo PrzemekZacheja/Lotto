@@ -56,8 +56,8 @@ class ResultChecker {
 
         List<ResultDto> resultDtos = generateResult(ticketDtoToCheck, winnerNumbersDto);
         List<Result> entities = ResultCheckerMapper.mapToResult(resultDtos);
-        repository.saveAll(entities);
-        log.info("Saved to repository : " + resultDtos.size() + " elements");
+        List<Result> resultList = repository.saveAll(entities);
+        log.info("Saved to ResultRepository : " + resultList.size() + " elements");
         return resultDtos;
     }
 }

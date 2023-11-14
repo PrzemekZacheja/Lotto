@@ -1,6 +1,7 @@
 package pl.lotto.domain.resultchecker;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
+@Log4j2
 public class ResultCheckerFacade {
 
     private final NumbersGeneratorFacade numbersGenerator;
@@ -30,7 +32,7 @@ public class ResultCheckerFacade {
     }
 
     public ResultDto retrieveTicketCheckedByIdTicket(String idTicket) {
-        return repository.findById(idTicket)
+        return repository.findByTicketId(idTicket)
                          .map(ResultCheckerMapper::mapToTicketCheckedDto)
                          .orElseThrow(() -> new ResultCheckerNotFoundException("Not found for id: " + idTicket));
     }

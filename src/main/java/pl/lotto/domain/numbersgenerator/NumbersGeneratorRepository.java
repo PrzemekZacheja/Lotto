@@ -9,6 +9,8 @@ import java.util.Optional;
 @Repository
 public interface NumbersGeneratorRepository extends MongoRepository<WinnerNumbers, String> {
 
+    boolean existsByDrawDate(LocalDateTime drawDate);
+
 
     Optional<WinnerNumbers> findByDrawDate(LocalDateTime localDateTime);
 }

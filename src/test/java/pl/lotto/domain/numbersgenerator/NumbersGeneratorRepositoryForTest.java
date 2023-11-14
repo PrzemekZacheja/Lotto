@@ -77,6 +77,11 @@ class NumbersGeneratorRepositoryForTest implements NumbersGeneratorRepository {
     }
 
     @Override
+    public boolean existsByDrawDate(LocalDateTime drawDate) {
+        return localDateTimeWinnerNumbersMap.containsKey(drawDate);
+    }
+
+    @Override
     public Optional<WinnerNumbers> findByDrawDate(LocalDateTime localDateTime) {
         return Optional.ofNullable(localDateTimeWinnerNumbersMap.get(localDateTime));
     }

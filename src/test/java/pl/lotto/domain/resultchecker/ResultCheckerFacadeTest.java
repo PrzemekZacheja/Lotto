@@ -50,7 +50,7 @@ class ResultCheckerFacadeTest {
                                  .ticketId("002")
                                  .build()
                        ));
-        when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
+        when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> resultDtos = resultCheckerFacade.generateResultsOfTickets();
         //then
@@ -89,7 +89,7 @@ class ResultCheckerFacadeTest {
                                  .ticketId("001")
                                  .build()
                        ));
-        when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
+        when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> resultDtos = resultCheckerFacade.generateResultsOfTickets();
         //then
@@ -112,7 +112,7 @@ class ResultCheckerFacadeTest {
                                  .build()
 
                        ));
-        when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
+        when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> resultDtos = resultCheckerFacade.generateResultsOfTickets();
         //then
@@ -134,7 +134,7 @@ class ResultCheckerFacadeTest {
                                  .ticketId("001")
                                  .build()
                        ));
-        when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
+        when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> listFromDatabase = resultCheckerFacade.generateResultsOfTickets();
         List<Result> resultList = ResultCheckerMapper.mapToResult(listFromDatabase);
@@ -166,7 +166,7 @@ class ResultCheckerFacadeTest {
                                  .build()
 
                        ));
-        when(drawDateFacade.getDateOfNextDraw()).thenReturn(localDateTime);
+        when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> listFromDatabase = resultCheckerFacade.generateResultsOfTickets();
         List<Result> resultList = ResultCheckerMapper.mapToResult(listFromDatabase);

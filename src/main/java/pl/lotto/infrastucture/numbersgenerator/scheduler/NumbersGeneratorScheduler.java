@@ -1,11 +1,11 @@
 package pl.lotto.infrastucture.numbersgenerator.scheduler;
 
-import lombok.*;
-import lombok.extern.log4j.*;
-import org.springframework.scheduling.annotation.*;
-import org.springframework.stereotype.*;
-import pl.lotto.domain.numbersgenerator.*;
-import pl.lotto.domain.numbersgenerator.dto.*;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 
 @Component
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class NumbersGeneratorScheduler {
 
     @Scheduled(cron = "${lotto.numbergenerator.lotteryRunOccurrence}")
     public void scheduleGenerateSixNumbers() {
-        log.info("Scheduling");
+        log.info("Scheduling scheduleGenerateSixNumbers()");
         WinnerNumbersDto winnerNumbersDto = numbersGeneratorFacade.generateSixNumbers();
         log.info(winnerNumbersDto.winningNumbers());
         log.info(winnerNumbersDto.timeOfWinDrawNumbers());

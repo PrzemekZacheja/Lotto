@@ -1,16 +1,17 @@
 package pl.lotto.domain.numbersgenerator;
 
-import org.junit.jupiter.api.*;
-import pl.lotto.domain.numbersgenerator.dto.*;
-import pl.lotto.domain.numbersreceiver.*;
+import org.junit.jupiter.api.Test;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
+import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
-import java.security.*;
-import java.time.*;
-import java.util.*;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class NumbersGeneratorFacadeTest {
 
@@ -51,7 +52,7 @@ class NumbersGeneratorFacadeTest {
     }
 
     @Test
-    void should_generate_six_random_numbers() {
+    void should_generate_one_set_six_random_numbers_by_givn_date() {
         //given
         final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
@@ -86,8 +87,8 @@ class NumbersGeneratorFacadeTest {
         //when
         WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
         //then
-        assertThrows(WinningNunmbersNotFoundExeption.class,
-                () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
+        assertThrows(WinningNumbersFoundException.class,
+                     () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
     }
 
     @Test

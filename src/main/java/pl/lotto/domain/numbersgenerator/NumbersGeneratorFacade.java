@@ -5,6 +5,7 @@ import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,10 +27,19 @@ public class NumbersGeneratorFacade {
                                                                .winningNumbers(winningRandomNumbers)
                                                                .drawDate(drawDate)
                                                                .build();
+            return getWinnerNumbersDto(drawDate, winnerNumbersDocument);
+        } else {
+            return generateSixNumbers();
+        }
+    }
+
+    private WinnerNumbersDto getWinnerNumbersDto(LocalDateTime drawDate, WinnerNumbers winnerNumbersDocument) {
+        if (!numbersGeneratorRepository.existsByDrawDate(drawDate)) {
             WinnerNumbers saved = numbersGeneratorRepository.save(winnerNumbersDocument);
             return WinnerNumbersMapper.mapFromWinnerNumbers(saved);
         } else {
-            return generateSixNumbers();
+            Optional<WinnerNumbers> byDrawDate = numbersGeneratorRepository.findByDrawDate(drawDate);
+            return WinnerNumbersMapper.mapFromWinnerNumbers(byDrawDate.get());
         }
     }
 
@@ -48,7 +58,7 @@ public class NumbersGeneratorFacade {
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
         WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findByDrawDate(localDateTime)
-                                                                          .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
+                                                                          .orElseThrow(() -> new WinningNumbersFoundException(
                                                                                   "Not Found"));
         return WinnerNumbersDto.builder()
                                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())

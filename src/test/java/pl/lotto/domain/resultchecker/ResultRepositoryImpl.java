@@ -19,12 +19,16 @@ public class ResultRepositoryImpl implements ResultRepository {
 
     @Override
     public <S extends Result> S save(S entity) {
-        return null;
+        Result result = inMemoryDatabase.put(entity.ticketId(), entity);
+        return entity;
     }
 
     @Override
     public <S extends Result> List<S> saveAll(Iterable<S> entities) {
-        return null;
+        for (Result result : entities) {
+            save(result);
+        }
+        return (List<S>) entities;
     }
 
     @Override
@@ -131,5 +135,10 @@ public class ResultRepositoryImpl implements ResultRepository {
     public <S extends Result, R> R findBy(Example<S> example,
                                                  Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public Optional<Result> findByTicketId(String idTicket) {
+        return Optional.ofNullable(inMemoryDatabase.get(idTicket));
     }
 }
