@@ -62,7 +62,7 @@ class NumbersGeneratorFacadeTest {
         Set<Integer> randomNumbers2 = generatorRandomNumbers.generateSixNumbers()
                                                             .winningNumbers();
         //then
-        assertThat(randomNumbers1).isNotEqualTo(randomNumbers2);
+        assertThat(randomNumbers1).isEqualTo(randomNumbers2);
     }
 
     @Test

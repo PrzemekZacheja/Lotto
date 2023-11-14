@@ -19,6 +19,7 @@ import pl.lotto.domain.resultchecker.ResultCheckerNotFoundException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -115,12 +116,12 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                         ));
 
 
-//        step 5: 3 days and 115 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
+//        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
         //given & when & then
-        clock.plusDaysAndMinutes(3, 115);
+        clock.plusDaysAndMinutes(3, 55);
 
 //        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
-        await().atMost(Duration.ofSeconds(20))
+        await().atMost(20, TimeUnit.SECONDS)
                .pollInterval(Duration.ofSeconds(1L))
                .until(() -> {
                    try {
