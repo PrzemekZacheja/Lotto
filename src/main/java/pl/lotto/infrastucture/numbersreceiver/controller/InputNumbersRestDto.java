@@ -1,7 +1,12 @@
 package pl.lotto.infrastucture.numbersreceiver.controller;
 
-import java.util.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-public record InputNumbersRestDto(List<Integer> inputNumbers) {
+public record InputNumbersRestDto(
+        @NotNull(message = "{inputNumbers.notNull}")
+        @NotEmpty(message = "{inputNumbers.notEmpty}")
+        List<Integer> inputNumbers) {
 
 }
