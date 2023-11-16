@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
-import pl.lotto.domain.numbersgenerator.WinningNumbersFoundException;
+import pl.lotto.domain.numbersgenerator.WinningNumbersNotFoundException;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
@@ -67,7 +67,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                      .winningNumbers()
                                                      .isEmpty();
 
-                   } catch (WinningNumbersFoundException exception) {
+                   } catch (WinningNumbersNotFoundException exception) {
                        return false;
                    }
                });

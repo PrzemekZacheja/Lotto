@@ -39,14 +39,14 @@ public class NumberReceiverFacade {
     }
 
     public List<TicketDto> usersNumbers(DrawDateFacade dateOfDraw) {
-        List<Ticket> allTicketsByDrawDate = repository.findByDrawDate(dateOfDraw.getDateOfNextDraw());
+        List<Ticket> allTicketsByDrawDate = repository.findByDrawDate(dateOfDraw.generateDateOfNextDraw());
         return allTicketsByDrawDate.stream()
                                    .map(TicketMapper::mapFromTicket)
                                    .toList();
     }
 
     public List<TicketDto> retrieveAllTicketsByNextDrawDate(LocalDateTime drawDate) {
-        LocalDateTime nextDateOfDraw = drawDateFacade.getDateOfNextDraw();
+        LocalDateTime nextDateOfDraw = drawDateFacade.generateDateOfNextDraw();
         if (drawDate.isAfter(nextDateOfDraw)) {
             return Collections.emptyList();
         }
@@ -57,6 +57,6 @@ public class NumberReceiverFacade {
     }
 
     public LocalDateTime getDrawDate() {
-        return drawDateFacade.getDateOfNextDraw();
+        return drawDateFacade.generateDateOfNextDraw();
     }
 }

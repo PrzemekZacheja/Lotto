@@ -1,8 +1,8 @@
 package pl.lotto.domain.numbersgenerator;
 
 import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
-import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class NumbersGeneratorFacade {
 
-    private final NumberReceiverFacade numberReceiverFacade;
     private final WinningNumberGenerable winningNumberGenerator;
     private final NumbersGeneratorRepository numbersGeneratorRepository;
     private final NumbersGeneratorFacadeConfigurationProperties configuration;
+    private final DrawDateFacade drawDateFacade;
 
     public WinnerNumbersDto generateSixNumbers() {
-        LocalDateTime drawDate = numberReceiverFacade.getDrawDate();
+        LocalDateTime drawDate = drawDateFacade.generateDateOfNextDraw();
         Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers(configuration.lowerBand(),
                 configuration.upperBand(),
                 configuration.count());
@@ -39,7 +39,8 @@ public class NumbersGeneratorFacade {
             return WinnerNumbersMapper.mapFromWinnerNumbers(saved);
         } else {
             Optional<WinnerNumbers> byDrawDate = numbersGeneratorRepository.findByDrawDate(drawDate);
-            return WinnerNumbersMapper.mapFromWinnerNumbers(byDrawDate.get());
+            WinnerNumbers winnerNumbers = byDrawDate.get();
+            return WinnerNumbersMapper.mapFromWinnerNumbers(winnerNumbers);
         }
     }
 
@@ -58,17 +59,11 @@ public class NumbersGeneratorFacade {
 
     public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
         WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findByDrawDate(localDateTime)
-                                                                          .orElseThrow(() -> new WinningNumbersFoundException(
+                                                                          .orElseThrow(() -> new WinningNumbersNotFoundException(
                                                                                   "Not Found"));
         return WinnerNumbersDto.builder()
                                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())
                                .timeOfWinDrawNumbers(winnerNumbersByDrawDate.drawDate())
                                .build();
-    }
-
-    public boolean areWinnerNumbersGenerated() {
-        WinnerNumbersDto winnerNumbersDto = retrieveAllWinnerNumbersByNextDrawDate(numberReceiverFacade.getDrawDate());
-        return !winnerNumbersDto.winningNumbers()
-                                .isEmpty();
     }
 }

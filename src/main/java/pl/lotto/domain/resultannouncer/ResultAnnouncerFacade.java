@@ -13,8 +13,9 @@ public class ResultAnnouncerFacade {
 
     public ResultAnnouncerResponseDto generateResponseByIdTicket(String idTicket) {
         if (repository.existsById(idTicket)) {
-            return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(repository.findById(idTicket)
-                                                                                   .get());
+            ResultAnnouncerResponse resultResponse = repository.findById(idTicket)
+                                                               .get();
+            return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(resultResponse);
         }
 
         ResultDto resultDto = resultCheckerFacade.retrieveTicketCheckedByIdTicket(idTicket);

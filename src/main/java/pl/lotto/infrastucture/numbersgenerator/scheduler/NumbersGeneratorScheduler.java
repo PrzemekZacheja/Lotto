@@ -18,6 +18,7 @@ public class NumbersGeneratorScheduler {
     public void scheduleGenerateSixNumbers() {
         log.info("Scheduling scheduleGenerateSixNumbers()");
         WinnerNumbersDto winnerNumbersDto = numbersGeneratorFacade.generateSixNumbers();
+        log.info("Generating six random numbers, on time: " + winnerNumbersDto.timeOfWinDrawNumbers());
         log.info(winnerNumbersDto.winningNumbers());
         log.info(winnerNumbersDto.timeOfWinDrawNumbers());
     }

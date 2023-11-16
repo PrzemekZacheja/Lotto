@@ -1,11 +1,15 @@
 package pl.lotto.domain.numbersgenerator;
 
 import org.junit.jupiter.api.Test;
+import pl.lotto.domain.AdjustableClock;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.drawdategenerator.DrawDateGeneratorForTest;
 import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,25 +28,27 @@ class NumbersGeneratorFacadeTest {
                                                                                                                                   1)
                                                                                                                           .count(25)
                                                                                                                           .build();
+    final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
+    final AdjustableClock clock = new AdjustableClock(drawDate.toInstant(ZoneOffset.UTC), ZoneOffset.UTC);
 
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
-            mockNumberReceiverFacade,
             new WinningNumberGeneratorForTest(),
             new NumbersGeneratorRepositoryForTest(),
-            properties
+            properties,
+            new DrawDateFacade(new DrawDateGeneratorForTest(clock))
     );
 
     NumbersGeneratorFacade generatorRandomNumbers = new NumbersGeneratorFacade(
-            mockNumberReceiverFacade,
             new WinningNumberGenerator(new SecureRandom()),
             new NumbersGeneratorRepositoryForTest(),
-            properties
-    );
+            properties,
+            new DrawDateFacade(new DrawDateGeneratorForTest(clock)
+            ));
 
     @Test
     void should_generate_six_numbers() {
         //given
-        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
+
         //when
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         WinnerNumbersDto winnerNumbersDto = generatorRandomNumbers.generateSixNumbers();
@@ -87,7 +93,7 @@ class NumbersGeneratorFacadeTest {
         //when
         WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
         //then
-        assertThrows(WinningNumbersFoundException.class,
+        assertThrows(WinningNumbersNotFoundException.class,
                      () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
     }
 

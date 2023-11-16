@@ -24,7 +24,7 @@ public class ResultCheckerFacade {
 
 
     public List<ResultDto> generateResultsOfTickets() {
-        LocalDateTime dateOfNextDraw = drawDateFacade.getGeneratedDateOfDraw();
+        LocalDateTime dateOfNextDraw = drawDateFacade.generateDateOfNextDraw();
         log.info(dateOfNextDraw + " date of Next Draw");
         List<TicketDto> ticketDtoToCheck = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(dateOfNextDraw);
         WinnerNumbersDto winnerNumbersDto = numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(dateOfNextDraw);

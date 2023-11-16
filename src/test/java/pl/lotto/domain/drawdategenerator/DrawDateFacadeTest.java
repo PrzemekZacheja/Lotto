@@ -1,10 +1,13 @@
 package pl.lotto.domain.drawdategenerator;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
-import java.time.*;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DrawDateFacadeTest {
 
@@ -21,7 +24,7 @@ class DrawDateFacadeTest {
 
         LocalDateTime expected = LocalDateTime.of(2023, 4, 8, 12, 0, 0);
         //when
-        LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
+        LocalDateTime dateOfNextDraw = drawDateFacade.generateDateOfNextDraw();
         //then
         assertThat(expected).isEqualTo(dateOfNextDraw);
     }
@@ -36,7 +39,7 @@ class DrawDateFacadeTest {
 
         LocalDateTime expected = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
-        LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
+        LocalDateTime dateOfNextDraw = drawDateFacade.generateDateOfNextDraw();
         //then
         assertThat(expected).isEqualTo(dateOfNextDraw);
     }
@@ -49,7 +52,7 @@ class DrawDateFacadeTest {
                 ZoneId.of("Europe/London"));
         LocalDateTime expected = LocalDateTime.of(2023, 4, 8, 12, 0, 0);
         //when
-        LocalDateTime dateOfNextDraw = drawDateFacade.getDateOfNextDraw();
+        LocalDateTime dateOfNextDraw = drawDateFacade.generateDateOfNextDraw();
         //then
         assertThat(expected).isEqualTo(dateOfNextDraw);
     }
