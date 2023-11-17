@@ -27,7 +27,7 @@ class ResultCheckerFacadeTest {
             numberReceiverFacade,
             drawDateFacade,
             ticketCheckedRepositoryForTesting,
-            new ResultChecker(ticketCheckedRepositoryForTesting)
+            new ResultChecker(ticketCheckedRepositoryForTesting, numbersGenerator)
     );
 
 
@@ -35,9 +35,9 @@ class ResultCheckerFacadeTest {
     void should_generate_all_players_with_correct_message() {
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
-        when(numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime))
+        when(numbersGenerator.retrieveAllWinnerNumbersByDrawDate(localDateTime))
                 .thenReturn(new WinnerNumbersDto(localDateTime, Set.of(1, 2, 3, 4, 5, 6)));
-        when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
+        when(numberReceiverFacade.retrieveAllTicketsDtoByDrawDate()).thenReturn(
                 List.of(
                         TicketDto.builder()
                                  .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
@@ -79,9 +79,9 @@ class ResultCheckerFacadeTest {
     void should_generate_fail_message_when_winningNumbers_equal_null() {
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
-        when(numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime))
+        when(numbersGenerator.retrieveAllWinnerNumbersByDrawDate(localDateTime))
                 .thenReturn(null);
-        when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
+        when(numberReceiverFacade.retrieveAllTicketsDtoByDrawDate()).thenReturn(
                 List.of(
                         TicketDto.builder()
                                  .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
@@ -101,9 +101,9 @@ class ResultCheckerFacadeTest {
     void should_generate_fail_message_when_winningNumbers_is_empty() {
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
-        when(numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime))
+        when(numbersGenerator.retrieveAllWinnerNumbersByDrawDate(localDateTime))
                 .thenReturn(null);
-        when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
+        when(numberReceiverFacade.retrieveAllTicketsDtoByDrawDate()).thenReturn(
                 List.of(
                         TicketDto.builder()
                                  .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
@@ -124,9 +124,9 @@ class ResultCheckerFacadeTest {
     void should_save_correct_objects_to_database() {
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
-        when(numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime))
+        when(numbersGenerator.retrieveAllWinnerNumbersByDrawDate(localDateTime))
                 .thenReturn(new WinnerNumbersDto(localDateTime, Set.of(1, 2, 3, 4, 5, 6)));
-        when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
+        when(numberReceiverFacade.retrieveAllTicketsDtoByDrawDate()).thenReturn(
                 List.of(
                         TicketDto.builder()
                                  .userNumbers(Set.of(1, 2, 3, 9, 8, 7))
@@ -155,9 +155,9 @@ class ResultCheckerFacadeTest {
     void should_return_correct_objects_from_database() {
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
-        when(numbersGenerator.retrieveAllWinnerNumbersByNextDrawDate(localDateTime))
+        when(numbersGenerator.retrieveAllWinnerNumbersByDrawDate(localDateTime))
                 .thenReturn(new WinnerNumbersDto(localDateTime, Set.of(1, 2, 3, 4, 5, 6)));
-        when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate(localDateTime)).thenReturn(
+        when(numberReceiverFacade.retrieveAllTicketsDtoByDrawDate()).thenReturn(
                 List.of(
                         TicketDto.builder()
                                  .userNumbers(Set.of(1, 2, 3, 9, 8, 7))

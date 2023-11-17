@@ -57,7 +57,7 @@ public class NumbersGeneratorFacade {
                       .collect(Collectors.toSet());
     }
 
-    public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
+    public WinnerNumbersDto retrieveAllWinnerNumbersByDrawDate(LocalDateTime localDateTime) {
         WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findByDrawDate(localDateTime)
                                                                           .orElseThrow(() -> new WinningNumbersNotFoundException(
                                                                                   "Not Found"));

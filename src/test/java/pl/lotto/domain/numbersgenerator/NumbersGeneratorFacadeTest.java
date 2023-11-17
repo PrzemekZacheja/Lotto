@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 class NumbersGeneratorFacadeTest {
 
     private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
-    private final WinningNumberGeneratorForTest mockWinningNumberGeneratorForTest = mock(WinningNumberGeneratorForTest.class);
     private final NumbersGeneratorFacadeConfigurationProperties properties = NumbersGeneratorFacadeConfigurationProperties.builder()
                                                                                                                           .upperBand(
                                                                                                                                   99)
@@ -78,7 +77,7 @@ class NumbersGeneratorFacadeTest {
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         //when
         WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
-        WinnerNumbersDto winnerNumbersDtoFromRepository = generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(
+        WinnerNumbersDto winnerNumbersDtoFromRepository = generatorMockedNumbers.retrieveAllWinnerNumbersByDrawDate(
                 drawDate);
         //then
         assertThat(winnerNumbersDtoFromRepository).isEqualTo(winnerNumbersDto);
@@ -91,10 +90,10 @@ class NumbersGeneratorFacadeTest {
         final LocalDateTime failDrawDate = LocalDateTime.of(2021, 4, 1, 12, 0, 0);
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         //when
-        WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
+        generatorMockedNumbers.generateSixNumbers();
         //then
         assertThrows(WinningNumbersNotFoundException.class,
-                     () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
+                     () -> generatorMockedNumbers.retrieveAllWinnerNumbersByDrawDate(failDrawDate));
     }
 
     @Test

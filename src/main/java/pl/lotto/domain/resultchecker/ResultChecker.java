@@ -2,10 +2,12 @@ package pl.lotto.domain.resultchecker;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.ResultDto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +17,23 @@ class ResultChecker {
 
     public static final int HITS_TO_WIN = 3;
     private final ResultRepository repository;
+    private final NumbersGeneratorFacade numbersGeneratorFacade;
 
-    private static List<ResultDto> generateResult(List<TicketDto> ticketDtoToCheck, WinnerNumbersDto winnerNumbersDto) {
+    private List<ResultDto> generateResult(List<TicketDto> ticketDtoToCheck) {
         List<ResultDto> listToReturn = new ArrayList<>();
         for (TicketDto singleTicketDtoToCheck : ticketDtoToCheck) {
+            LocalDateTime drawDateFromTicket = singleTicketDtoToCheck.drawDate();
+            WinnerNumbersDto winnerNumbersDto = numbersGeneratorFacade.retrieveAllWinnerNumbersByDrawDate(drawDateFromTicket);
+            if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers()
+                                                            .isEmpty()) {
+                return List.of(ResultDto.builder()
+                                        .ticketId(singleTicketDtoToCheck.ticketId())
+                                        .drawDate(singleTicketDtoToCheck.drawDate())
+                                        .numbersFromUser(singleTicketDtoToCheck.userNumbers())
+                                        .message("Ticket checked incorrectly")
+                                        .isWinner(false)
+                                        .build());
+            }
             int result = intersectionOfTwoLists(winnerNumbersDto, singleTicketDtoToCheck);
             boolean isWinner = isWinner(result);
 
@@ -45,16 +60,14 @@ class ResultChecker {
         return result >= HITS_TO_WIN;
     }
 
-    List<ResultDto> checkWinnerResults(List<TicketDto> ticketDtoToCheck, WinnerNumbersDto winnerNumbersDto) {
-        if (winnerNumbersDto == null || winnerNumbersDto.winningNumbers()
-                                                        .isEmpty()) {
+    List<ResultDto> saveCheckedTicketsToResults(List<TicketDto> ticketDtoToCheck) {
+        if (ticketDtoToCheck == null || ticketDtoToCheck.isEmpty()) {
             return List.of(ResultDto.builder()
                                     .message("Ticket checked incorrectly")
                                     .isWinner(false)
                                     .build());
         }
-
-        List<ResultDto> resultDtos = generateResult(ticketDtoToCheck, winnerNumbersDto);
+        List<ResultDto> resultDtos = generateResult(ticketDtoToCheck);
         List<Result> entities = ResultCheckerMapper.mapToResult(resultDtos);
         List<Result> resultList = repository.saveAll(entities);
         log.info("Saved to ResultRepository : " + resultList.size() + " elements");

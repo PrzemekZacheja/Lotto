@@ -63,7 +63,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                .pollInterval(Duration.ofSeconds(1))
                .until(() -> {
                    try {
-                       return !numbersGeneratorFacade.retrieveAllWinnerNumbersByNextDrawDate(drawDate)
+                       return !numbersGeneratorFacade.retrieveAllWinnerNumbersByDrawDate(drawDate)
                                                      .winningNumbers()
                                                      .isEmpty();
 

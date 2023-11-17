@@ -10,15 +10,14 @@ import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 public class ResultCheckerFacadeConfig {
 
     @Bean
-    public ResultCheckerFacade resultCheckerFacade(NumbersGeneratorFacade numbersGeneratorFacade,
-                                                   NumberReceiverFacade numberReceiverFacade, DrawDateFacade drawDateFacade,
+    public ResultCheckerFacade resultCheckerFacade(NumberReceiverFacade numberReceiverFacade, DrawDateFacade drawDateFacade,
                                                    ResultRepository resultRepository, ResultChecker resultChecker) {
-        return new ResultCheckerFacade(numbersGeneratorFacade, numberReceiverFacade, drawDateFacade, resultRepository,
+        return new ResultCheckerFacade(numberReceiverFacade, drawDateFacade, resultRepository,
                                        resultChecker);
     }
 
     @Bean
-    public ResultChecker resultChecker(ResultRepository resultRepository) {
-        return new ResultChecker(resultRepository);
+    public ResultChecker resultChecker(ResultRepository resultRepository, NumbersGeneratorFacade numbersGeneratorFacade) {
+        return new ResultChecker(resultRepository, numbersGeneratorFacade);
     }
 }
