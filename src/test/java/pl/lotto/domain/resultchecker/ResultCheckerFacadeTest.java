@@ -23,7 +23,6 @@ class ResultCheckerFacadeTest {
     DrawDateFacade drawDateFacade = mock(DrawDateFacade.class);
     ResultRepositoryImpl ticketCheckedRepositoryForTesting = new ResultRepositoryImpl();
     ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(
-            numbersGenerator,
             numberReceiverFacade,
             drawDateFacade,
             ticketCheckedRepositoryForTesting,
@@ -49,7 +48,7 @@ class ResultCheckerFacadeTest {
                                  .drawDate(localDateTime)
                                  .ticketId("002")
                                  .build()
-                       ));
+                ));
         when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> resultDtos = resultCheckerFacade.generateResultsOfTickets();
@@ -72,7 +71,7 @@ class ResultCheckerFacadeTest {
                                  .isWinner(false)
                                  .message("Ticket checked correctly")
                                  .build()
-                       ));
+                ));
     }
 
     @Test
@@ -88,7 +87,7 @@ class ResultCheckerFacadeTest {
                                  .drawDate(localDateTime)
                                  .ticketId("001")
                                  .build()
-                       ));
+                ));
         when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> resultDtos = resultCheckerFacade.generateResultsOfTickets();
@@ -111,7 +110,7 @@ class ResultCheckerFacadeTest {
                                  .ticketId("001")
                                  .build()
 
-                       ));
+                ));
         when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> resultDtos = resultCheckerFacade.generateResultsOfTickets();
@@ -133,7 +132,7 @@ class ResultCheckerFacadeTest {
                                  .drawDate(localDateTime)
                                  .ticketId("001")
                                  .build()
-                       ));
+                ));
         when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> listFromDatabase = resultCheckerFacade.generateResultsOfTickets();
@@ -141,14 +140,14 @@ class ResultCheckerFacadeTest {
         //then
         assertThat(resultList).isEqualTo(List.of(
                 Result.builder()
-                             .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                             .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                             .drawDate(localDateTime)
-                             .ticketId("001")
-                             .isWinner(true)
-                             .message("Ticket checked correctly")
-                             .build()
-                                                       ));
+                      .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                      .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                      .drawDate(localDateTime)
+                      .ticketId("001")
+                      .isWinner(true)
+                      .message("Ticket checked correctly")
+                      .build()
+        ));
     }
 
     @Test
@@ -165,7 +164,7 @@ class ResultCheckerFacadeTest {
                                  .ticketId("001")
                                  .build()
 
-                       ));
+                ));
         when(drawDateFacade.generateDateOfNextDraw()).thenReturn(localDateTime);
         //when
         List<ResultDto> listFromDatabase = resultCheckerFacade.generateResultsOfTickets();
@@ -173,13 +172,13 @@ class ResultCheckerFacadeTest {
         //then
         assertThat(resultList).isEqualTo(List.of(
                 Result.builder()
-                             .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
-                             .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
-                             .drawDate(localDateTime)
-                             .ticketId("001")
-                             .isWinner(true)
-                             .message("Ticket checked correctly")
-                             .build()
-                                                       ));
+                      .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                      .numbersFromUser(Set.of(1, 2, 3, 9, 8, 7))
+                      .drawDate(localDateTime)
+                      .ticketId("001")
+                      .isWinner(true)
+                      .message("Ticket checked correctly")
+                      .build()
+        ));
     }
 }
