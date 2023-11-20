@@ -31,7 +31,7 @@ class ResultCheckerFacadeTest {
 
 
     @Test
-    void should_generate_all_players_with_correct_message() {
+    void should_generate_all_tickets_with_correct_message() {
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2023, 3, 31, 12, 0, 0);
         when(numbersGenerator.retrieveAllWinnerNumbersByDrawDate(localDateTime))
