@@ -11,6 +11,7 @@ import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class InputNumbersRestController {
     private final NumbersGeneratorFacade numbersGeneratorFacade;
 
     @PostMapping("/inputNumbers")
-    public ResponseEntity<TicketDto> inputNumbers(@RequestBody InputNumbersRestDto requestDto) {
+    public ResponseEntity<TicketDto> inputNumbers(@RequestBody @Valid InputNumbersRestDto requestDto) {
         Set<Integer> inputNumbers = new HashSet<>(requestDto.inputNumbers());
         TicketDto ticketDto = numberReceiverFacade.inputNumbers(inputNumbers);
         return ResponseEntity.ok(ticketDto);

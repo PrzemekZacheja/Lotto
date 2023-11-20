@@ -1,11 +1,15 @@
 package pl.lotto.domain.numbersreceiver;
 
-import lombok.*;
+import lombok.Builder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Builder
-record Ticket(String ticketId, LocalDateTime drawDate, Set<Integer> numbers) {
+@Document
+record Ticket(String ticketId,
+              LocalDateTime drawDate,
+              Set<Integer> numbers) {
 
 }

@@ -1,23 +1,24 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.*;
-import pl.lotto.domain.numbersgenerator.dto.*;
-import pl.lotto.domain.numbersreceiver.*;
+import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 
-import java.time.*;
-import java.util.*;
-import java.util.stream.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class NumbersGeneratorFacade {
 
-    private final NumberReceiverFacade numberReceiverFacade;
     private final WinningNumberGenerable winningNumberGenerator;
     private final NumbersGeneratorRepository numbersGeneratorRepository;
     private final NumbersGeneratorFacadeConfigurationProperties configuration;
+    private final DrawDateFacade drawDateFacade;
 
     public WinnerNumbersDto generateSixNumbers() {
-        LocalDateTime drawDate = numberReceiverFacade.getDrawDate();
+        LocalDateTime drawDate = drawDateFacade.generateDateOfNextDraw();
         Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers(configuration.lowerBand(),
                 configuration.upperBand(),
                 configuration.count());
@@ -26,10 +27,20 @@ public class NumbersGeneratorFacade {
                                                                .winningNumbers(winningRandomNumbers)
                                                                .drawDate(drawDate)
                                                                .build();
+            return getWinnerNumbersDto(drawDate, winnerNumbersDocument);
+        } else {
+            return generateSixNumbers();
+        }
+    }
+
+    private WinnerNumbersDto getWinnerNumbersDto(LocalDateTime drawDate, WinnerNumbers winnerNumbersDocument) {
+        if (!numbersGeneratorRepository.existsByDrawDate(drawDate)) {
             WinnerNumbers saved = numbersGeneratorRepository.save(winnerNumbersDocument);
             return WinnerNumbersMapper.mapFromWinnerNumbers(saved);
         } else {
-            return generateSixNumbers();
+            Optional<WinnerNumbers> byDrawDate = numbersGeneratorRepository.findByDrawDate(drawDate);
+            WinnerNumbers winnerNumbers = byDrawDate.get();
+            return WinnerNumbersMapper.mapFromWinnerNumbers(winnerNumbers);
         }
     }
 
@@ -46,9 +57,9 @@ public class NumbersGeneratorFacade {
                       .collect(Collectors.toSet());
     }
 
-    public WinnerNumbersDto retrieveAllWinnerNumbersByNextDrawDate(LocalDateTime localDateTime) {
-        WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findWinningNumberByDrawDate(localDateTime)
-                                                                          .orElseThrow(() -> new WinningNunmbersNotFoundExeption(
+    public WinnerNumbersDto retrieveAllWinnerNumbersByDrawDate(LocalDateTime localDateTime) {
+        WinnerNumbers winnerNumbersByDrawDate = numbersGeneratorRepository.findByDrawDate(localDateTime)
+                                                                          .orElseThrow(() -> new WinningNumbersNotFoundException(
                                                                                   "Not Found"));
         return WinnerNumbersDto.builder()
                                .winningNumbers(winnerNumbersByDrawDate.winningNumbers())

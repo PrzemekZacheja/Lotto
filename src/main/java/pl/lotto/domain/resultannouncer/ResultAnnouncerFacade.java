@@ -3,7 +3,7 @@ package pl.lotto.domain.resultannouncer;
 import lombok.AllArgsConstructor;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
-import pl.lotto.domain.resultchecker.dto.TicketCheckedDto;
+import pl.lotto.domain.resultchecker.dto.ResultDto;
 
 @AllArgsConstructor
 public class ResultAnnouncerFacade {
@@ -12,9 +12,15 @@ public class ResultAnnouncerFacade {
     ResultAnnouncerResponseRepository repository;
 
     public ResultAnnouncerResponseDto generateResponseByIdTicket(String idTicket) {
-        TicketCheckedDto ticketCheckedDto = resultCheckerFacade.retrieveTicketCheckedByIdTicket(idTicket);
-        if (ticketCheckedDto != null) {
-            ResultAnnouncerResponse resultResponse = ResultAnnouncerMapper.mapToResultAnnouncerResponse(ticketCheckedDto);
+        if (repository.existsById(idTicket)) {
+            ResultAnnouncerResponse resultResponse = repository.findById(idTicket)
+                                                               .get();
+            return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(resultResponse);
+        }
+
+        ResultDto resultDto = resultCheckerFacade.retrieveTicketCheckedByIdTicket(idTicket);
+        if (resultDto != null) {
+            ResultAnnouncerResponse resultResponse = ResultAnnouncerMapper.mapToResultAnnouncerResponse(resultDto);
             repository.save(resultResponse);
             return ResultAnnouncerMapper.mapToResultAnnouncerResponseDto(resultResponse);
         } else {

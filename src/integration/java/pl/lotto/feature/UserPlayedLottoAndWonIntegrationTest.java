@@ -1,6 +1,7 @@
 package pl.lotto.feature;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
+import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
-import pl.lotto.domain.numbersgenerator.WinningNunmbersNotFoundExeption;
+import pl.lotto.domain.numbersgenerator.WinningNumbersNotFoundException;
 import pl.lotto.domain.numbersreceiver.dto.TicketDto;
+import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
+import pl.lotto.domain.resultchecker.ResultCheckerFacade;
+import pl.lotto.domain.resultchecker.ResultCheckerNotFoundException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -23,10 +29,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Log4j2
 class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     NumbersGeneratorFacade numbersGeneratorFacade;
+    @Autowired
+    ResultCheckerFacade resultCheckerFacade;
+    @Autowired
+    AdjustableClock clock;
 
 
     @Test
@@ -38,24 +49,25 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                            .withStatus(HttpStatus.OK.value())
                                                            .withHeader("Content-Type", "application/json")
                                                            .withBody(
-                                                                   "[43, 5, 80, 14, 62, 31, 99, 51, 22, 40, 4, 75, 71, 31, 30, 66, 64, 53, 78, 72, 68, 4, 62, 70, 84]")));
+                                                                   "[1, 2, 3, 4, 5, 6, 43, 5, 80, 14, 62, 31, 99, 51, 22, 40, " +
+                                                                           "4, 75, 71, 31, 30, 66, 64, 53, 78, 72, 68, 4, 62, 70, 84]")));
         //when
         numbersGeneratorFacade.generateSixNumbers();
 
 
-//        step 2: system fetched winning numbers for draw date: 19.11.2022 10:00
+//        step 2: system fetched winning numbers for draw date: 19.11.2022 12:00
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2022, 11, 26, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2022, 11, 19, 12, 0, 0);
         //when & then
         await().atMost(Duration.ofSeconds(20))
                .pollInterval(Duration.ofSeconds(1))
                .until(() -> {
                    try {
-                       return !numbersGeneratorFacade.retrieveAllWinnerNumbersByNextDrawDate(drawDate)
+                       return !numbersGeneratorFacade.retrieveAllWinnerNumbersByDrawDate(drawDate)
                                                      .winningNumbers()
                                                      .isEmpty();
 
-                   } catch (WinningNunmbersNotFoundExeption exception) {
+                   } catch (WinningNumbersNotFoundException exception) {
                        return false;
                    }
                });
@@ -78,10 +90,11 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         String contentAsString = mvcResult.getResponse()
                                           .getContentAsString();
         TicketDto ticketDto = objectMapper.readValue(contentAsString, TicketDto.class);
+        String ticketId = ticketDto.ticketId();
 
         assertAll(
                 () -> assertThat(ticketDto.drawDate()).isEqualTo(drawDate),
-                () -> assertThat(ticketDto.ticketId()).isNotNull(),
+                () -> assertThat(ticketId).isNotNull(),
                 () -> assertThat(ticketDto.message()).isEqualTo("Success")
         );
 
@@ -104,9 +117,47 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
 
 //        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
+        //given & when & then
+        clock.plusDaysAndMinutes(3, 55);
+
 //        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
+        await().atMost(20, TimeUnit.SECONDS)
+               .pollInterval(Duration.ofSeconds(1L))
+               .until(() -> {
+                   try {
+                       return !resultCheckerFacade.retrieveTicketCheckedByIdTicket(ticketId)
+                                                  .winnersNumbers()
+                                                  .isEmpty();
+                   } catch (ResultCheckerNotFoundException exception) {
+                       log.error("Step 6 exception; " + exception);
+                       return false;
+                   }
+               });
+
+
 //        step 7: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
+        //given & when & then
+        clock.plusDaysAndMinutes(0, 6);
+
+
 //        step 8: user made GET /results/sampleTicketId and system returned 200 (OK)
+        //given & when
+        ResultActions performGetResultWithExistingId = mockMvc.perform(get("/results/" + ticketId));
+        //then
+        String content = performGetResultWithExistingId.andExpect(status().isOk())
+                                                       .andReturn()
+                                                       .getResponse()
+                                                       .getContentAsString();
+        ResultAnnouncerResponseDto resultAnnouncerResponseDto = objectMapper.readValue(content, ResultAnnouncerResponseDto.class);
+        assertAll(
+                () -> assertThat(resultAnnouncerResponseDto.responseDto()
+                                                           .ticketId()).isEqualTo(ticketId),
+                () -> assertThat(resultAnnouncerResponseDto.responseDto()
+                                                           .drawDate()).isEqualTo(drawDate),
+                () -> assertThat(resultAnnouncerResponseDto.responseDto()
+                                                           .numbersFromUser()
+                                                           .size()).isEqualTo(6)
+        );
 
     }
 }

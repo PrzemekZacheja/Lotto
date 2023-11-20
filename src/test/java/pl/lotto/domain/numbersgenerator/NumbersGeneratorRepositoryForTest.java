@@ -1,13 +1,18 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.*;
-import org.springframework.data.domain.*;
-import org.springframework.data.repository.query.*;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 @AllArgsConstructor
 class NumbersGeneratorRepositoryForTest implements NumbersGeneratorRepository {
@@ -72,7 +77,12 @@ class NumbersGeneratorRepositoryForTest implements NumbersGeneratorRepository {
     }
 
     @Override
-    public Optional<WinnerNumbers> findWinningNumberByDrawDate(LocalDateTime localDateTime) {
+    public boolean existsByDrawDate(LocalDateTime drawDate) {
+        return localDateTimeWinnerNumbersMap.containsKey(drawDate);
+    }
+
+    @Override
+    public Optional<WinnerNumbers> findByDrawDate(LocalDateTime localDateTime) {
         return Optional.ofNullable(localDateTimeWinnerNumbersMap.get(localDateTime));
     }
 

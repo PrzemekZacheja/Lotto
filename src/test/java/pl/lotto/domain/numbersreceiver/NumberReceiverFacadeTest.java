@@ -1,14 +1,19 @@
 package pl.lotto.domain.numbersreceiver;
 
-import org.junit.jupiter.api.*;
-import pl.lotto.domain.*;
-import pl.lotto.domain.drawdategenerator.*;
-import pl.lotto.domain.numbersreceiver.dto.*;
+import org.junit.jupiter.api.Test;
+import pl.lotto.domain.AdjustableClock;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.drawdategenerator.DrawDateGenerable;
+import pl.lotto.domain.drawdategenerator.DrawDateGeneratorForTest;
+import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class NumberReceiverFacadeTest {
@@ -104,24 +109,4 @@ class NumberReceiverFacadeTest {
         assertThat(result.ticketId()).isNotNull();
     }
 
-
-    @Test
-    void it_should_return_empty_list_when_given_date_is_after_next_drawDate() {
-        //given
-        Clock clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0)
-                                               .toInstant(ZoneOffset.UTC),
-                ZoneId.of("Europe/London"));
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
-                new NumberValidator(),
-                new InMemoryNumberReceiverRepositoryImpl(),
-                new HashGenerator(),
-                new DrawDateFacade(new DrawDateGeneratorForTest(clock))
-        );
-        TicketDto resultDto = numberReceiverFacade.inputNumbers(Set.of(1, 2, 3, 4, 5, 6));
-        LocalDateTime drawDate = resultDto.drawDate();
-        //when
-        List<TicketDto> listOfTickets = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(drawDate.plusWeeks(1L));
-        //then
-        assertThat(listOfTickets).isEmpty();
-    }
 }

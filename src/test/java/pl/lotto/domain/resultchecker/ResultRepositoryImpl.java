@@ -12,23 +12,27 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
+public class ResultRepositoryImpl implements ResultRepository {
 
-    private final Map<String, TicketChecked> inMemoryDatabase = new ConcurrentHashMap<>();
+    private final Map<String, Result> inMemoryDatabase = new ConcurrentHashMap<>();
 
 
     @Override
-    public <S extends TicketChecked> S save(S entity) {
-        return null;
+    public <S extends Result> S save(S entity) {
+        Result result = inMemoryDatabase.put(entity.ticketId(), entity);
+        return entity;
     }
 
     @Override
-    public <S extends TicketChecked> List<S> saveAll(Iterable<S> entities) {
-        return null;
+    public <S extends Result> List<S> saveAll(Iterable<S> entities) {
+        for (Result result : entities) {
+            save(result);
+        }
+        return (List<S>) entities;
     }
 
     @Override
-    public Optional<TicketChecked> findById(String s) {
+    public Optional<Result> findById(String s) {
         return Optional.ofNullable(inMemoryDatabase.get(s));
     }
 
@@ -38,12 +42,12 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
     }
 
     @Override
-    public List<TicketChecked> findAll() {
+    public List<Result> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<TicketChecked> findAllById(Iterable<String> strings) {
+    public Iterable<Result> findAllById(Iterable<String> strings) {
         return null;
     }
 
@@ -58,7 +62,7 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
     }
 
     @Override
-    public void delete(TicketChecked entity) {
+    public void delete(Result entity) {
 
     }
 
@@ -68,7 +72,7 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends TicketChecked> entities) {
+    public void deleteAll(Iterable<? extends Result> entities) {
 
     }
 
@@ -78,58 +82,63 @@ public class TicketCheckedRepositoryImpl implements TicketCheckedRepository {
     }
 
     @Override
-    public List<TicketChecked> findAll(Sort sort) {
+    public List<Result> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<TicketChecked> findAll(Pageable pageable) {
+    public Page<Result> findAll(Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends TicketChecked> S insert(S entity) {
+    public <S extends Result> S insert(S entity) {
         return null;
     }
 
     @Override
-    public <S extends TicketChecked> List<S> insert(Iterable<S> entities) {
+    public <S extends Result> List<S> insert(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public <S extends TicketChecked> Optional<S> findOne(Example<S> example) {
+    public <S extends Result> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     @Override
-    public <S extends TicketChecked> List<S> findAll(Example<S> example) {
+    public <S extends Result> List<S> findAll(Example<S> example) {
         return null;
     }
 
     @Override
-    public <S extends TicketChecked> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Result> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     @Override
-    public <S extends TicketChecked> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Result> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends TicketChecked> long count(Example<S> example) {
+    public <S extends Result> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends TicketChecked> boolean exists(Example<S> example) {
+    public <S extends Result> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends TicketChecked, R> R findBy(Example<S> example,
+    public <S extends Result, R> R findBy(Example<S> example,
                                                  Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public Optional<Result> findByTicketId(String idTicket) {
+        return Optional.ofNullable(inMemoryDatabase.get(idTicket));
     }
 }

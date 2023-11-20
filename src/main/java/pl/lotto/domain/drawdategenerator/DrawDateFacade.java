@@ -1,15 +1,15 @@
 package pl.lotto.domain.drawdategenerator;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
 
-import java.time.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 public class DrawDateFacade {
 
     private final DrawDateGenerable dateDrawGenerator;
 
-    public LocalDateTime getDateOfNextDraw() {
+    public LocalDateTime generateDateOfNextDraw() {
         return dateDrawGenerator.generateNextDateOfDraw();
     }
 }

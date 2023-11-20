@@ -1,14 +1,16 @@
 package pl.lotto.domain.numbersgenerator;
 
-import org.springframework.data.mongodb.repository.*;
-import org.springframework.stereotype.*;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface NumbersGeneratorRepository extends MongoRepository<WinnerNumbers, String> {
 
+    boolean existsByDrawDate(LocalDateTime drawDate);
 
-    Optional<WinnerNumbers> findWinningNumberByDrawDate(LocalDateTime localDateTime);
+
+    Optional<WinnerNumbers> findByDrawDate(LocalDateTime localDateTime);
 }

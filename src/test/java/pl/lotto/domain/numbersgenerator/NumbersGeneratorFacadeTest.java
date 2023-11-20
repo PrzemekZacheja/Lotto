@@ -1,21 +1,25 @@
 package pl.lotto.domain.numbersgenerator;
 
-import org.junit.jupiter.api.*;
-import pl.lotto.domain.numbersgenerator.dto.*;
-import pl.lotto.domain.numbersreceiver.*;
+import org.junit.jupiter.api.Test;
+import pl.lotto.domain.AdjustableClock;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.drawdategenerator.DrawDateGeneratorForTest;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
+import pl.lotto.domain.numbersreceiver.NumberReceiverFacade;
 
-import java.security.*;
-import java.time.*;
-import java.util.*;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class NumbersGeneratorFacadeTest {
 
     private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
-    private final WinningNumberGeneratorForTest mockWinningNumberGeneratorForTest = mock(WinningNumberGeneratorForTest.class);
     private final NumbersGeneratorFacadeConfigurationProperties properties = NumbersGeneratorFacadeConfigurationProperties.builder()
                                                                                                                           .upperBand(
                                                                                                                                   99)
@@ -23,25 +27,27 @@ class NumbersGeneratorFacadeTest {
                                                                                                                                   1)
                                                                                                                           .count(25)
                                                                                                                           .build();
+    final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
+    final AdjustableClock clock = new AdjustableClock(drawDate.toInstant(ZoneOffset.UTC), ZoneOffset.UTC);
 
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
-            mockNumberReceiverFacade,
             new WinningNumberGeneratorForTest(),
             new NumbersGeneratorRepositoryForTest(),
-            properties
+            properties,
+            new DrawDateFacade(new DrawDateGeneratorForTest(clock))
     );
 
     NumbersGeneratorFacade generatorRandomNumbers = new NumbersGeneratorFacade(
-            mockNumberReceiverFacade,
             new WinningNumberGenerator(new SecureRandom()),
             new NumbersGeneratorRepositoryForTest(),
-            properties
-    );
+            properties,
+            new DrawDateFacade(new DrawDateGeneratorForTest(clock)
+            ));
 
     @Test
     void should_generate_six_numbers() {
         //given
-        final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
+
         //when
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         WinnerNumbersDto winnerNumbersDto = generatorRandomNumbers.generateSixNumbers();
@@ -51,7 +57,7 @@ class NumbersGeneratorFacadeTest {
     }
 
     @Test
-    void should_generate_six_random_numbers() {
+    void should_generate_one_set_six_random_numbers_by_givn_date() {
         //given
         final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
         //when
@@ -61,7 +67,7 @@ class NumbersGeneratorFacadeTest {
         Set<Integer> randomNumbers2 = generatorRandomNumbers.generateSixNumbers()
                                                             .winningNumbers();
         //then
-        assertThat(randomNumbers1).isNotEqualTo(randomNumbers2);
+        assertThat(randomNumbers1).isEqualTo(randomNumbers2);
     }
 
     @Test
@@ -71,7 +77,7 @@ class NumbersGeneratorFacadeTest {
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         //when
         WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
-        WinnerNumbersDto winnerNumbersDtoFromRepository = generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(
+        WinnerNumbersDto winnerNumbersDtoFromRepository = generatorMockedNumbers.retrieveAllWinnerNumbersByDrawDate(
                 drawDate);
         //then
         assertThat(winnerNumbersDtoFromRepository).isEqualTo(winnerNumbersDto);
@@ -84,10 +90,10 @@ class NumbersGeneratorFacadeTest {
         final LocalDateTime failDrawDate = LocalDateTime.of(2021, 4, 1, 12, 0, 0);
         when(mockNumberReceiverFacade.getDrawDate()).thenReturn(drawDate);
         //when
-        WinnerNumbersDto winnerNumbersDto = generatorMockedNumbers.generateSixNumbers();
+        generatorMockedNumbers.generateSixNumbers();
         //then
-        assertThrows(WinningNunmbersNotFoundExeption.class,
-                () -> generatorMockedNumbers.retrieveAllWinnerNumbersByNextDrawDate(failDrawDate));
+        assertThrows(WinningNumbersNotFoundException.class,
+                     () -> generatorMockedNumbers.retrieveAllWinnerNumbersByDrawDate(failDrawDate));
     }
 
     @Test

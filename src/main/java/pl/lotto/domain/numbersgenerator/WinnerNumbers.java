@@ -1,18 +1,16 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.*;
-import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.*;
+import lombok.Builder;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Builder
 @Document
 record WinnerNumbers(
-        @Id
-        String id,
-        LocalDateTime drawDate,
+        @Indexed(unique = true) LocalDateTime drawDate,
         Set<Integer> winningNumbers
 ) {
 
