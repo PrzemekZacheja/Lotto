@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerable {
 
+    public static final int WINNING_NUMBERS = 6;
+    public static final int NUMBERS_TO_RANDOMIZE = 25;
+    public static final int MIN_INT = 1;
+    public static final int MAX_INT = 99;
     private final RestTemplate restTemplate;
     private final String uri;
     private final int port;
@@ -27,9 +31,9 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
     public Set<Integer> generateWinningRandomNumbers(final int lowerBand, final int upperBand, final int count) {
         String urlForService = getUrlForService();
         final String url = UriComponentsBuilder.fromHttpUrl(urlForService)
-                                               .queryParam("min", 1)
-                                               .queryParam("max", 99)
-                                               .queryParam("count", 25)
+                                               .queryParam("min", MIN_INT)
+                                               .queryParam("max", MAX_INT)
+                                               .queryParam("count", NUMBERS_TO_RANDOMIZE)
                                                .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
@@ -43,7 +47,7 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
 
         return Objects.requireNonNull(responseEntity.getBody())
                       .stream()
-                      .limit(6)
+                      .limit(WINNING_NUMBERS)
                       .collect(Collectors.toSet());
     }
 

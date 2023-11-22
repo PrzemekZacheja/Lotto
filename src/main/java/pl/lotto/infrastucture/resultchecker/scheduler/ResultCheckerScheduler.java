@@ -15,7 +15,7 @@ public class ResultCheckerScheduler {
     ResultCheckerFacade resultCheckerFacade;
     NumbersGeneratorFacade numbersGeneratorFacade;
 
-    @Scheduled(cron = "${lotto.result-checker.lotteryRunOccurrence}")
+    @Scheduled(cron = "${lotto.resultchecker.lotteryRunOccurrence}")
     public void checkResults() {
         log.info("Generating results");
         resultCheckerFacade.generateResultsOfTickets();

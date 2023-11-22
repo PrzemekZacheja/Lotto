@@ -1,19 +1,21 @@
 package pl.lotto;
 
-import com.fasterxml.jackson.databind.*;
-import com.github.tomakehurst.wiremock.junit5.*;
-import org.junit.jupiter.api.extension.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.autoconfigure.web.servlet.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.web.servlet.*;
-import org.testcontainers.containers.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.*;
-import org.testcontainers.utility.*;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(classes = {LottoSpringBootApplication.class, IntegrationConfiguration.class})
 @ActiveProfiles("integration")
@@ -36,8 +38,8 @@ public class BaseIntegrationTest {
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-        registry.add("lotto.number_generator.http.client.config.uri", () -> WIRE_MOCK_HOST);
-        registry.add("lotto.number_generator.http.client.config.port", () -> wireMockServer.getPort());
+        registry.add("lotto.numbergenerator.http.client.config.uri", () -> WIRE_MOCK_HOST);
+        registry.add("lotto.numbergenerator.http.client.config.port", () -> wireMockServer.getPort());
     }
 
 }
