@@ -6,8 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacade;
@@ -38,6 +44,18 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
     ResultCheckerFacade resultCheckerFacade;
     @Autowired
     AdjustableClock clock;
+
+    @Container
+    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+    @Autowired
+    public MockMvc mockMvc;
+
+    @DynamicPropertySource
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        registry.add("lotto.numbergenerator.http.client.config.uri", () -> WIRE_MOCK_HOST);
+        registry.add("lotto.numbergenerator.http.client.config.port", () -> wireMockServer.getPort());
+    }
 
 
     @Test

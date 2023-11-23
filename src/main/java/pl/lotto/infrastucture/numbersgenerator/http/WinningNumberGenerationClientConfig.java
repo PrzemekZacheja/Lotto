@@ -14,7 +14,7 @@ public class WinningNumberGenerationClientConfig {
 
     @Bean
     public WinningNumberGenerable remoteNumberGeneratorClient(RestTemplate restTemplate,
-                                                              @Value("${lotto.numbergenerator.http.client.config.uri})") String uri,
+                                                              @Value("${lotto.numbergenerator.http.client.config.uri}") String uri,
                                                               @Value("${lotto.numbergenerator.http.client.config.port}") int port) {
         return new WinningNumberGeneratorRestTemplate(restTemplate, uri, port);
     }
