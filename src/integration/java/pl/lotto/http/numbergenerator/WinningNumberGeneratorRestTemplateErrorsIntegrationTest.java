@@ -26,7 +26,7 @@ public class WinningNumberGeneratorRestTemplateErrorsIntegrationTest {
             wireMockServer.getPort(), 1000, 1000);
 
     @Test
-    void should_return_null_set_Of_numbers_when_fault_connection_reset_by_peer() {
+    void should_throw_exception_500_when_fault_connection_reset_by_peer() {
         //given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                                        .willReturn(WireMock.aResponse()
@@ -41,7 +41,7 @@ public class WinningNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_null_set_Of_numbers_when_fault_empty_response_body() {
+    void should_throw_exception_500_when_fault_empty_response_body() {
         //given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                                        .willReturn(WireMock.aResponse()
@@ -56,7 +56,7 @@ public class WinningNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_null_set_Of_numbers_when_fault_random_data_corruption() {
+    void should_throw_exception_500_when_fault_random_data_corruption() {
         //given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                                        .willReturn(WireMock.aResponse()
