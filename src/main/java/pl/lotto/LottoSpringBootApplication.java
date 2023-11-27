@@ -1,15 +1,14 @@
 package pl.lotto;
 
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.boot.context.properties.*;
-import org.springframework.data.mongodb.repository.config.*;
-import org.springframework.scheduling.annotation.*;
-import pl.lotto.domain.numbersgenerator.*;
-import pl.lotto.infrastucture.numbersgenerator.http.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacadeConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({NumbersGeneratorFacadeConfigurationProperties.class, NumbersGeneratorRestTemplateConfigurationProperties.class})
+@EnableConfigurationProperties({NumbersGeneratorFacadeConfigurationProperties.class})
 @EnableScheduling
 @EnableMongoRepositories
 public class LottoSpringBootApplication {

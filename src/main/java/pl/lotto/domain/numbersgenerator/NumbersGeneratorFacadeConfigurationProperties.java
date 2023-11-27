@@ -1,9 +1,9 @@
 package pl.lotto.domain.numbersgenerator;
 
-import lombok.*;
-import org.springframework.boot.context.properties.*;
+import lombok.Builder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "lotto.number-generator.facade")
+@ConfigurationProperties(prefix = "lotto.numbergenerator.facade")
 @Builder
 public record NumbersGeneratorFacadeConfigurationProperties(int lowerBand, int upperBand, int count) {
 }
