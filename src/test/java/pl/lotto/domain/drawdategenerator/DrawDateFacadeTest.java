@@ -13,7 +13,7 @@ class DrawDateFacadeTest {
 
     Clock clock = Clock.fixed(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
                                            .toInstant(ZoneOffset.UTC),
-            ZoneId.of("Europe/London"));
+                              ZoneId.of("Europe/London"));
     DrawDateFacade drawDateFacade = new DrawDateFacade(
             new DrawDateGenerator(clock)
     );
@@ -34,7 +34,7 @@ class DrawDateFacadeTest {
         //given
         clock = Clock.fixed(LocalDateTime.of(2023, 3, 30, 15, 0, 0)
                                          .toInstant(ZoneOffset.UTC),
-                ZoneId.of("Europe/London"));
+                            ZoneId.of("Europe/London"));
         drawDateFacade = new DrawDateFacade(new DrawDateGenerator(clock));
 
         LocalDateTime expected = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
@@ -49,7 +49,7 @@ class DrawDateFacadeTest {
         //given
         clock = Clock.fixed(LocalDateTime.of(2023, 4, 1, 15, 0, 0)
                                          .toInstant(ZoneOffset.UTC),
-                ZoneId.of("Europe/London"));
+                            ZoneId.of("Europe/London"));
         LocalDateTime expected = LocalDateTime.of(2023, 4, 8, 12, 0, 0);
         //when
         LocalDateTime dateOfNextDraw = drawDateFacade.generateDateOfNextDraw();

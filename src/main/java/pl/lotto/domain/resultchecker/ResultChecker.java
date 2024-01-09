@@ -19,6 +19,16 @@ class ResultChecker {
     private final ResultRepository repository;
     private final NumbersGeneratorFacade numbersGeneratorFacade;
 
+    private static int intersectionOfTwoLists(WinnerNumbersDto winnerNumbersDto, TicketDto ticketDtoToChange) {
+        List<Integer> setToRetain = new ArrayList<>(ticketDtoToChange.userNumbers());
+        setToRetain.retainAll(winnerNumbersDto.winningNumbers());
+        return setToRetain.size();
+    }
+
+    private static boolean isWinner(int result) {
+        return result >= HITS_TO_WIN;
+    }
+
     private List<ResultDto> generateResult(List<TicketDto> ticketDtoToCheck) {
         List<ResultDto> listToReturn = new ArrayList<>();
         for (TicketDto singleTicketDtoToCheck : ticketDtoToCheck) {
@@ -48,16 +58,6 @@ class ResultChecker {
             listToReturn.add(resultOfResultCheckerDto);
         }
         return listToReturn;
-    }
-
-    private static int intersectionOfTwoLists(WinnerNumbersDto winnerNumbersDto, TicketDto ticketDtoToChange) {
-        List<Integer> setToRetain = new ArrayList<>(ticketDtoToChange.userNumbers());
-        setToRetain.retainAll(winnerNumbersDto.winningNumbers());
-        return setToRetain.size();
-    }
-
-    private static boolean isWinner(int result) {
-        return result >= HITS_TO_WIN;
     }
 
     List<ResultDto> saveCheckedTicketsToResults(List<TicketDto> ticketDtoToCheck) {

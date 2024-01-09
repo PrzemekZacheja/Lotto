@@ -20,8 +20,8 @@ public class NumbersGeneratorFacade {
     public WinnerNumbersDto generateSixNumbers() {
         LocalDateTime drawDate = drawDateFacade.generateDateOfNextDraw();
         Set<Integer> winningRandomNumbers = winningNumberGenerator.generateWinningRandomNumbers(configuration.lowerBand(),
-                configuration.upperBand(),
-                configuration.count());
+                                                                                                configuration.upperBand(),
+                                                                                                configuration.count());
         if (areAllNumbersInRequiredRange(winningRandomNumbers)) {
             WinnerNumbers winnerNumbersDocument = WinnerNumbers.builder()
                                                                .winningNumbers(winningRandomNumbers)

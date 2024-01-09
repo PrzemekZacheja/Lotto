@@ -1,4 +1,4 @@
-package pl.lotto.feature;
+package pl.lotto.featurehappypath;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import lombok.extern.log4j.Log4j2;
@@ -38,17 +38,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Log4j2
 class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
+    @Container
+    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+    @Autowired
+    public MockMvc mockMvc;
     @Autowired
     NumbersGeneratorFacade numbersGeneratorFacade;
     @Autowired
     ResultCheckerFacade resultCheckerFacade;
     @Autowired
     AdjustableClock clock;
-
-    @Container
-    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
-    @Autowired
-    public MockMvc mockMvc;
 
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
@@ -91,15 +90,16 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                });
 
 
-//        step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned OK(200) with message:
+//        step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned OK(200) with
+//        message:
 //        “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
         //given
         //when
         ResultActions performPostInputNumbers = mockMvc.perform(post("/inputNumbers").content("""
-                                                                                                      {
-                                                                                                      "inputNumbers" : [1, 2, 3, 4, 5, 6]
-                                                                                                      }
-                                                                                                      """.trim())
+                                                                                              {
+                                                                                              "inputNumbers" : [1, 2, 3, 4, 5, 6]
+                                                                                              }
+                                                                                              """.trim())
                                                                                      .contentType(
                                                                                              MediaType.APPLICATION_JSON));
         //then
@@ -114,7 +114,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 () -> assertThat(ticketDto.drawDate()).isEqualTo(drawDate),
                 () -> assertThat(ticketId).isNotNull(),
                 () -> assertThat(ticketDto.message()).isEqualTo("Success")
-        );
+                 );
 
 
 //        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND)
@@ -125,13 +125,13 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         //then
         performGetResultWithNoExistingId.andExpect(status().isNotFound())
                                         .andExpect(content().json("""
-                                                                            {
-                                                                            "message": "Not found for id: notExistingId",
-                                                                            "status" : "NOT_FOUND"
-                                                                            }
-                                                                          """
+                                                                    {
+                                                                    "message": "Not found for id: notExistingId",
+                                                                    "status" : "NOT_FOUND"
+                                                                    }
+                                                                  """
 
-                                        ));
+                                                                 ));
 
 
 //        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
@@ -175,7 +175,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 () -> assertThat(resultAnnouncerResponseDto.responseDto()
                                                            .numbersFromUser()
                                                            .size()).isEqualTo(6)
-        );
+                 );
 
     }
 }

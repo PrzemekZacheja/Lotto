@@ -18,10 +18,10 @@ public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
         //given
         //when
         ResultActions perform = mockMvc.perform(post("/inputNumbers").content("""
-                                                                                      {
-                                                                                      "inputNumbers" : []
-                                                                                      }
-                                                                                      """.trim())
+                                                                              {
+                                                                              "inputNumbers" : []
+                                                                              }
+                                                                              """.trim())
                                                                      .contentType(MediaType.APPLICATION_JSON));
         //then
         MvcResult mvcResult = perform.andExpect(status().isBadRequest())
@@ -38,8 +38,8 @@ public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
         //given
         //when
         ResultActions perform = mockMvc.perform(post("/inputNumbers").content("""
-                                                                                      {}
-                                                                                      """.trim())
+                                                                              {}
+                                                                              """.trim())
                                                                      .contentType(MediaType.APPLICATION_JSON));
         //then
         MvcResult mvcResult = perform.andExpect(status().isBadRequest())

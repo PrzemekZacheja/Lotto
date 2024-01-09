@@ -22,7 +22,8 @@ public class WinningNumberGeneratorRestTemplateErrorsIntegrationTest {
                                                                       .options(wireMockConfig().dynamicPort())
                                                                       .build();
 
-    WinningNumberGenerable winningNumberGenerator = new WinningNumberGeneratorRestTemplateIntegrationTestConfig().remoteWinningNumberGeneratorClient(
+    WinningNumberGenerable winningNumberGenerator =
+            new WinningNumberGeneratorRestTemplateIntegrationTestConfig().remoteWinningNumberGeneratorClient(
             wireMockServer.getPort(), 1000, 1000);
 
     @Test

@@ -40,7 +40,7 @@ class ResultAnnouncerFacadeTest {
                          .message("You win")
                          .isWinner(true)
                          .build()
-        );
+                                                                                          );
         //when
         ResultAnnouncerResponseDto responseDto = resultAnnouncerFacade.generateResponseByIdTicket(idTicket);
         //then
@@ -56,7 +56,7 @@ class ResultAnnouncerFacadeTest {
                                                                                                     clockForTest))
                                                                                             .build()
 
-                                                                    )
+                                                                                )
 
                                                                     .message("You win")
                                                                     .build());
@@ -74,7 +74,7 @@ class ResultAnnouncerFacadeTest {
                          .message("You win")
                          .isWinner(true)
                          .build()
-        );
+                                                                                          );
         ResultDto expectedResultDto = ResultDto.builder()
                                                .ticketId("001")
                                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
@@ -107,7 +107,7 @@ class ResultAnnouncerFacadeTest {
                          .message("You win")
                          .isWinner(true)
                          .build()
-        );
+                                                                                          );
         ResultDto expectedResultDto = ResultDto.builder()
                                                .ticketId("001")
                                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))

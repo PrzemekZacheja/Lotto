@@ -133,7 +133,7 @@ public class ResultRepositoryImpl implements ResultRepository {
 
     @Override
     public <S extends Result, R> R findBy(Example<S> example,
-                                                 Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+                                          Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 
