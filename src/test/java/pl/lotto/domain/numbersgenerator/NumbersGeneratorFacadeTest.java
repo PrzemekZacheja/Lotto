@@ -30,13 +30,13 @@ class NumbersGeneratorFacadeTest {
                                                                                                                                   1)
                                                                                                                           .count(25)
                                                                                                                           .build();
-    NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
+    final NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
             new WinningNumberGeneratorForTest(),
             new NumbersGeneratorRepositoryForTest(),
             properties,
             new DrawDateFacade(new DrawDateGeneratorForTest(clock))
     );
-    NumbersGeneratorFacade generatorRandomNumbers = new NumbersGeneratorFacade(
+    final NumbersGeneratorFacade generatorRandomNumbers = new NumbersGeneratorFacade(
             new WinningNumberGenerator(new SecureRandom()),
             new NumbersGeneratorRepositoryForTest(),
             properties,

@@ -18,11 +18,11 @@ import static org.mockito.Mockito.when;
 
 class ResultCheckerFacadeTest {
 
-    NumbersGeneratorFacade numbersGenerator = mock(NumbersGeneratorFacade.class);
-    NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
-    DrawDateFacade drawDateFacade = mock(DrawDateFacade.class);
-    ResultRepositoryImpl ticketCheckedRepositoryForTesting = new ResultRepositoryImpl();
-    ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(
+    final NumbersGeneratorFacade numbersGenerator = mock(NumbersGeneratorFacade.class);
+    final NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
+    final DrawDateFacade drawDateFacade = mock(DrawDateFacade.class);
+    final ResultRepositoryImpl ticketCheckedRepositoryForTesting = new ResultRepositoryImpl();
+    final ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(
             numberReceiverFacade,
             drawDateFacade,
             ticketCheckedRepositoryForTesting,

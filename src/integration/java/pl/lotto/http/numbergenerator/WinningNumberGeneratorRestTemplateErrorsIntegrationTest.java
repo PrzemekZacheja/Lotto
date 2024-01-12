@@ -18,11 +18,11 @@ public class WinningNumberGeneratorRestTemplateErrorsIntegrationTest {
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String APPLICATION_JSON = "application/json";
     @RegisterExtension
-    public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
-                                                                      .options(wireMockConfig().dynamicPort())
-                                                                      .build();
+    public static final WireMockExtension wireMockServer = WireMockExtension.newInstance()
+                                                                            .options(wireMockConfig().dynamicPort())
+                                                                            .build();
 
-    WinningNumberGenerable winningNumberGenerator =
+    final WinningNumberGenerable winningNumberGenerator =
             new WinningNumberGeneratorRestTemplateIntegrationTestConfig().remoteWinningNumberGeneratorClient(
                     wireMockServer.getPort(), 1000, 1000);
 

@@ -19,12 +19,13 @@ import static org.mockito.Mockito.when;
 
 class ResultAnnouncerFacadeTest {
 
-    ResultCheckerFacade resultCheckerFacadeMock = mock(ResultCheckerFacade.class);
-    RepositoryForTest repository = new RepositoryForTest();
-    ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacadeMock, repository);
-    AdjustableClock clockForTest = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
-                                                                    .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-    String idTicket = "001";
+    final ResultCheckerFacade resultCheckerFacadeMock = mock(ResultCheckerFacade.class);
+    final RepositoryForTest repository = new RepositoryForTest();
+    final ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacadeMock, repository);
+    final AdjustableClock clockForTest = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
+                                                                          .toInstant(ZoneOffset.UTC),
+                                                             ZoneId.systemDefault());
+    final String idTicket = "001";
 
 
     @Test

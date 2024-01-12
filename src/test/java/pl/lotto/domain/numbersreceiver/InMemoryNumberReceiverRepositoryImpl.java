@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 class InMemoryNumberReceiverRepositoryImpl implements NumberReceiverRepository {
 
-    Map<String, Ticket> inMemoryDatabase = new ConcurrentHashMap<>();
+    final Map<String, Ticket> inMemoryDatabase = new ConcurrentHashMap<>();
 
 
     @Override

@@ -1,5 +1,6 @@
 package pl.lotto.domain.loginandregister;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +15,10 @@ import java.util.function.Function;
 
 public class LoginAndRegisterFacadeRepositoryForTest implements LoginAndRegisterFacadeRepository {
 
-    Map<String, User> databaseInMemory = new ConcurrentHashMap<>();
+    final Map<String, User> databaseInMemory = new ConcurrentHashMap<>();
 
     @Override
-    public User save(User user) {
+    public @NotNull User save(User user) {
         databaseInMemory.put(user.getEmail(), user);
         return user;
     }

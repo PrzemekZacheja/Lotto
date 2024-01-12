@@ -11,8 +11,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class LoginAndRegisterFacadeTest {
 
-    LoginAndRegisterFacadeRepository repository = new LoginAndRegisterFacadeRepositoryForTest();
-    LoginAndRegisterFacade loginAndRegisterFacade = new LoginAndRegisterFacade(repository);
+    final LoginAndRegisterFacadeRepository repository = new LoginAndRegisterFacadeRepositoryForTest();
+    final LoginAndRegisterFacade loginAndRegisterFacade = new LoginAndRegisterFacade(repository);
 
     @Test
     void should_save_user_to_database_if_not_exist() {
