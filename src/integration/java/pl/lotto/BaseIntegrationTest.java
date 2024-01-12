@@ -14,10 +14,11 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import pl.lotto.security.SecurityConfigTest;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-@SpringBootTest(classes = {LottoSpringBootApplication.class, IntegrationConfiguration.class})
+@SpringBootTest(classes = {LottoSpringBootApplication.class, IntegrationConfiguration.class, SecurityConfigTest.class})
 @ActiveProfiles("integration")
 @AutoConfigureMockMvc
 @Testcontainers
