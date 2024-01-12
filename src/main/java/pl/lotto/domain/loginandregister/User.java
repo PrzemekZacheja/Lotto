@@ -14,10 +14,8 @@ import java.util.Collection;
 @Builder
 @Getter
 final class User implements UserDetails {
-    @Id
-    String id;
-    @Indexed(unique = true)
-    private String email;
+    @Id String id;
+    @Indexed(unique = true) private String email;
     private String password;
     private String token;
     private boolean isLogged;
@@ -35,10 +33,6 @@ final class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     @Override
