@@ -21,6 +21,15 @@ class NumbersGeneratorFacadeTest {
 
     final LocalDateTime drawDate = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
     final AdjustableClock clock = new AdjustableClock(drawDate.toInstant(ZoneOffset.UTC), ZoneOffset.UTC);
+    private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
+    private final NumbersGeneratorFacadeConfigurationProperties properties =
+            NumbersGeneratorFacadeConfigurationProperties.builder()
+                                                                                                                          .upperBand(
+                                                                                                                                  99)
+                                                                                                                          .lowerBand(
+                                                                                                                                  1)
+                                                                                                                          .count(25)
+                                                                                                                          .build();
     NumbersGeneratorFacade generatorMockedNumbers = new NumbersGeneratorFacade(
             new WinningNumberGeneratorForTest(),
             new NumbersGeneratorRepositoryForTest(),
@@ -33,14 +42,6 @@ class NumbersGeneratorFacadeTest {
             properties,
             new DrawDateFacade(new DrawDateGeneratorForTest(clock)
             ));
-    private final NumberReceiverFacade mockNumberReceiverFacade = mock(NumberReceiverFacade.class);
-    private final NumbersGeneratorFacadeConfigurationProperties properties = NumbersGeneratorFacadeConfigurationProperties.builder()
-                                                                                                                          .upperBand(
-                                                                                                                                  99)
-                                                                                                                          .lowerBand(
-                                                                                                                                  1)
-                                                                                                                          .count(25)
-                                                                                                                          .build();
 
     @Test
     void should_generate_six_numbers() {

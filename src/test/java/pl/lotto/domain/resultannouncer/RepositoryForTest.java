@@ -130,4 +130,14 @@ class RepositoryForTest implements ResultAnnouncerResponseRepository {
                                                            Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
+    @Override
+    public ResultAnnouncerResponse findByTicketId(String ticketId) {
+        return databaseInMemory.get(ticketId);
+    }
+
+    @Override
+    public boolean existsByTicketId(String idTicket) {
+        return databaseInMemory.containsKey(idTicket);
+    }
 }

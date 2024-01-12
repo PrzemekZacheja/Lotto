@@ -6,6 +6,7 @@ import pl.lotto.domain.loginandregister.dto.UserDto;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class LoginAndRegisterFacadeTest {
