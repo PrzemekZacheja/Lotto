@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -58,6 +59,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
 
     @Test
+    @WithMockUser
     void should_user_win_and_system_should_generate_winner() throws Exception {
 //        step 1: external service returns 6 random numbers (1,2,3,4,5,6)
         //given
@@ -90,7 +92,8 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                });
 
 
-//        step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned OK(200) with
+//          4. user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned
+//          OK(200) with
 //        message:
 //        “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
         //given
@@ -103,10 +106,10 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                                                      .contentType(
                                                                                              MediaType.APPLICATION_JSON));
         //then
-        MvcResult mvcResult = performPostInputNumbers.andExpect(status().isOk())
-                                                     .andReturn();
-        String contentAsString = mvcResult.getResponse()
-                                          .getContentAsString();
+        MvcResult mvcResultInStepSix = performPostInputNumbers.andExpect(status().isOk())
+                                                              .andReturn();
+        String contentAsString = mvcResultInStepSix.getResponse()
+                                                   .getContentAsString();
         TicketDto ticketDto = objectMapper.readValue(contentAsString, TicketDto.class);
         String ticketId = ticketDto.ticketId();
 
@@ -117,7 +120,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                  );
 
 
-//        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND)
+//        5. user made GET /results/notExistingId and system returned 404(NOT_FOUND)
 //          and body with (“message”: “Not found for id: notExistingId” and “status”: “NOT_FOUND”)
         //given
         //when
@@ -134,11 +137,12 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                                                                  ));
 
 
-//        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
+//        step 6: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
         //given & when & then
         clock.plusDaysAndMinutes(3, 55);
 
-//        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
+//        step 7: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it
+//        with 6 hits
         await().atMost(20, TimeUnit.SECONDS)
                .pollInterval(Duration.ofSeconds(1L))
                .until(() -> {
@@ -153,12 +157,12 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                });
 
 
-//        step 7: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
+//        step 8: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
         //given & when & then
         clock.plusDaysAndMinutes(0, 6);
 
 
-//        step 8: user made GET /results/sampleTicketId and system returned 200 (OK)
+//        step 9: user made GET /results/sampleTicketId and system returned 200 (OK)
         //given & when
         ResultActions performGetResultWithExistingId = mockMvc.perform(get("/results/" + ticketId));
         //then

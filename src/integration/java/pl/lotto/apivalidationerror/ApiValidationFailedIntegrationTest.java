@@ -3,6 +3,7 @@ package pl.lotto.apivalidationerror;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @WithMockUser
     void should_return_400_with_error_message_when_input_numbers_is_empty() throws Exception {
         //given
         //when
@@ -34,6 +36,7 @@ public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     void should_return_400_with_error_message_when_json_is_empty() throws Exception {
         //given
         //when
