@@ -19,12 +19,6 @@ class NumbersGeneratorRepositoryForTest implements NumbersGeneratorRepository {
 
     private final Map<LocalDateTime, WinnerNumbers> localDateTimeWinnerNumbersMap = new ConcurrentHashMap<>();
 
-//    @Override
-//    public WinnerNumbers save(WinnerNumbers winnerNumbers) {
-//        localDateTimeWinnerNumbersMap.put(winnerNumbers.drawDate(), winnerNumbers);
-//        return winnerNumbers;
-//    }
-
     @Override
     public <S extends WinnerNumbers> S save(final S entity) {
         localDateTimeWinnerNumbersMap.put(entity.drawDate(), entity);

@@ -1,6 +1,6 @@
 package pl.lotto.domain.numbersreceiver;
 
-import java.util.*;
+import java.util.UUID;
 
 class HashGenerator implements HashGenerable {
 

@@ -12,13 +12,13 @@ class ResultCheckerMapper {
     static List<Result> mapToResult(final List<ResultDto> resultDtoList) {
         return resultDtoList.stream()
                             .map(ticketCheckedDto -> Result.builder()
-                                                                         .ticketId(ticketCheckedDto.ticketId())
-                                                                         .numbersFromUser(ticketCheckedDto.numbersFromUser())
-                                                                         .drawDate(ticketCheckedDto.drawDate())
-                                                                         .winnersNumbers(ticketCheckedDto.winnersNumbers())
-                                                                         .isWinner(ticketCheckedDto.isWinner())
-                                                                         .message(ticketCheckedDto.message())
-                                                                         .build())
+                                                           .ticketId(ticketCheckedDto.ticketId())
+                                                           .numbersFromUser(ticketCheckedDto.numbersFromUser())
+                                                           .drawDate(ticketCheckedDto.drawDate())
+                                                           .winnersNumbers(ticketCheckedDto.winnersNumbers())
+                                                           .isWinner(ticketCheckedDto.isWinner())
+                                                           .message(ticketCheckedDto.message())
+                                                           .build())
                             .toList();
     }
 

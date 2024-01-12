@@ -6,9 +6,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import pl.lotto.domain.numbersgenerator.NumbersGeneratorFacadeConfigurationProperties;
+import pl.lotto.infrastucture.security.jwt.JwtConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({NumbersGeneratorFacadeConfigurationProperties.class})
+@EnableConfigurationProperties({NumbersGeneratorFacadeConfigurationProperties.class, JwtConfigurationProperties.class})
 @EnableScheduling
 @EnableMongoRepositories
 public class LottoSpringBootApplication {

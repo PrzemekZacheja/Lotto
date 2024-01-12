@@ -20,8 +20,8 @@ class NumberReceiverFacadeTest {
 
     AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
                                                              .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-    DrawDateGenerable dateDrawGeneratorForTest = new DrawDateGeneratorForTest(clock);
-    NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
+    final DrawDateGenerable dateDrawGeneratorForTest = new DrawDateGeneratorForTest(clock);
+    final NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
             new InMemoryNumberReceiverRepositoryImpl(),
             new HashGenerator(),

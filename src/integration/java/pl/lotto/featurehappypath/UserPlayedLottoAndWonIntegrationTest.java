@@ -1,4 +1,4 @@
-package pl.lotto.feature;
+package pl.lotto.featurehappypath;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import lombok.extern.log4j.Log4j2;
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,17 +39,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Log4j2
 class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
+    @Container
+    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+    @Autowired
+    public MockMvc mockMvc;
     @Autowired
     NumbersGeneratorFacade numbersGeneratorFacade;
     @Autowired
     ResultCheckerFacade resultCheckerFacade;
     @Autowired
     AdjustableClock clock;
-
-    @Container
-    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
-    @Autowired
-    public MockMvc mockMvc;
 
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
@@ -59,6 +59,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
 
     @Test
+    @WithMockUser
     void should_user_win_and_system_should_generate_winner() throws Exception {
 //        step 1: external service returns 6 random numbers (1,2,3,4,5,6)
         //given
@@ -91,22 +92,24 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                });
 
 
-//        step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned OK(200) with message:
+//          4. user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned
+//          OK(200) with
+//        message:
 //        “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
         //given
         //when
         ResultActions performPostInputNumbers = mockMvc.perform(post("/inputNumbers").content("""
-                                                                                                      {
-                                                                                                      "inputNumbers" : [1, 2, 3, 4, 5, 6]
-                                                                                                      }
-                                                                                                      """.trim())
+                                                                                              {
+                                                                                              "inputNumbers" : [1, 2, 3, 4, 5, 6]
+                                                                                              }
+                                                                                              """.trim())
                                                                                      .contentType(
                                                                                              MediaType.APPLICATION_JSON));
         //then
-        MvcResult mvcResult = performPostInputNumbers.andExpect(status().isOk())
-                                                     .andReturn();
-        String contentAsString = mvcResult.getResponse()
-                                          .getContentAsString();
+        MvcResult mvcResultInStepSix = performPostInputNumbers.andExpect(status().isOk())
+                                                              .andReturn();
+        String contentAsString = mvcResultInStepSix.getResponse()
+                                                   .getContentAsString();
         TicketDto ticketDto = objectMapper.readValue(contentAsString, TicketDto.class);
         String ticketId = ticketDto.ticketId();
 
@@ -114,10 +117,10 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 () -> assertThat(ticketDto.drawDate()).isEqualTo(drawDate),
                 () -> assertThat(ticketId).isNotNull(),
                 () -> assertThat(ticketDto.message()).isEqualTo("Success")
-        );
+                 );
 
 
-//        step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND)
+//        5. user made GET /results/notExistingId and system returned 404(NOT_FOUND)
 //          and body with (“message”: “Not found for id: notExistingId” and “status”: “NOT_FOUND”)
         //given
         //when
@@ -125,20 +128,21 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
         //then
         performGetResultWithNoExistingId.andExpect(status().isNotFound())
                                         .andExpect(content().json("""
-                                                                            {
-                                                                            "message": "Not found for id: notExistingId",
-                                                                            "status" : "NOT_FOUND"
-                                                                            }
-                                                                          """
+                                                                    {
+                                                                    "message": "Not found for id: notExistingId",
+                                                                    "status" : "NOT_FOUND"
+                                                                    }
+                                                                  """
 
-                                        ));
+                                                                 ));
 
 
-//        step 5: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
+//        step 6: 3 days and 55 minutes passed, and it is 5 minute before draw (19.11.2022 11:55)
         //given & when & then
         clock.plusDaysAndMinutes(3, 55);
 
-//        step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
+//        step 7: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it
+//        with 6 hits
         await().atMost(20, TimeUnit.SECONDS)
                .pollInterval(Duration.ofSeconds(1L))
                .until(() -> {
@@ -153,12 +157,12 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                });
 
 
-//        step 7: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
+//        step 8: 6 minutes passed, and it is 1 minute after the draw (19.11.2022 12:01)
         //given & when & then
         clock.plusDaysAndMinutes(0, 6);
 
 
-//        step 8: user made GET /results/sampleTicketId and system returned 200 (OK)
+//        step 9: user made GET /results/sampleTicketId and system returned 200 (OK)
         //given & when
         ResultActions performGetResultWithExistingId = mockMvc.perform(get("/results/" + ticketId));
         //then
@@ -175,7 +179,7 @@ class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 () -> assertThat(resultAnnouncerResponseDto.responseDto()
                                                            .numbersFromUser()
                                                            .size()).isEqualTo(6)
-        );
+                 );
 
     }
 }

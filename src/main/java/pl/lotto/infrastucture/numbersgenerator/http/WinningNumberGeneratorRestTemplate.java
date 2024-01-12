@@ -37,8 +37,11 @@ public class WinningNumberGeneratorRestTemplate implements WinningNumberGenerabl
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
         try {
-            ResponseEntity<List<Integer>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<>() {
-            });
+            ResponseEntity<List<Integer>> responseEntity = restTemplate.exchange(url,
+                                                                                 HttpMethod.GET,
+                                                                                 requestEntity,
+                                                                                 new ParameterizedTypeReference<>() {
+                                                                                 });
             return Objects.requireNonNull(responseEntity.getBody())
                           .stream()
                           .limit(WINNING_NUMBERS)

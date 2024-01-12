@@ -19,12 +19,13 @@ import static org.mockito.Mockito.when;
 
 class ResultAnnouncerFacadeTest {
 
-    ResultCheckerFacade resultCheckerFacadeMock = mock(ResultCheckerFacade.class);
-    RepositoryForTest repository = new RepositoryForTest();
-    ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacadeMock, repository);
-    AdjustableClock clockForTest = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
-                                                                    .toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-    String idTicket = "001";
+    final ResultCheckerFacade resultCheckerFacadeMock = mock(ResultCheckerFacade.class);
+    final RepositoryForTest repository = new RepositoryForTest();
+    final ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacadeMock, repository);
+    final AdjustableClock clockForTest = new AdjustableClock(LocalDateTime.of(2023, 4, 1, 12, 0, 0)
+                                                                          .toInstant(ZoneOffset.UTC),
+                                                             ZoneId.systemDefault());
+    final String idTicket = "001";
 
 
     @Test
@@ -40,7 +41,7 @@ class ResultAnnouncerFacadeTest {
                          .message("You win")
                          .isWinner(true)
                          .build()
-        );
+                                                                                          );
         //when
         ResultAnnouncerResponseDto responseDto = resultAnnouncerFacade.generateResponseByIdTicket(idTicket);
         //then
@@ -56,7 +57,7 @@ class ResultAnnouncerFacadeTest {
                                                                                                     clockForTest))
                                                                                             .build()
 
-                                                                    )
+                                                                                )
 
                                                                     .message("You win")
                                                                     .build());
@@ -74,7 +75,7 @@ class ResultAnnouncerFacadeTest {
                          .message("You win")
                          .isWinner(true)
                          .build()
-        );
+                                                                                          );
         ResultDto expectedResultDto = ResultDto.builder()
                                                .ticketId("001")
                                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))
@@ -107,7 +108,7 @@ class ResultAnnouncerFacadeTest {
                          .message("You win")
                          .isWinner(true)
                          .build()
-        );
+                                                                                          );
         ResultDto expectedResultDto = ResultDto.builder()
                                                .ticketId("001")
                                                .winnersNumbers(Set.of(1, 2, 3, 4, 5, 6))

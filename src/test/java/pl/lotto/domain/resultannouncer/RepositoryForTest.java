@@ -1,5 +1,6 @@
 package pl.lotto.domain.resultannouncer;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 class RepositoryForTest implements ResultAnnouncerResponseRepository {
-    Map<String, ResultAnnouncerResponse> databaseInMemory = new ConcurrentHashMap<>();
+    final Map<String, ResultAnnouncerResponse> databaseInMemory = new ConcurrentHashMap<>();
 
     @Override
-    public ResultAnnouncerResponse save(ResultAnnouncerResponse resultResponse) {
+    public @NotNull ResultAnnouncerResponse save(ResultAnnouncerResponse resultResponse) {
         return databaseInMemory.put(resultResponse.ticketId(), resultResponse);
     }
 
@@ -129,5 +130,15 @@ class RepositoryForTest implements ResultAnnouncerResponseRepository {
     public <S extends ResultAnnouncerResponse, R> R findBy(Example<S> example,
                                                            Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public ResultAnnouncerResponse findByTicketId(String ticketId) {
+        return databaseInMemory.get(ticketId);
+    }
+
+    @Override
+    public boolean existsByTicketId(String idTicket) {
+        return databaseInMemory.containsKey(idTicket);
     }
 }

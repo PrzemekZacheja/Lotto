@@ -1,6 +1,6 @@
 package pl.lotto.domain.numbersgenerator;
 
-import java.util.*;
+import java.util.Set;
 
 class WinningNumberGeneratorForTest implements WinningNumberGenerable {
 

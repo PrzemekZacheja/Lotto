@@ -1,6 +1,6 @@
 package pl.lotto.domain.numbersreceiver;
 
-import pl.lotto.domain.numbersreceiver.dto.*;
+import pl.lotto.domain.numbersreceiver.dto.TicketDto;
 
 class TicketMapper {
 

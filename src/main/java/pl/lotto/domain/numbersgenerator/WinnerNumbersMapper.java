@@ -1,6 +1,6 @@
 package pl.lotto.domain.numbersgenerator;
 
-import pl.lotto.domain.numbersgenerator.dto.*;
+import pl.lotto.domain.numbersgenerator.dto.WinnerNumbersDto;
 
 public class WinnerNumbersMapper {
 
