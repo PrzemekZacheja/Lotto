@@ -1,4 +1,4 @@
-# Lotto042023
+# Lotto
 
 Project simulate lotto game. That's larger project than Lotto032023 (https://github.com/PrzemekZacheja/LottoGame032023).
 Include architecture hexagon with tests. Implements
