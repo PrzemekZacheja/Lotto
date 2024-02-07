@@ -31,6 +31,7 @@
         <java-jwt.version>4.4.0</java-jwt.version>
         <spring-boot-starter-data-redis.version>2.7.2</spring-boot-starter-data-redis.version>
         <jedis.version>3.9.0</jedis.version>
+        <spring-boot-starter-cache.version>2.4.0</spring-boot-starter-cache.version>
     </properties>
 
     <dependencies>
@@ -143,6 +144,11 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>${spring-boot-starter-cache.version}</version>
         </dependency>
     </dependencies>
 

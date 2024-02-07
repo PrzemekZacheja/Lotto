@@ -18,8 +18,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 class RedisConfiguration {
 
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory(@Value("${lotto.redis.host}") String host,
-                                                         @Value("${lotto.redis.port}") int port) {
+    public JedisConnectionFactory jedisConnectionFactory(@Value("${spring.redis.host}") String host,
+                                                         @Value("${spring.redis.port}") int port) {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
