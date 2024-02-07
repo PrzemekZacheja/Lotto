@@ -14,8 +14,10 @@ import pl.lotto.infrastucture.security.jwt.JwtConfigurationProperties;
 @EnableMongoRepositories
 public class LottoSpringBootApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(LottoSpringBootApplication.class, args);
     }
+
 
 }

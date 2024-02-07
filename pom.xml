@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit-jupiter-engine.version>5.9.1</junit-jupiter-engine.version>
         <assertj-core.version>3.23.1</assertj-core.version>
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <mockito-core.version>4.9.0</mockito-core.version>
         <testcontainers.version>1.17.4</testcontainers.version>
         <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
@@ -29,6 +29,8 @@
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <spring-security-config.version>5.7.6</spring-security-config.version>
         <java-jwt.version>4.4.0</java-jwt.version>
+        <spring-boot-starter-data-redis.version>2.7.2</spring-boot-starter-data-redis.version>
+        <jedis.version>3.9.0</jedis.version>
     </properties>
 
     <dependencies>
@@ -130,6 +132,17 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>${java-jwt.version}</version>
+        </dependency>
+        <!--        REDIS-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${spring-boot-starter-data-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
         </dependency>
     </dependencies>
 
