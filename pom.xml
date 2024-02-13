@@ -27,7 +27,7 @@
         <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
         <awaitility.version>4.2.0</awaitility.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-        <spring-security-config.version>5.7.6</spring-security-config.version>
+        <spring-security-config.version>5.7.11</spring-security-config.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <spring-boot-starter-data-redis.version>2.7.2</spring-boot-starter-data-redis.version>
         <jedis.version>3.9.0</jedis.version>
